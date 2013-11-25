@@ -1,0 +1,81 @@
+#include <cstdio>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <string>
+
+//AAA//
+
+using namespace std;
+
+// Player
+struct Player {
+  string m_strName;
+  int m_iShot;
+  int m_iHeight;
+  static bool LexName(const Player& rLeft, const Player& rRight) { return rLeft.m_strName < rRight.m_strName; }
+  static bool Rate(const Player& rLeft, const Player& rRight) { 
+    if (rLeft.m_iShot == rRight.m_iShot){ return rLeft.m_iHeight > rRight.m_iHeight; }
+    else { return rLeft.m_iShot > rRight.m_iShot; }
+  }
+};
+
+
+int t;
+const int MAX_T = 50;
+
+int n[MAX_T], m[MAX_T], p[MAX_T];
+const int MAX_N = 30;
+const int MAX_M = 120;
+const int MAX_P = 5;
+const int MAX_Len = 25;
+
+string name[MAX_T][MAX_N];
+int shot[MAX_T][MAX_N];
+int height[MAX_T][MAX_N];
+
+
+void read();
+void solve();
+
+int main(){
+  read();
+  solve();
+  return 0;
+}
+
+void read(){
+  //  scanf("%d\n", &t);
+  cin >> t;
+  fprintf(stderr, "t; %d\n", t);
+
+  for(int i=0; i < t; i++){
+    //scanf("%d %d %d\n", &n[i], &m[i], &p[i]);
+    cin >> n[i] >> m[i] >> p[i];
+    fprintf(stderr, "n[%d]=%d, m[%d]=%d, p[%d]=%d\n", i, n[i], i, m[i], i, p[i]);
+
+    for(int j=0; j < n[i]; j++){
+      //scanf("%s %d %d\n", &name[i][j], &shot[i][j], &height[i][j]);
+      //fprintf(stderr, "name[%d][%d]=%s, shot[%d][%d]=%d, height[%d][%d]=%d\n", 
+      //      i,j,name[i][j],
+      //      i,j,shot[i][j],
+      //      i,j,height[i][j]);
+      cin >> name[i][j] >> shot[i][j] >> height[i][j];
+      cerr << "name[" << i << "][" << j << "]=" << name[i][j] 
+	   << ", shot[" << i << "][" << j << "]=" << shot[i][j] 
+	   << ", height[" << i << "][" << j << "]=" << height[i][j] << endl;
+
+    }
+  }
+}
+
+void solve(){
+
+  int i;
+  int ans;
+
+  for (i = 0; i < t; i++){
+    printf("Case #%d: %s\n", i+1, (ans == 1) ? "YES" : "NO");
+  }
+}

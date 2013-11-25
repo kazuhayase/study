@@ -1,0 +1,8 @@
+1
+6 62 3
+Meihong 33 192
+Duc 62 162
+Wai 70 148
+Fabien 19 120
+Bhuwan 48 176
+Vlad 30 225
