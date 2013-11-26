@@ -20,15 +20,17 @@ double ans;
 
 class Key {
   int win_;
-  double sun_;
+  int lose_;
+  int sun_;
   
 public: 
-
-  Key( int win=0, double sun=0 )
-    : win_(win), sun_(sun){}
+  
+  Key( int win=0, int lose=0, int sun=0 )
+   : win_(win), lose_(lose), sun_(sun){}
 
   int win() const { return win_; }
-  double sun() const {return sun_;}
+  int lose() const { return lose_; }
+  int sun() const {return sun_;}
 
   bool operator <(const Key &Obj) const
   {
@@ -47,14 +49,12 @@ public:
        return win_ > Obj.win();
      }
    }
+};
 
-
- };
-
- // key = (#win,sun), value = probability
- typedef pair<Key, double> probPair;
- multimap <Key, double> probMap[MAX_K * 2];
- //map <Key, double> probMap;
+// key = (#win,#lose,sun), value = probability
+typedef pair<Key, double> probPair;
+map <Key, double> probMap[MAX_K * 2+1];
+//map <Key, double> probMap;
 
 
  void read_t();
@@ -85,46 +85,46 @@ public:
 
    ans = 0.0;
 
-   for(int i=0; i < k*2; i++){
+   for(int i=0; i < k*2+1; i++){
      probMap[i].clear();
    }
 
-   Key key_init = Key(0,pi);
+   Key key_init = Key(0,0,(int)(pi*1000));
 
    probMap[0].insert(probPair(key_init, 1.0));
 
  }
 
  void dp(){
-   double pre_lose, pre_win;
 
-   for(int j=1; j < k*2; j++){
+   for(int j=1; j < k*2+1; j++){
 
-     multimap <Key, double>::iterator it = probMap[j-1].begin();
+     map <Key, double>::iterator it = probMap[j-1].begin();
      while(it != probMap[j-1].end())
       {
 	Key key = (*it).first;
-	double value  = (*it).second;
+	double value = (*it).second;
 	int win=key.win();
-	double sun=key.sun();
-	double winP = sun * ps + (1-sun) * pr;
+	int lose=key.lose();
+	int sun=key.sun();
+	double winP = ((double)sun * ps + (double)(1000-sun) * pr)/1000;
 
 
-	Key keyLoseDown = Key(win, sun-pd < 0.0 ? 0 : sun-pd );
+	Key keyLoseDown = Key(win, lose+1, max(sun-(int)(pd*1000),0));
 	double valueLoseDown = value * (1-winP) *pl;
 
-	Key keyLoseSame = Key(win, sun);
+	Key keyLoseSame = Key(win, lose+1, sun);
 	double valueLoseSame = value * (1-winP) * (1-pl);
 
-	Key keyWinUp = Key(win+1, sun+pu > 1.0 ? 1.0 : sun+pu);
+	Key keyWinUp = Key(win+1, lose, min(sun+(int)(pu*1000), 1000));
 	double valueWinUp = value * winP *pw;
 
-	Key keyWinSame = Key(win+1, sun);
+	Key keyWinSame = Key(win+1, lose, sun);
 	double valueWinSame = value * winP *(1-pw);
 
-	multimap <Key, double>::iterator nit;
+	map <Key, double>::iterator nit;
 
-	if(j-win < k) {
+	if(lose < k-1){
 
 	  nit = probMap[j].find(keyLoseDown);
 	  if(nit == probMap[j].end()){
@@ -146,7 +146,6 @@ public:
 	if(win == k-1) {
 	  ans += value * winP;
 	} else {
-
 	  nit = probMap[j].find(keyWinUp);
 	  if(nit == probMap[j].end()){
 	    probMap[j].insert(probPair(keyWinUp, valueWinUp ));
