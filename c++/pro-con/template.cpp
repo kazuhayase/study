@@ -1,0 +1,30 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+const int MAX_N = 50;
+
+int N;
+int A[MAX_N];
+
+void read(){
+  scanf("%d\n", &N);
+
+  for(int i=0; i<N; i++){
+    scanf("%d", &A[i]);
+  }
+}
+
+void solve(){
+
+  int ans=0;
+  printf("%d\n", ans);
+
+}
+
+int main(){
+  read();
+  solve();
+  return 0;
+}
+

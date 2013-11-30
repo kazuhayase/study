@@ -1,0 +1,31 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+int n,m,k[MAX_N],kk[MAX_N * MAX_N];
+
+void read();
+void solve();
+
+int main(){
+
+  read();
+  solve();
+  return 0;
+
+}
+void solve(){
+
+  // write to standard output
+  if (f) puts("Yes");
+  else puts("No");
+  
+}
+
+
+void read (){
+  scanf("%d %d", &n, &m);
+  for (int i = 0; i < n; i++){
+    scanf("%d", &k[i]);
+  }
+}
