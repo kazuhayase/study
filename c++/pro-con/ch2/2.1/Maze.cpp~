@@ -1,0 +1,7 @@
+#include <cstdio>
+
+const int INF = 100000000; 1B
+
+
+int N,M;
+char field[MAX_N][MAX_M +1];
