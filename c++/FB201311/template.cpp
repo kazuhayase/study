@@ -1,42 +1,45 @@
 #include <cstdio>
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <set>
 
-int t;
+using namespace std;
+
+int T;
 const int MAX_T = 20;
 
 int n[MAX_T];
-const int MAX_N = 20;
+const int MAX_N = 1000;
 
 char s[MAX_T][MAX_N][MAX_N];
 
+void read_T();
 void read();
-void solve();
+void solve(int t);
 
 int main(){
-  read();
-  solve();
+  read_T();
+  for(int t=0; t < T; t++){
+    read();
+    solve(t);
+  }
   return 0;
 }
 
-void read(){
-  scanf("%d\n", &t);
-  fprintf(stderr, "t; %d\n", t);
-
-  for(int i=0; i < t; i++){
-    scanf("%d", &n[i]);
-    fprintf(stderr, "n[%d]; %d\n", i, n[i]);
-    for(int j=0; j < n[i]; j++){
-      gets(s[i][j]);
-      fprintf(stderr, "s[%d][%d]%s\n", i,j,s[i][j]);
-  }
-
+void read_T(){
+  cin >> T;
+  fprintf(stderr, "T=%d\n", T);
 }
 
-void solve(){
+void read(){
+  scanf("%d", &n);
+  fprintf(stderr, "n; %d\n", n);
+}
 
-  int i;
+void solve(int t){
+
   int ans;
+  printf("Case #%d: %s\n", t+1, (ans == 1) ? "YES" : "NO");
 
-  for (i = 0; i < t; i++){
-    printf("Case #%d: %s\n", i+1, (ans == 1) ? "YES" : "NO");
-  }
 }
