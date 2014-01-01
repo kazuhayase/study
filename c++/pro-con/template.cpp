@@ -1,19 +1,18 @@
 #include <cstdio>
+#include <iostream>
 #include <algorithm>
+#include <map>
+#include <set>
+
 using namespace std;
 
 const int MAX_N = 50;
+const int INF = std::numeric_limits<int>::max(); //2,147,483,647 == 2^31 -1
 
-int N;
+//INPUT
+
+int n;
 int A[MAX_N];
-
-void read(){
-  scanf("%d\n", &N);
-
-  for(int i=0; i<N; i++){
-    scanf("%d", &A[i]);
-  }
-}
 
 void solve(){
 
@@ -23,7 +22,6 @@ void solve(){
 }
 
 int main(){
-  read();
   solve();
   return 0;
 }
