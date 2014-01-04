@@ -7,6 +7,10 @@
 #include <set>
 #include <vector>
 
+typedef vector<int> vec;
+typedef vector<vec> mat;
+typedef long long ll;
+
 using namespace std;
 
 const int MAX_N = 50;
