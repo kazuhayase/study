@@ -1,4 +1,4 @@
-// simpler bipartite matching
+// Asteroids using "simpler bipartite matching"
 
 #include <cstdio>
 #include <climits>
@@ -9,9 +9,10 @@
 using namespace std;
 
 const int MAX_V = 100;
+const int MAX_K = 100;
 const int INF = std::numeric_limits<int>::max(); //2,147,483,647 == 2^31 -1
 
-//INPUT
+//for simpler bipartite matching
 int V;
 vector<int> G[MAX_V];
 int match[MAX_V]; //pair in matching
@@ -50,3 +51,16 @@ int bipartite_matching(){
   }
   return res;
 }
+
+//INPUT
+int N, K;
+int R[MAX_K], C[MAX_K];
+
+void solve(){
+  V = N*2;
+  for (int i=0; i<K; i++){
+    add_edge(R[i] - 1, N + C[i] - 1);
+  }
+  printf("%d\n", bipartite_matching());
+}
+
