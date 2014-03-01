@@ -71,7 +71,21 @@ void solve(){
   puts (ok ? "Yes" : "No");
 }
 
+int main(){
+  //case1
+  N=0; 
+  V=7;
+  X=3, Y=1;
+  solve();
 
+  //case2
+  N=1; 
+  V=7;
+  X=3, Y=1;
+  L[0] = 1, B[0] = 1, R[0] = 2, T[0] = 2;
+  solve();
+
+}
 
 
   
