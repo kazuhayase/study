@@ -73,11 +73,12 @@ const int MAX_N = 20000;
 const int MAX_M = 200000;
 
 //INPUT
-int N, M;
-int A[MAX_N], B[MAX_N];
-int a[MAX_M], b[MAX_M], w[MAX_M];
+int N=3, M=1;
+int A[MAX_N]={1,2,10}, B[MAX_N]={10,10,3};
+int a[MAX_M]={2}, b[MAX_M]={3}, w[MAX_M]={1000};
 
-void solve(){
+//void solve(){
+int main(){
   int s = N, t = s+1;
 
   for (int i=0; i < N; i++){
@@ -91,6 +92,7 @@ void solve(){
   }
 
   printf("%d\n", max_flow(s,t));
+  return 0;
 }
 
 

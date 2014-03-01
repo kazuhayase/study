@@ -11,7 +11,7 @@
 #include <queue>
 using namespace std;
 
-const int MAX_V = 100;
+const int MAX_V = 300;
 const int INF = std::numeric_limits<int>::max(); //2,147,483,647 == 2^31 -1
 
 typedef pair<int, int> P; // first is shortest distance, second is vertex number
@@ -79,3 +79,48 @@ int min_cost_flow(int s, int t, int f){
   return res;
 }
 
+const int MAX_N = 100;
+const int MAX_M = 100;
+
+
+//INPUT
+int N=3,M=4;
+int X[MAX_N]={-3,-2,2}, Y[MAX_N]={3,-2,2}, B[MAX_N]={5,6,5};
+int p[MAX_M]={-1,1,-2,0}, Q[MAX_M]={1,1,-2,-1}, C[MAX_M]={3,4,7,3};
+int E[MAX_N][MAX_M]={{3,1,1,0},{0,0,6,0},{0,3,0,2}};
+
+//void solve(){
+int main(){
+  // matching graph
+  // 0 -- N-1; Building
+  // N -- N+M-1; shelter
+  int s = N+M, t = s+1;
+  V = t+1;
+  int cost = 0; // sum of the plan E
+  int F = 0; //number of people
+  for (int i=0; i < N; i++){
+    for (int j=0; j < M; j++){
+      int c = abs(X[i] - p[j]) + abs(Y[i] - Q[j]) + 1;
+      add_edge(i, N+j, INF, c);
+      cost += E[i][j] * c;
+    }
+  }
+  for (int i=0; i < N; i++){
+    add_edge(s, i, B[i], 0);
+    F += B[i];
+  }
+  for (int i=0; i < M; i++){
+    add_edge(N+i, t, C[i], 0);
+  }
+  
+  if (min_cost_flow(s, t, F) < cost){
+    printf("SUBOPTIMAL\n");
+    for (int i=0; i < N; i++) {
+      for (int j=0; j < M; j++){
+	printf("%d%c", G[N+j][i].cap, j+1 == M ? '\n' : ' '); // rev path cap in residual graph == size of the path's flow
+      }
+    }
+  } else {
+    printf("OPTIMAL\n");
+  }
+}

@@ -11,7 +11,7 @@
 #include <queue>
 using namespace std;
 
-const int MAX_V = 100;
+const int MAX_V = 1000;
 const int INF = std::numeric_limits<int>::max(); //2,147,483,647 == 2^31 -1
 
 typedef pair<int, int> P; // first is shortest distance, second is vertex number
@@ -77,5 +77,22 @@ int min_cost_flow(int s, int t, int f){
     }
   }
   return res;
+}
+
+const int MAX_M = 10000;
+
+//INPUT
+int N=4, M=5;
+int a[MAX_M]={1,2,3,1,2}, b[MAX_M]={2,3,4,3,4}, c[MAX_M]={1,1,1,2,2};
+
+int main(){
+  int s=0, t=N-1;
+  V = N;
+  for(int i=0; i<M; i++){
+    add_edge(a[i]-1, b[i]-1, 1, c[i]);
+    add_edge(b[i]-1, a[i]-1, 1, c[i]);
+  }
+  printf("%d\n", min_cost_flow(s,t,2));
+  return 0;
 }
 
