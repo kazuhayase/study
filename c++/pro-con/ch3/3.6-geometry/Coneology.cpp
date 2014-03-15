@@ -1,3 +1,6 @@
+// plane scan (sweep) method
+// 平面走査
+
 #include<vector>
 #include<set>
 #include<cstdio>
