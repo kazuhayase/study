@@ -43,3 +43,19 @@ vec gauss_jordan(const mat& A, const vec& b){
 }
 
   
+int main(){
+  mat A (3, vec(3));
+  vec b (3);
+
+  A[0][0] = 1; A[0][1] = -2; A[0][2] = 3;
+  A[1][0] = 4; A[1][1] = -5; A[1][2] = 6;
+  A[2][0] = 7; A[2][1] = -8; A[2][2] = 10;
+  b[0] = 6; b[1] = 12; b[2] = 21;
+
+  vec res = gauss_jordan(A, b);
+
+  for(int i=0; i<3; i++){
+    printf("%f ", res[i]);
+  }
+  printf("\n");
+}
