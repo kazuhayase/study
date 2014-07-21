@@ -19,7 +19,7 @@ void solve(){
   // compute grundy number
   int max_x = *max_element(X, X+N);
 
-  for (int j=1; j<max_x; j++){
+  for (int j=1; j <= max_x; j++){
     set<int> s;
     for (int i=0; i < K; i++){
       if (A[i] <= j) s.insert(grundy[j - A[i]]);
@@ -39,24 +39,24 @@ void solve(){
 }
 
 int main(){
-  /*
   N=3, K=3;
   A[0]=1, A[1]=3, A[2]=4;
   X[0]=5, X[1]=6, X[2]=7;
   solve();
 
   fill(grundy, grundy+MAX_X+1, 0);
-  */
 
   N=3, K=3;
   A[0]=1, A[1]=3, A[2]=4;
   X[0]=5, X[1]=6, X[2]=8;
   solve();
 
+  /*
   for(int i=1; i<1000; i++){
     X[2]=i;
     printf("%d:", i);
     solve();
   }
+  */
 
 }
