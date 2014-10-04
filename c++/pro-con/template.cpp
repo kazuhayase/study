@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <string>
 
 typedef vector<int> vec;
 typedef vector<vec> mat;
