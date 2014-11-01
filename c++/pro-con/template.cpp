@@ -11,6 +11,7 @@
 typedef vector<int> vec;
 typedef vector<vec> mat;
 typedef long long ll;
+typedef unsigned long long ull;
 
 using namespace std;
 
