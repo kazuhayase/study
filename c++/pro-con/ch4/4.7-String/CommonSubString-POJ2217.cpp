@@ -1,7 +1,9 @@
 #include<string>
 using namespace std;
 
-const int MAX_N = 1000;
+const int MAX_N = 20001;
+const int MAX_L = 10000;
+
 int n,k;
 int sarank[MAX_N + 1];
 int lcprank[MAX_N + 1];
@@ -69,18 +71,31 @@ void construct_lcp(string S, int *sa, int *lcp){
     lcp[lcprank[i] - 1] = h;
   }
 }
-    
-int main(){
-  string S="abracadabra";
-  int SA[100];
-  int LCP[100];
-  construct_sa(S, SA);
-  construct_lcp(S, SA, LCP);
 
-  //printf("i, S[i], SA[i], LCP[i]\n");
-  printf("i, SA[i], LCP[i]\n");
-  for(int i=0; i<15; i++){
-    printf("%d,%d,%d\n", i,SA[i],LCP[i]);
+//INPUT 
+string S,T;
+
+int sa[MAX_L], lcp[MAX_L];
+
+void solve(){
+  int s1 = S.length();
+  S += '\0' + T;
+
+  construct_sa(S, sa);
+  construct_lcp(S, sa, lcp);
+
+  int ans=0;
+  for(int i=0; i<S.length(); i++){
+    if ((sa[i]<s1) !=(sa[i+1]<s1)){
+      ans=max(ans, lcp[i]);
+    }
   }
+  printf("%d\n", ans);
 }
-  
+
+int main(){
+  S="ABRACADABRA";
+  T="ECADADABRBCRDAR";
+  solve();
+}
+
