@@ -19,7 +19,7 @@ bool compare_sa(int i, int j){
 
 void construct_sa(string S, int *sa){
   n = S.length();
-  // start length-1, rank is character code
+  // start length=1, rank is character code
   for (int i=0; i <=n; i++){
     sa[i] = i;
     sarank[i] = i < n ? S[i] : -1;
@@ -60,7 +60,7 @@ void construct_lcp(string S, int *sa, int *lcp){
 
   int h=0;
   lcp[0]=0;
-  for(int i=0; i<=n; i++){
+  for(int i=0; i<n; i++){
     int j = sa[lcprank[i] - 1];
     if (h>0) h--;
     for(; j+h<n && i+h<n; h++){

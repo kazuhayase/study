@@ -42,18 +42,6 @@ void construct_sa(string S, int *sa){
   }
 }
 
-// search
-bool contain(string S, int *sa, string T) {
-  int a=0, b=S.length();
-  while (b-a>1){
-    int c = (a+b)/2;
-    // compare T-length S from sa[c] with T
-    if (S.compare(sa[c], T.length(), T) < 0) a=c;
-    else b=c;
-  }
-  return S.compare(sa[b], T.length(), T) == 0;
-}
-
 // LCP (Longest Common Prefix Array)
 
 void construct_lcp(string S, int *sa, int *lcp){
