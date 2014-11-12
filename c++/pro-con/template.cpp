@@ -18,6 +18,11 @@ using namespace std;
 const int MAX_N = 50;
 const int INF = std::numeric_limits<int>::max(); //2,147,483,647 == 2^31 -1
 
+template <typename T>
+void FILL_(void* ptr, size_t size, T value) {
+  std::fill((T*)ptr, (T*)ptr + size, value);
+}
+
 //INPUT
 
 int n;
