@@ -1,38 +1,9 @@
 # -*- coding: utf-8 -*-
 import math,string,itertools,fractions,heapq,collections,re,array,bisect
 
-class Lottery:
-    def sortByOdds(self, rules):
-        length = len(rules)
-        if length == 0:
-            return([])
-        name=['' for i in range(length)]
-        num=[0 for i in range(length)]
-        for i, r in enumerate(rules):
-            col = r.find(":")
-            name[i] = r[:col]
-            atr = r[col+2:].split(" ")
-            ch = int(atr[0])
-            bl = int(atr[1])
-            if atr[2] == "F" and atr[3] == "F":
-                num[i] = ch ** bl
-            elif atr[2] == "F" and atr[3] == "T": 
-                num[i] = math.factorial(ch) / math.factorial(ch - bl)
-            elif atr[2] == "T" and atr[3] == "T":   # choose(atr[0], atr[1])
-                num[i] = math.factorial(ch) / math.factorial(ch - bl) / math.factorial(bl)
-            else: # choose (atr[0]+atr[1]-1, atr[1])
-                num[i] = math.factorial(ch+bl-1) / math.factorial(ch-1) / math.factorial(bl)
-        sNum = sorted(set(num))
-        res = []
-        for s in sNum:
-            nl = []
-            for i in range(num.count(s)):
-                nl.append(name[num.index(s)])
-                name.remove(name[num.index(s)])
-                num.remove(s)
-            for n in sorted(nl):
-                res.append(n)
-        return (res)
+class Clicountingd2:
+    def count(self, g):
+        return 0
 
 # CUT begin
 # TEST CODE FOR PYTHON {{{
@@ -62,12 +33,12 @@ def pretty_str(x):
     else:
         return str(x)
 
-def do_test(rules, __expected):
+def do_test(g, __expected):
     startTime = time.time()
-    instance = Lottery()
+    instance = Clicountingd2()
     exception = None
     try:
-        __result = instance.sortByOdds(rules);
+        __result = instance.count(g);
     except:
         import traceback
         exception = traceback.format_exc()
@@ -88,38 +59,35 @@ def do_test(rules, __expected):
         return 0
 
 def run_tests():
-    sys.stdout.write("Lottery (550 Points)\n\n")
+    sys.stdout.write("Clicountingd2 (1000 Points)\n\n")
 
     passed = cases = 0
     case_set = set()
     for arg in sys.argv[1:]:
         case_set.add(int(arg))
 
-    with open("Lottery.sample", "r") as f:
+    with open("Clicountingd2.sample", "r") as f:
         while True:
             label = f.readline()
             if not label.startswith("--"): break
 
-            rules = []
+            g = []
             for i in range(0, int(f.readline())):
-                rules.append(f.readline().rstrip())
-            rules = tuple(rules)
+                g.append(f.readline().rstrip())
+            g = tuple(g)
             f.readline()
-            __answer = []
-            for i in range(0, int(f.readline())):
-                __answer.append(f.readline().rstrip())
-            __answer = tuple(__answer)
+            __answer = int(f.readline().rstrip())
 
             cases += 1
             if len(case_set) > 0 and (cases - 1) in case_set: continue
             sys.stdout.write("  Testcase #%d ... " % (cases - 1))
-            passed += do_test(rules, __answer)
+            passed += do_test(g, __answer)
 
     sys.stdout.write("\nPassed : %d / %d cases\n" % (passed, cases))
 
-    T = time.time() - 1451775729
+    T = time.time() - 1471242707
     PT, TT = (T / 60.0, 75.0)
-    points = 550 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
+    points = 1000 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
     sys.stdout.write("Time   : %d minutes %d secs\n" % (int(T/60), T%60))
     sys.stdout.write("Score  : %.2f points\n" % points)
 
