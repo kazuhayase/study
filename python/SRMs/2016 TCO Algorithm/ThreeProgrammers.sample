@@ -1,0 +1,32 @@
+-- Example 0
+CAB
+
+BCA
+-- Example 1
+CBB
+
+BCB
+-- Example 2
+BB
+
+impossible
+-- Example 3
+BBA
+
+BAB
+-- Example 4
+CAC
+
+impossible
+-- Example 5
+ACAC
+
+CAAC
+-- Example 6
+ACABC
+
+ACABC
+-- Example 7
+BAABCABBCCACBAACABAABABBCCAACABCCAACCABCACACCBABAB
+
+BACBABCAACBACABCBACBACABCBACBACABCABCAACBACAACABCA

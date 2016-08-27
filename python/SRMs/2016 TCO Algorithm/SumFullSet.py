@@ -1,27 +1,18 @@
 # -*- coding: utf-8 -*-
 import math,string,itertools,fractions,heapq,collections,re,array,bisect
 
-class PeopleCircle:
-    def order(self, numMales, numFemales, K):
-<<<<<<< HEAD
-        sum = numMales + numFemales
-        res =['M' for i in range(sum)]
-        cur = sum-1
-        for i in range(numFemales):       
-            for j in range( K % (sum - i) ):
-                cur = (cur + 1) % sum
-                while res[cur] == 'F':
-                    cur = (cur + 1) % sum
-            res[cur] = 'F'
-
-        return "".join(res)
-=======
-        res = [' ' for i in range(numFemales + numMales)]
-        cur = 0
-        for i in range(numFemales):
-           next = cur + K % 
-        return ""
->>>>>>> origin/master
+class SumFullSet:
+    def isSumFullSet(self, elements):
+        se = set(elements)
+        num = len(elements)
+        for i in range(num):
+            for j in range(num):
+                if i != j:
+                    if elements[i]+elements[j] in se:
+                        continue
+                    else:
+                        return "not closed"
+        return "closed"
 
 # CUT begin
 # TEST CODE FOR PYTHON {{{
@@ -51,12 +42,12 @@ def pretty_str(x):
     else:
         return str(x)
 
-def do_test(numMales, numFemales, K, __expected):
+def do_test(elements, __expected):
     startTime = time.time()
-    instance = PeopleCircle()
+    instance = SumFullSet()
     exception = None
     try:
-        __result = instance.order(numMales, numFemales, K);
+        __result = instance.isSumFullSet(elements);
     except:
         import traceback
         exception = traceback.format_exc()
@@ -77,38 +68,35 @@ def do_test(numMales, numFemales, K, __expected):
         return 0
 
 def run_tests():
-    sys.stdout.write("PeopleCircle (350 Points)\n\n")
+    sys.stdout.write("SumFullSet (250 Points)\n\n")
 
     passed = cases = 0
     case_set = set()
     for arg in sys.argv[1:]:
         case_set.add(int(arg))
 
-    with open("PeopleCircle.sample", "r") as f:
+    with open("SumFullSet.sample", "r") as f:
         while True:
             label = f.readline()
             if not label.startswith("--"): break
 
-            numMales = int(f.readline().rstrip())
-            numFemales = int(f.readline().rstrip())
-            K = int(f.readline().rstrip())
+            elements = []
+            for i in range(0, int(f.readline())):
+                elements.append(int(f.readline().rstrip()))
+            elements = tuple(elements)
             f.readline()
             __answer = f.readline().rstrip()
 
             cases += 1
             if len(case_set) > 0 and (cases - 1) in case_set: continue
             sys.stdout.write("  Testcase #%d ... " % (cases - 1))
-            passed += do_test(numMales, numFemales, K, __answer)
+            passed += do_test(elements, __answer)
 
     sys.stdout.write("\nPassed : %d / %d cases\n" % (passed, cases))
 
-<<<<<<< HEAD
-    T = time.time() - 1462590968
-=======
-    T = time.time() - 1461677205
->>>>>>> origin/master
+    T = time.time() - 1461754805
     PT, TT = (T / 60.0, 75.0)
-    points = 350 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
+    points = 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
     sys.stdout.write("Time   : %d minutes %d secs\n" % (int(T/60), T%60))
     sys.stdout.write("Score  : %.2f points\n" % points)
 

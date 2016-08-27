@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 eclipse.preferences.version=1
 encoding//python/SRMs/SRM\ 144/BinaryCode.py=utf-8
 encoding//python/SRMs/SRM\ 144/Lottery.py=utf-8
@@ -8,3 +9,11 @@ encoding//python/SRMs/SRM\ 595/LittleElephantAndIntervalsDiv1.py=utf-8
 encoding//python/SRMs/SRM\ 696/Arrfix.py=utf-8
 encoding//python/SRMs/Single\ Round\ Match\ 696/Arrfix.py=utf-8
 encoding//python/SRMs/Single\ Round\ Match\ 696/Ropestring.py=utf-8
+=======
+eclipse.preferences.version=1
+encoding//python/SRMs/2016\ TCO\ Algorithm/SumFullSet.py=utf-8
+encoding//python/SRMs/2016\ TCO\ Algorithm/ThreeProgrammers.py=utf-8
+encoding//python/SRMs/SRM\ 144/BinaryCode.py=utf-8
+encoding//python/SRMs/SRM\ 146/RectangularGrid.py=utf-8
+encoding//python/SRMs/SRM\ 147/PeopleCircle.py=utf-8
+>>>>>>> origin/master
