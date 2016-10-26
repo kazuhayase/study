@@ -3,7 +3,36 @@ import math,string,itertools,fractions,heapq,collections,re,array,bisect
 
 class Lottery:
     def sortByOdds(self, rules):
-        return ()
+        length = len(rules)
+        if length == 0:
+            return([])
+        name=['' for i in range(length)]
+        num=[0 for i in range(length)]
+        for i, r in enumerate(rules):
+            col = r.find(":")
+            name[i] = r[:col]
+            atr = r[col+2:].split(" ")
+            ch = int(atr[0])
+            bl = int(atr[1])
+            if atr[2] == "F" and atr[3] == "F":
+                num[i] = ch ** bl
+            elif atr[2] == "F" and atr[3] == "T": 
+                num[i] = math.factorial(ch) / math.factorial(ch - bl)
+            elif atr[2] == "T" and atr[3] == "T":   # choose(atr[0], atr[1])
+                num[i] = math.factorial(ch) / math.factorial(ch - bl) / math.factorial(bl)
+            else: # choose (atr[0]+atr[1]-1, atr[1])
+                num[i] = math.factorial(ch+bl-1) / math.factorial(ch-1) / math.factorial(bl)
+        sNum = sorted(set(num))
+        res = []
+        for s in sNum:
+            nl = []
+            for i in range(num.count(s)):
+                nl.append(name[num.index(s)])
+                name.remove(name[num.index(s)])
+                num.remove(s)
+            for n in sorted(nl):
+                res.append(n)
+        return (res)
 
 # CUT begin
 # TEST CODE FOR PYTHON {{{
