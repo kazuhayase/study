@@ -1,0 +1,9 @@
+INSTUPEqualSubstrings2
+/home/hayase/git/study/python/SRMs/Single Round Match 683/EqualSubstrings2.py
+INFOS:&&1|1|1|0&&2|2|1|1&&2|3|1|0&&2|4|1|0&&2|5|1|0&&2|6|1|0
+run_tests=6
+pretty_str=4
+tc_equal=3
+get=2
+EqualSubstrings2=1
+do_test=5
