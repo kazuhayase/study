@@ -1,0 +1,25 @@
+-- VERSION_4
+-- START DISKCACHE_2
+/home/hayase/git/study/python/SRMs/.metadata/.plugins/org.eclipse.core.resources/.projects/Single Round Match 679/com.python.pydev.analysis/v2_indexcache
+ContestScoreboard|1461815825180820000|/home/hayase/git/study/python/SRMs/Single Round Match 679/ContestScoreboard.py
+ListeningSongs|1461815825180820000|/home/hayase/git/study/python/SRMs/Single Round Match 679/ListeningSongs.py
+-- END DISKCACHE
+-- START DICTIONARY
+2
+1=ContestScoreboard
+2=ListeningSongs
+-- END DICTIONARY
+-- START TREE 1
+6
+con|1|ContestScoreboard!9@
+do_|2|do_test!18@do_test!10@
+lis|1|ListeningSongs!17@
+pre|2|pretty_str!18@pretty_str!10@
+run|2|run_tests!18@run_tests!10@
+tc_|2|tc_equal!10@tc_equal!18@
+-- END TREE
+-- START TREE 2
+2
+fin|1|findWinner!1&10@
+lis|1|listen!2&18@
+-- END TREE
