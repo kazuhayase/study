@@ -6,7 +6,7 @@ Created on 2016/11/26
 import math, string, itertools, fractions, heapq, collections, re, array, bisect
 
 MAX_N = 50
-
+ 
 if __name__ == '__main__':
     n = int(input())
     m = int(input())
