@@ -15,9 +15,9 @@ class UFT(object):
         '''
         Constructor
         '''
-        for i in range(n):
-            self.par[i]=i
-            self.rank[i]=0
+        self.par = [i for i in range(n)]
+        self.rank = [0 for i in range(n)]
+
     
     def find(self, x):
         if self.par[x] == x:
