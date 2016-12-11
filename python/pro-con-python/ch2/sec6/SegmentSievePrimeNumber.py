@@ -27,5 +27,5 @@ def	segmentSieve(a,b):
 
 if __name__ == '__main__':
 	print("{}".format(segmentSieve(22,37))) #3
-	print("{}".format(segmentSieve(22801763489,22801787297))) #1000
+	print("{}".format(segmentSieve(22801763489,22801787297))) #1000 --> ? 1014?
 	
