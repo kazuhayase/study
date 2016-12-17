@@ -9,7 +9,7 @@ V=0
 E=0
 INF=1<30
 
-from ch2.sec4 import UnionFindTree  # @UnresolvedImport
+from ch2.sec4_Heap_UnionFind import UnionFindTree  # @UnresolvedImport
 
 def kruskal():
     G.sort()
