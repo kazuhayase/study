@@ -3,8 +3,7 @@ Created on 2017/01/01
 
 @author: kazuyoshi.hayase
 '''
-
-M=10000
+M=10007
 
 def mul(A,B):
     C = [[0 for i in range(len(B[0]))] for j in range(len(A))]
@@ -25,9 +24,29 @@ def MatPow(A, n):
         n>>=1
     return B
 
+def SumOfMatSer(n,k,A):
+    B=[[0 for i in range(n*2)] for j in range(n*2)]
+    for i in range(n):
+        for j in range(n):
+            B[i][j] = A[i][j]
+        B[n+i][i] = B[n+i][n+i] = 1
+    B = MatPow(B, k+1)
+    for i in range(n):
+        row=[]
+        for j in range(n):
+            a = B[n+i][j] % M
+            if i==j:
+                a = (a + M-1) % M
+            row.append(str(a))
+        print(' '.join(row))
+
 if __name__ == '__main__':
-    n=10
-    A=[[1,1],[1,0]]
-    A = MatPow(A,n)
-    print(A[1][0])
+    n=2
+    k=2
+    M=4
+    A=[[0,1],[1,1]]
+    SumOfMatSer(n,k,A)
+    
+    
+    
     

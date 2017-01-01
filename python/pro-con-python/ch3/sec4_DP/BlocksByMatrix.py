@@ -25,9 +25,13 @@ def MatPow(A, n):
         n>>=1
     return B
 
+
 if __name__ == '__main__':
-    n=10
-    A=[[1,1],[1,0]]
-    A = MatPow(A,n)
-    print(A[1][0])
+    A=[[2,1,0],[2,2,2],[0,2,2]]
+    n=1
+    R=MatPow(A,n)
+    print(R[0][0]) # A x (1,0,0)T
+    n=2
+    R=MatPow(A,n)
+    print(R[0][0]) # A x (1,0,0)T
     

@@ -4,7 +4,7 @@ Created on 2017/01/01
 @author: kazuyoshi.hayase
 '''
 
-M=10000
+M=10007
 
 def mul(A,B):
     C = [[0 for i in range(len(B[0]))] for j in range(len(A))]
@@ -26,8 +26,8 @@ def MatPow(A, n):
     return B
 
 if __name__ == '__main__':
-    n=10
-    A=[[1,1],[1,0]]
-    A = MatPow(A,n)
-    print(A[1][0])
-    
+    A=[[0,1,1,0],[0,0,1,0],[0,0,0,1],[1,0,0,0]]
+    k=2
+    R=MatPow(A,k)
+    res=sum([sum(R[i]) for i in range(len(R[0]))])
+    print(res)
