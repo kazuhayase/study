@@ -87,15 +87,32 @@ def bipartiteMatching(N,K,can):
             if e[1] > 0:
                 que.append(e[0])
     minVC=[]
+    HR=[]
+    HC=[]
+    
     for i in range(N):
         if visited[N+i]:
             minVC.append(N+i)
+            HC.append(i+1)
         if not visited[i]:
             minVC.append(i)
+            HR.append(i+1)
     print("Minimum Vertex Cover=", minVC)
-    
+    print("R-lines=", HR)
+    print("C-lines=", HC)
+
+
+def solve(N,K,R,C):
+    n=N
+    k=N
+    can=[]
+    for r,c in zip(R,C):
+        can.append([r-1,c-1])
+    bipartiteMatching(n, k, can)
+
 if __name__ == '__main__':
-    N=3 #computers (0-indexed)
-    K=3 #jobs (0-indexed)
-    can=[[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
-    bipartiteMatching(N, K, can)
+    N=3
+    K=4
+    R=[1,1,2,3]
+    C=[1,3,2,2]
+    solve(N,K,R,C)
