@@ -7,16 +7,16 @@ Created on 2016/12/23
 INF=1<<32
 
 def rec(S,v,dp,n,d):
-    if dp[S][v] >=0:
-        return dp[S][v]
+    if dp[v][S] >=0:
+        return dp[v][S]
     if S == (1<<n)-1 and v==0:
-        dp[S][v]=0
+        dp[v][S]=0
         return 0
     res = INF
     for u in range(n):
         if not ((S >> u) & 1):
             res = min(res, rec(S | (1<<u), u, dp,n,d) + d[v][u])
-    dp[S][v] = res
+    dp[v][S] = res
     return res
 
 def solve(n,d):
