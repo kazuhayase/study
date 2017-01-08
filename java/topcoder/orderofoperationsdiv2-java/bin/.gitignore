@@ -1,1 +1,6 @@
-/bin/
+/.classpath
+/.project
+/.settings/
+/OrderOfOperationsDiv2.class
+/OrderOfOperationsDiv2.html
+/OrderOfOperationsDiv2Test.class
