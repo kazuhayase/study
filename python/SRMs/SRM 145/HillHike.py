@@ -87,7 +87,11 @@ def run_tests():
 
     sys.stdout.write("\nPassed : %d / %d cases\n" % (passed, cases))
 
+<<<<<<< HEAD
     T = time.time() - 1474785418
+=======
+    T = time.time() - 1475402425
+>>>>>>> origin/master
     PT, TT = (T / 60.0, 75.0)
     points = 1000 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
     sys.stdout.write("Time   : %d minutes %d secs\n" % (int(T/60), T%60))

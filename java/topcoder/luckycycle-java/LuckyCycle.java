@@ -1,8 +1,8 @@
 public class LuckyCycle {
 
 	public int[] getEdge(int[] edge1, int[] edge2, int[] weight) {
-		int[][] edge = new int[100][100];
-		int nodes = edge1.length + 1;
+		//int[][] edge = new int[100][100];
+		//int nodes = edge1.length + 1;
 		
 		for(int i=0; i<edge1.length; i++){
 			if(edge1[i]>edge2[i]){
@@ -15,6 +15,7 @@ public class LuckyCycle {
 		for(int i=0; i<edge1.length; i++){
 			for(int j=0; j<edge1.length; j++){
 				int v1=-1, v2=-1;
+				v2 = v1 + v2;;
 				if(i!=j && weight[i]!=weight[j] && 
 						(edge1[i] == edge1[j] || edge1[i] == edge2[j] || edge2[i] == edge1[j] || edge2[i] == edge2[j])	){
 						if(edge1[i]<edge1[j]){
@@ -33,12 +34,12 @@ public class LuckyCycle {
 							}
 						}
 						for(int k=0; k<edge1.length; k++){
-							if(i!=k && j!=k){
 							if(weight[i]!=weight[k] &&
-								(edge1[i] == edge1[k] || edge1[i] == edge2[k] || edge2[i] == edge1[k] || edge2[i] == edge2[k])	){
-								int[] ret = {
+								(edge1[i] == edge1[k] || edge1[i] == edge2[k] || 
+									edge2[i] == edge1[k] || edge2[i] == edge2[k]) ) {
+								;
 							}
-						
+						}
 				}
 			}
 		}
