@@ -64,7 +64,7 @@ def solve(N,ps):
     qs=convexHull(ps,N)
     n=len(qs)
     if n==2:
-        print('{:.0f'.format(dist(qs[0],qs[1])))
+        print('{:.0f}'.format(dist(qs[0],qs[1])))
         return
     res=0
     rs=[]
