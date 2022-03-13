@@ -1,56 +1,54 @@
 # -*- coding: utf-8 -*-
 import math,string,itertools,fractions,heapq,collections,re,array,bisect
 
-class VendingMachine:
 
-    def move(self, s,t,c):
-        dist = abs(t-s)
-        return min(dist, c-dist)
+class LastDigit:
     
-    def motorUse(self, prices, purchases):
-        M = len(prices)
-        shelf =  [ list(map(int, prices[i].split(' '))) for i in range (M) ] 
-        N = len(shelf[0])
-        column = [ [s[j] for s in shelf] for j in range (N) ]
-        co=[]
-        heapq.heapify(co)
-        for j in range (N):
-            heapq.heappush(co,[-sum(column[j]),j,column[j]])
-        pat = re.compile('(\d+),(\d+):(\d+)')
-        col=0
-        tim=0
-        Sum=0
-        [tmps, tmpcolnum, tmpco] = heapq.heappop(co)
-        Sum += self.move(0,tmpcolnum,N)
-        col = tmpcolnum
-        heapq.heappush(co,[tmps,tmpcolnum,tmpco])
-        flag = True
-        for pur in purchases:
-            ma = pat.match(pur)
-            (sh,cc,ti) = map(int, ma.groups())
-            if ti - tim > 4:
-                [tmps, tmpcolnum, tmpco] = heapq.heappop(co)
-                Sum += self.move(col,tmpcolnum,N)
-                col = tmpcolnum
-                heapq.heappush(co,[tmps,tmpcolnum,tmpco])
-            Sum += self.move(col,cc,N)
-            col=cc
-            tim=ti
-            for CO in co:
-                [tmps, tmpcolnum, tmpco] = CO
-                if tmpcolnum == cc:
-                    if tmpco[sh] == 0:
-                        flag = False
-                    CO[0] += tmpco[sh]
-                    tmpco[sh] = 0
-            heapq.heapify(co)
-        [tmps, tmpcolnum, tmpco] = heapq.heappop(co)
-        Sum += self.move(col,tmpcolnum,N)
-        if flag:
-            return Sum
+    @classmethod
+    def zorome(cls, d, length):
+        return int (str(d)*length)
+    
+    @classmethod
+    def findOne(cls, S, length):
+        strS = str(S)
+        if len(strS) < length:
+            return 0, False
+        elif len(strS) == length:
+            S0 = int(strS[0]) 
+            newS = cls.zorome(S0, length)
+            if newS > S:
+                newS = cls.zorome(S0 - 1, length)
+                return S0 - 1, False
+            else:
+                return S0, False
+        else:
+            if length < 2:
+                return 0, True
+            
+            newS = cls.zorome(9, length-1)
+            #if len(str(S-newS))>length-2:
+             #   return 0, True
+            #else:
+            return 9, False
+        
+    def findX(self, S):
+        strS = str(S)
+        res=0
+        length = len(strS)
+        flg=True
+        for i in range (length):
+            if len(str(S))<length-i:
+                res = res*10
+            else:
+                nextD, tmpf= self.findOne(S, length-i)
+                res = res*10 + nextD
+                S = S - self.zorome(nextD,length-i)
+                if tmpf:
+                    flg=False
+        if flg:        
+            return res
         else:
             return -1
-
 # CUT begin
 # TEST CODE FOR PYTHON {{{
 import sys, time, math
@@ -79,12 +77,12 @@ def pretty_str(x):
     else:
         return str(x)
 
-def do_test(prices, purchases, __expected):
+def do_test(S, __expected):
     startTime = time.time()
-    instance = VendingMachine()
+    instance = LastDigit()
     exception = None
     try:
-        __result = instance.motorUse(prices, purchases);
+        __result = instance.findX(S);
     except:
         import traceback
         exception = traceback.format_exc()
@@ -105,39 +103,32 @@ def do_test(prices, purchases, __expected):
         return 0
 
 def run_tests():
-    sys.stdout.write("VendingMachine (600 Points)\n\n")
+    sys.stdout.write("LastDigit (500 Points)\n\n")
 
     passed = cases = 0
     case_set = set()
     for arg in sys.argv[1:]:
         case_set.add(int(arg))
 
-    with open("VendingMachine.sample", "r") as f:
+    with open("LastDigit.sample", "r") as f:
         while True:
             label = f.readline()
             if not label.startswith("--"): break
 
-            prices = []
-            for i in range(0, int(f.readline())):
-                prices.append(f.readline().rstrip())
-            prices = tuple(prices)
-            purchases = []
-            for i in range(0, int(f.readline())):
-                purchases.append(f.readline().rstrip())
-            purchases = tuple(purchases)
+            S = int(f.readline().rstrip())
             f.readline()
             __answer = int(f.readline().rstrip())
 
             cases += 1
             if len(case_set) > 0 and (cases - 1) in case_set: continue
             sys.stdout.write("  Testcase #%d ... " % (cases - 1))
-            passed += do_test(prices, purchases, __answer)
+            passed += do_test(S, __answer)
 
     sys.stdout.write("\nPassed : %d / %d cases\n" % (passed, cases))
 
-    T = time.time() - 1474720366
+    T = time.time() - 1474902504
     PT, TT = (T / 60.0, 75.0)
-    points = 600 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
+    points = 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
     sys.stdout.write("Time   : %d minutes %d secs\n" % (int(T/60), T%60))
     sys.stdout.write("Score  : %.2f points\n" % points)
 

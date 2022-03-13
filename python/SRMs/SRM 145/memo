@@ -1,0 +1,16 @@
+dist = abs(t - s)
+move = max (dist, c-dist)
+
+M = len(prices)
+
+#shelf[i] = prices[i].split(' ')
+
+shelf = [ [prices[i].split(' ')] for i in range M]
+N = len(shelf[0])
+
+#column[j] = [s[j] for s in shelf]
+
+coulmn = [[s[j] for s in shelf] for j in range N]
+
+pat = re.complie('\d+,\d+:\d+')
+(sh,co,ti) = pat.finditer(purchases[i])
