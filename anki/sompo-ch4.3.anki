@@ -1,0 +1,237 @@
+[積立保険] 
+平準式積立保険料　年払と一時払('付)
+
+年払 平準式積立保険料
+[$$]
+P_s=\frac{W\phi^n}{\ax**{(q)\angln}}
+[/$$]
+
+一時払 平準式積立保険料
+[$$]
+P'_s=\frac{W\phi^n}{\ax**{(q)\angln}}\ax**{\angln}=P_s\ax**{\angln}
+[/$$]
+
+---
+[積立保険] 4.3.4.2
+営業保険料　年払と一時払('付)
+
+
+年払 営業保険料
+[$$]P=P_s(1+\beta+\delta)[/$$]
+
+一時払 営業保険料
+[$$]P'=P_s(1+\beta'+\delta')\ax**{\angln}[/$$]
+
+
+4.55.1
+---
+[積立保険] 4.3.4.2
+保険年度末払戻積立金(平準式)　年払と一時払('付)
+
+年払 保険年度末払戻積立金(平準式)
+[$$]\actsymb[][t]{V}{}=W\phi^{n-t}-P_s\ax**{(q)\angl{n-t}}[/$$]
+[$$]=W\phi^{n-t}\frac{\ax**{(q)\angl{t}}}
+{\ax**{(q)\angl{n}}}[/$$]
+[$$]=W\left(1-\frac{\ax**{(q)\angl{n-t}}}
+{\ax**{(q)\angl{n}}}\right)
+[/$$]
+
+一時払 保険年度末払戻積立金(平準式)
+[$$]\actsymb[][t]{V'}{}
+=\actsymb[][t]{V}{}+P_s\ax**{\angl{n-t}}[/$$]
+
+
+4.55.2
+---
+
+[積立保険] 4.3.4.3
+補償部分の保険料
+一時払営業保険料
+
+$P'
+=\frac{p+\alpha+\beta}{1-(\theta+\delta)}
+ \left\{ 1+\frac{p+\beta }{p+\alpha +\beta }\cdot(\ax**{\angln}-1)
+ \right\}
+=\frac{p+\alpha+\beta}{1-(\theta+\delta)}
+ \left\{ 1+\frac{p+\beta }{p+\alpha +\beta }\cdot v\frac{1-v^{n-1}}{1-v}
+ \right\}
+$
+
+4.55
+
+---
+
+[積立保険] 4.3.4.3
+補償部分の保険料
+年払営業保険料
+
+$P
+=\frac{p+\alpha+\beta}{1-(\theta+\delta)}
+ \left\{ \frac{
+ 1+\frac{p+\beta }{p+\alpha +\beta }\cdot(\ax**{\angln}-1)}{\ax**{\anglnf}}
+ \right\}
+=\frac{P'}{\ax**{\angln}}
+$
+
+4.56
+---
+[積立保険] 4.3.4.4
+全損失効時の返戻金
+(1)保険期間中(t年度)全損失効時に支払う返れい金の現価 (t+1年 からn年まで)
+
+$
+P_s(\ax**{\angl{n-t}}-\ax**{(q)\angl{n-t}})
+$
+
+4.57
+
+---
+[積立保険] 4.3.4.4
+全損失効時の返戻金
+(2)第1保険年度から第t保険年度の間に全損失効となった契約に支払った返れい金の終価
+
+$
+\phi^{-t}(P_s(\ax**{\angln}-\ax**{(q)\angln}))
+- P_s(\ax**{\angl{n-t}}-\ax**{(q)\angl{n-t}})
+$
+
+4.58
+
+---
+[積立保険] 4.3.4.4
+全損失効時の返戻金
+(3)第t保険年度の予定利息[$]R_t[/$]
+
+$
+R_t = (1-q)^t\cdot\actsymb[t][]{V}{}-(1-q)^{t-1}\cdot\actsymb[t-1][]{V}{}-(1-q)^{t-1}(1-d)^{t-1}P_s
+$
+
+4.59
+---
+[積立保険] 4.3.5
+中途返戻金付&保険料払込免除・予定契約消滅率を考慮した保険料の公式
+
+平準式積立保険料
+$
+P_s = \frac{W\phi^n+R\phi^m}{\ax**{(q,d)\angln}}
+$
+
+4.59.1
+
+
+保険年度末払戻積立金[$](1\leq t<m)[/$]
+$
+\actsymb[t][]{V}{}
+=W\phi^{n-t}+R\phi^{m-t}-P_s(1-d)^t\ax**{(q,d)\angl{n-t}}
+=(W\phi^{n-t}+R\phi^{m-t})\frac{1-\psi^t}{1-\psi^n}
+$
+
+4.59.2
+
+保険年度末払戻積立金[$](m\leq t<n)[/$]
+
+$
+\actsymb[t][]{V}{}
+=W\phi^{n-t}-P_s(1-d)^t\ax**{(q,d)\angl{n-t}}
+=(W\phi^{n-t}+R\phi^{m-t})\frac{1-\psi^t}{1-\psi^n}-R\phi^{m-t}
+=W\phi^{n-t}\frac{1-\psi^t}{1-\psi^n}-R\phi^{m-t}
+\frac{\psi^t-\psi^n}{1-\psi^n}
+$
+
+4.59.3
+
+----
+[積立保険] 4.3.5.1
+チルメル式積立保険料
+初年度の積立保険料,2年目以降の積立保険料
+
+$
+P_1 = \frac{(1-\ax**{(q)\angln})\alpha+W\phi^n}{\ax**{(q)\angln}}
+
+P_2 = P_1 + \alpha
+$
+
+4.60
+----
+[積立保険] 4.3.5.2
+チルメル式の払戻積立金
+
+$\actsymb[t][]{V}{} = W\left(
+1-\frac{\ax**{(q)\angl{n-t}}}{\ax**{(q)\angln}}
+-\alpha\frac{\ax**{(q)\angl{n-t}}}{\ax**{(q)\angln}}
+\right)$
+
+4.61
+----
+[立積保険] 4.3.6
+払戻積立金の再帰式
+
+$
+\actsymb[t-1][]{V}{}+P 
+=vq\cdot\actsymb[t][]{V}{}+v(1-q)\cdot\actsymb[t][]{V}{}
+$
+
+4.62
+----
+[立積保険] 4.3.6
+払戻積立金の再帰式
+生保数理ファクラーの再帰式
+
+$
+\actsymb[t-1][]{V}{}+P 
+=vq_{x+t-1}+vp_{x+t-1}\cdot\actsymb[t][]{V}{}
+$
+
+4.63
+----
+[立積保険] 4.3.6
+払戻積立金の再帰式
+契約消滅時に払戻積立金を支払うケースのPを求める
+
+$
+\actsymb[t-1][]{V}{}+P 
+=vq\cdot\actsymb[t][]{V}{}+v(1-q)\cdot\actsymb[t][]{V}{}
+=v\cdot\actsymb[t][]{V}{}
+$
+
+$v^{t-1}\cdot\actsymb[t-1][]{V}{}+Pv^{t-1}
+=v^{t}\cdot\actsymb[t][]{V}{}
+$
+
+t=1,2,...,nを足すと
+
+$
+P(1+v+\cdots+v^{n-1})=v^n\cdot\actsymb[t][]{V}{}
+$
+
+よって、
+$
+P=\frac{v^n}{\ax**{\angln}}W
+$
+
+
+4.64, 4.65, 4.66, 4.67
+
+----
+[積立保険] 4.3.7
+事業年度末の払戻積立金
+経過[$]t-\frac{m+1}{12}\leq tt < t-\frac{m}{12}[/$]
+(3月始期なら,t=1に対して0以上1/12未満経過なので、m=11)
+
+$
+\actsymb[t][]{V'}{}
+=\actsymb[t][]{V}{}\phi^{\frac{2m+1}{24}}
+$
+
+4.68
+----
+[積立保険] 4.3.8.1 分割払
+分割払原資S,各回の分割金a,分割回数n分割基準日(満期日)に第1回分割金を支払う場合
+
+$
+a=\frac{S}{\ax**{\angln}}
+$
+
+4.69
+
+
