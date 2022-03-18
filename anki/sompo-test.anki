@@ -1,0 +1,154 @@
+
+$l=\log{\prod^4_{i=1} f(y_i)}$
+
+$l\rightarrow\sum^4_{i=1}\frac{(y_i-\mu_i)^2}{2\sigma^2}$
+
+ー般化線形モデル (GLM) 目的変数 [$]Y[/$] の平均 [$]\mu_i=E(Y_i)=b'(\theta_i)[/$]を[$]\beta_i,x_i[/$]で表す
+
+ー般化線形モデル (GLM) [$]y_i[/$の従う指数型分布族を正規分布[$]P(Y_i=y_i)=f(y_i)=\frac{1}{
+\sqrt{2\pi\sigma^2}\exp\left(-\frac{(y_i-\mu_i)^2}{2\sigma^2}\right)[/$リンク関数を[$]g(x)=x[/$]とし、[$]\beta_i[/$で偏微分して0とする方程式。
+
+
+\partial\beta_1\: (y_1-\beta_1-\beta_3)+(y_2-\beta_1)=0
+\partial\beta_2\: (y_3-\beta_2-\beta_3)+(y_4-\beta_2)=0
+\partial\beta_3\: (y_1-\beta_1-\beta_3)+(y_3-\beta_2-\beta_3)=0
+
+
+$
+2\beta_1+\beta_3=y_1+y_2
+2\beta_2+\beta_3=y_3+y_4
+\beta_3=\frac{1}{2}(y_1+y_3-y_2-y_4)
+$
+
+w
+
+
+
+
+$$
+\mu_i=\beta_1x_{i1}+\beta_2x_{i2}+\beta_3x_{i3}=
+\begin{cases}
+\beta_1+\beta_3 (i=1)
+\beta_1   (i=2)
+\beta_2+\beta_3 (i=3)
+\beta_2 (i=4)
+\end{cases}
+$$
+
+
+[$][/$]
+[$$][/$$]
+$aa$
+$$aabb$$
+
+
+--------
+ー般化線形モデル (GLM) WB#2(合ストB)
+指数型分布族をポアソン分布、リンク関数を[$]g(x)=\log{x}[/$]
+[$]\beta_i[/$]で偏微分して0とする方程式。
+
+$
+[\partial l / \partial\beta_1] (y_1-\beta_1-\beta_3)+(y_2-\beta_1)=0
+[\partial l / \partial\beta_2] (y_3-\beta_2-\beta_3)+(y_4-\beta_2)=0
+[\partial l / \partial\beta_3] (y_1-\beta_1-\beta_3)+(y_3-\beta_2-\beta_3)=0
+$
+
+
+
+ー般化線形モデル (GLM) WB#2(合ストB)
+指数型分布族をポアソン分布、リンク関数を[$]g(x)=\log{x}[/$]
+[$]\beta_i[/$]を求める（[$]\beta_3[/$]から求める）
+[$$]
+e^{\beta_3}=\frac{y_1+y_3}{y_2+y_4}
+[/$$]
+
+[$$]
+e^{\beta_1}(1+e^{\beta_3})=y_1+y_2
+[/$$]
+[$$]
+e^{\beta_2}(1+e^{\beta_3})=y_3+y_4
+[/$$]
+[$$]
+e^{\beta_3}(e^{\beta_1}+e^{\beta_2})=y_1+y_3
+[/$$]
+
+
+ー般化線形モデル (GLM) WB#2(合ストB)
+指数型分布族をポアソン分布、リンク関数を[$]g(x)=\log{x}[/$]
+[$]\mu_i[/$]を求める
+
+ 
+[$$]\mu_1 = e^{\beta^1+\beta^3}[/$$] 
+[$$]\mu_2 = e^{\beta^1}[/$$] 
+[$$]\mu_3 = e^{\beta^2+\beta^3}[/$$] 
+[$$]\mu_4 = e^{\beta^2}[/$$] 
+
+-----
+
+ー般化線形モデル (GLM) WB#4(合ストC)
+指数型分布族を指数分布、リンク関数を[$]g(x)=\log{x}[/$]
+[$]\beta_i[/$]を求める（[$]\beta_3[/$]から求める）
+
+[$$]
+e^{\beta_3}=\sqrt{\frac{y_1\cdot y_3}{y_2\cdot y_4}}
+[/$$]
+
+[$$]
+\frac{y_1}{e^{\beta_1+\beta_3}}+\frac{y_2}{e^{\beta_1}}=2
+[/$$]
+
+[$$]
+\frac{y_3}{e^{\beta_2+\beta_3}}+\frac{y_4}{e^{\beta_2}}=2
+[/$$]
+
+[$$]
+\frac{y_1}{e^{\beta_1+\beta_3}}+\frac{y_3}{e^{\beta_2+\beta_3}}=2
+[/$$]
+
+ー般化線形モデル (GLM) WB#4(合ストC)
+指数型分布族を指数分布、リンク関数を[$]g(x)=\log{x}[/$]
+[$]\mu_i[/$]を求める
+
+[$$]\mu_1 = e^{\beta^1+\beta^3}[/$$] 
+[$$]\mu_2 = e^{\beta^1}[/$$] 
+[$$]\mu_3 = e^{\beta^2+\beta^3}[/$$] 
+[$$]\mu_4 = e^{\beta^2}[/$$] 
+
+4.54.1  WB#4(合ストC) 平均値の式
+
+-----------
+ー般化線形モデル (GLM) WB#3(合ストD)
+指数型分布族をポアソン分布、リンク関数を[$]g(x)=x[/$]
+[$]\beta_i[/$]を求める（[$]\beta_3[/$]から求める）
+
+[$$]
+\beta_3=\frac{(y_1+y_2+y_3+y_4)(y_1y_3-y_2y_4)}{2(y_1+y_4)(y_2+y_3)}
+[/$$]
+
+[$$]
+\frac{y_1}{\beta_1+\beta_3}+\frac{y_2}{\beta_1}=2
+[/$$]
+
+[$$]
+\frac{y_3}{\beta_2+\beta_3}+\frac{y_4}{\beta_2}=2
+[/$$]
+
+[$$]
+\frac{y_1}{\beta_1+\beta_3}+\frac{y_3}{\beta_2+\beta_3}=2
+[/$$]
+
+4.54.2  WB#3(合ストD) βの式
+
+
+ー般化線形モデル (GLM) WB#3(合ストD)
+指数型分布族をポアソン分布、リンク関数を[$]g(x)=x[/$]
+[$]\mu_i[/$]を求める
+
+[$$]\mu_1 = \frac{y_1(y_1+y_2+y_3+y_4)}{2(y_1+y_4)}[/$$] 
+[$$]\mu_2 = \frac{y_2(y_1+y_2+y_3+y_4)}{2(y_2+y_3)}[/$$] 
+[$$]\mu_3 = \frac{y_3(y_1+y_2+y_3+y_4)}{2(y_3+y_2)}[/$$] 
+[$$]\mu_4 = \frac{y_4(y_1+y_2+y_3+y_4)}{2(y_4+y_1)}[/$$] 
+
+
+4.54.3  WB#3(合ストD) 平均値の式
+
