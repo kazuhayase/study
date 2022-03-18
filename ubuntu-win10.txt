@@ -1,0 +1,13 @@
+https://unix.stackexchange.com/questions/68581/how-can-i-prevent-windows-from-overwriting-grub-when-using-a-dual-boot-machine
+
+Boot from a live CD (CD/DVD or flash drive).
+Become root or use sudo with commands below.
+List the available partitions if needed: fdisk -l
+Windows will almost certainly exist on /dev/sda1: mount /dev/sda1 /mnt
+Reinstall GRUB in the MBR: grub-install --root-directory=/mnt/ /dev/sda
+Reboot: shutdown -r now
+Restore the GRUB menu: update-grub
+
+https://unix.stackexchange.com/questions/241809/grub2-gone-every-time-i-boot-windows-10
+bcdedit /set {bootmgr} path \EFI\ubuntu\shimx64.efi
+
