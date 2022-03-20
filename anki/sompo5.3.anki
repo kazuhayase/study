@@ -3,3 +3,471 @@
 
 5.3.1.1 プロック最大値モデル
 
+定義5.3.1分布関数が$H_{\xi\;\mu,\sigma}$となる分布を一般化極値分布(GEV))という. 
+
+$\xi$を形状パラメータ, 
+$\mu$を位置パラメータ, 
+$\sigma$を尺度パラメータという
+
+$
+H_{\xi\;\mu,\sigma}(x)=exp\left\{-\left(1+\xi\frac{x-\mu}{\sigma}
+\right)^{-\frac{1}{\xi}}\right\}\; \; 
+\left(1+\xi\frac{x-\mu}{\sigma}>0, \sigma>0\right)
+$
+
+最大値の分布を考えるためのもの. 
+$M_n_= \max{X_1,X_2,\ldots,X_n}$
+を以下のように適当に変形すると極値がGEVに従う
+$
+Z_n = \frac{M_n-d_n}{c_n}, c_n>0
+$
+$
+\lim_{n\to \infty} F_{Z_n}
+$ 
+一般化極値分布
+
+-----
+5.3.1 [極値理論]
+5.3.1.1 プロック最大値モデル
+
+定義5.3.1  一般化極値分布(GEV))の分布関数[$]H_{\xi;\;\mu,\sigma}[/$]
+
+グンベル分布
+
+$
+F_{Z_n}=\exp{(-e^{-x})}
+$
+
+$\xi=0, \mu=0,\sigma=1$
+
+フレシェ分布
+
+$
+F_{Z_n}=\exp{(-x^{-\alpha})} \;\;\;\;\;(x>0)
+$
+
+$\xi=\frac{1}{\alpha}(>0), \mu=1,\sigma=\xi$
+
+ワイブル分布
+$
+F_{Z_n}=\exp{(-(-x)^{-\alpha})} \;\;\;\;\;(x<0)
+$
+
+$\xi=-\frac{1}{\alpha}(<0), \mu=-1,\sigma=-\xi$
+
+
+-----
+5.3.1 [極値理論]
+5.3.1.1 プロック最大値モデル
+
+例5.6指数分布のときの 
+$Z_n=\frac{M_n-d_n}{c_n}$のc,dと極値分布
+
+
+$
+c_n=\frac{1}{\beta}
+d_n=\frac{\log{n}}{\beta}
+F_{Z_n}(x)=P(Z_n\leq x)=P(M_n \leq c_n x + d_n)=P(M_n \leq \frac{x+\log{n}}{\beta})
+F_{Z_n}(x)=\left( P(X_1 \leq \frac{x+\log{n}}{\beta}) \right)^n
+=\left( 1- \frac{e^{-x}}{n}\right)^n
+\lim_{n \to \infty}F_{Z_n}(x)=\exp{(-e^{^x})}
+$
+
+グンベル分布
+
+5.35-5.37
+
+
+-----
+5.3.1 [極値理論]
+5.3.1.1 プロック最大値モデル
+
+例5.7パレート分布のときの 
+$Z_n=\frac{M_n-d_n}{c_n}$のc,dと極値分布
+
+
+$
+F_X(x)=1-\left(\frac{\beta}{x}\right)^\alpha
+c_n=\beta n^{\frac{1}{\alpha}}
+d_n=0
+F_{Z_n}=\left\{1-\left(\frac{\beta}{c_n x+d_n}\right)^\alpha\right\}^n
+=\left\{1-\left(\frac{\beta}{c_n}\right)^\alpha x^{-\alpha}\right\}^n
+=\left\{1-\frac{x^{-\alpha}{n}\right\}^n
+\lim_{n\to\infty}F_{Z_n}=\exp{-x^{-\alpha}}
+F_x \in MDA(\Phi_\alpha)
+$
+
+フレシェ分布
+-----
+5.3.1 [極値理論]
+5.3.1.1 プロック最大値モデル
+
+例5.8ベータ分布のときの 
+[$]Z_n=\frac{M_n-d_n}{c_n}[/$]のc,dと極値分布
+
+
+$
+F_X(x)=1-\left(1-x\right)^\alpha
+c_n=\left(\frac{1}{n}\right)^{-\frac{1}{\alpha}}
+d_n=1
+F_{Z_n}=\left\{1-\left(1 - c_n x+d_n\right)^\alpha\right\}^n
+=\left(1-\frac{(-x)^{\alpha}}{n}\right)^n
+\lim_{n\to\infty}F_{Z_n}=\exp{-(-x)^{\alpha}}
+F_x \in MDA(\Psi_\alpha)
+$
+
+ワイブル分布
+
+5.37.2
+-----
+5.3.1 [極値理論]
+5.3.1.2閾値超過モデル
+
+定義5.3.2超過分布関数、平均超過関数(定義とテイル確率積分)
+$
+F_u(x)=\frac{F(x+u)-F(u)}{1-F(u)}
+e(u)=E[X-u|X>u]=\frac{1}{1-F(u)}\int_{u}^{\infty}(x-u)f(x)dx
+e(u)=\frac{1}{1-F(u)}\int_{u}^{\infty}(1-F(x))dx  \;\; (u>0)
+$
+
+------
+5.3.1 [極値理論]
+5.3.1.2閾値超過モデル
+
+例5.9平均aの指数分布の超過分布
+
+$
+F_u(x) = \frac{e^{-u/a}-e^{-(u+x)/a}}{e^{-u/a}} = 1 - e^{-x/a}
+$
+指数分布の無記憶性
+
+5.41
+
+------
+5.3.1 [極値理論]
+5.3.1.2閾値超過モデル
+
+定義5.3.3一般化パレート分布の分布関数
+
+$
+G_{\xi, \beta}(x) = 
+\begin{cases}
+ 1-\left(1+\xi\frac{x}{\beta}\right)^{-\frac{1}{\xi}} & (\xi\neq 0) \\
+ 1-\exp\left(-\frac{x}{\beta}\right) & (\xi = 0)
+\end{cases}
+$
+5.42
+------
+5.3.1 [極値理論]
+5.3.1.3リスク尺度
+VaR, ES, TVaR, CTEの定義（パラメータα)
+
+$
+VaR_\alpha(X)=\min{\{x|F_X(x)\geq \alpha\}}
+ES_\alpha(X)=E[(X-VaR_\alpha(X))_+] = \int_{\alpha}^{1}(VaR_t(X)-VaR_\alpha(X))dt
+TVaR_\alpha(X)=\frac{1}{1-\alpha}\int_{\alpha}^{1}VaR_t(X)dt
+CTE_\alpha(X)=E[X|X>VaR_\alpha(X)]
+$
+
+VaR(Value at Risk): 所要資本に出てくる概念である。これは損害額がVaR以上になる確率が1‑αである。
+ES(Expected Shortfall): VaRを超えた損害額(VaR以下の場合は0とする)の期待値を計算している
+TVaR(Tail VaR): VaR以上(という)条件付損害額期待値
+CTE(Conditional Tail Expectation): VaRを超えた場合の損害額の条件付期待値
+------
+5.3.1 [極値理論]
+5.3.1.3リスク尺度
+VaR, ES, TVaR, CTE間の関係３つ
+- CTE = {VaR, ES, F_X, α}で表す
+- TVaR = {VaR, ES, F_X, α}で
+- TVaR, VaR, CTEの大小関係
+
+$
+CTE_\alpha(X)=VaR_\alpha(X)+\frac{ES_\alpha(X)}{1-F_X(VaR_\alpha(X))}
+TVaR_\alpha(X)=VaR_\alpha(X)+\frac{ES_\alpha(X)}{1-\alpha}
+VaR(X)\leq TVaR_\alpha(X)\leq CTE_\alpha(X)
+$
+
+Xが連続の場合は TVaR=CTE
+------
+5.3.2 [歪みリスク尺度]
+定義5.3.5 歪みリスク尺度 [$]E_g(X))[/$]を生存関数[$]S(x)=1-F(x)[/$]と関数[$]g(x)[/$]で定義
+g(x): 広義単調増加,左連続, g(0)=0, g(1)=1
+
+$
+E_g(X)=\int_{0}^{\infty}g(S(x))dx-\int_{-$}^{0}(1-g(S(x)))dx
+$
+
+
+------
+5.3.2 [歪みリスク尺度]
+定理5.3.2 歪みリスク尺度E_g(X)はg'(1-F(x))f(x)に従う確率変数の期待値で算出できる
+
+例5.10歪みリスク尺度がVaRとなるg(x)
+
+$
+g(x)=\begin{cases}
+      0 & (x\leq 1-\alpha)\\
+      1 & (x>1-\alpha)
+     \end{cases}
+(0<\alpha<1)
+$
+
+5.51
+
+------
+5.3.2 [歪みリスク尺度]
+
+例5.11歪みリスク尺度がTVaRとなるg(x)
+
+$
+g(x)=\min\left\{\frac{x}{1-\alpha}\,1right\}
+$
+5.58
+------
+5.3.2 [歪みリスク尺度]
+
+例5.12歪みリスク尺度がベータの歪みリスクとなるg(x)
+
+$
+g(x)=\int_{0}^{x}\frac{1}{B(a,b)}t^{a-1}(1-t)^{b-1}dt
+$
+
+PH変換リスク尺度はa,bが以下の場合
+$
+a=\frac{1}{\gamma}, b=1
+$
+
+5.59
+------
+5.3.2 [歪みリスク尺度]
+
+例5.13歪みリスク尺度がワン変換リスク尺度となるg(x)
+
+$
+g(x)=\Phi(\Phi^{-1}(x)+\alpha)
+$
+
+コヒーレントリスク尺度。
+劣加法性を満たす。独立なリスクに対する加法性を満たさない。
+
+5.60
+-----
+5.3.3 [コヒーレント・リスク尺度]
+コヒーレント・リスク尺度の定義(満たす公理4つ)
+
+平行移動性: [$]\rho(X+c)=\rho(X)+c[/$]
+単調性: [$]P(X_1\leq X_2)=1 \Rightarrow \rho(X_1)\leq\rho(X_2)[/$]
+劣加法性: [$]\rho(X_1+X_2)\leq\rho(X_1)+\rho(X_2)[/$]
+正の同次性:任意の正の定数cに対して[$]\rho(cX)=c\rho(X)[/$]
+
+----
+5.3.4[スピアマンのρ]
+スピアマンのρは順位相関係数である。その定義とE[]での算出式
+
+
+$
+\rho=12Cov[F_X(X),F_Y(Y)]
+=12E[F_X(X)\cdot F_Y(Y)]-3
+$
+----
+5.3.4[スピアマンのρ]
+標本に対するスピアマンのρ
+
+$
+1-\frac{6\sum(rank(x_i)-rank(y_i))^2}{(n-1)n(n+1)}
+$
+
+5.63
+----
+5.3.5[ケンドールのτ]
+定義式
+
+$
+\tau=4E[F_{X,Y}(X,Y)}]-1
+$
+
+5.64
+
+----
+5.3.5[ケンドールのτ]
+標本のケンドールのτ
+
+$
+1-\frac{4\times #IntSect}{n^2-n}
+$
+
+#IntSectはx,yを小さい順で並べ、ペアを結んだ時にできる交点の数
+
+5.65
+
+----
+5.3.6[コピュラ]
+定義5.3.6 F(もしくはX)によって定まるコピュラ.
+N次元確率変数Xの同次分布関数Fが連続な周辺分布関数F_1,...,F_Nを持つとき
+
+$
+C(u_1,\ldots,u_N)=F(F_1^{-1}(u_1),\ldots,F_N^{-1}(u_N))
+$
+
+5.66
+
+----
+5.3.6[コピュラ]
+定理5.3.3[スクラーの定理] コピュラの存在と連続である場合の一意性.コピュラ,同時分布関数,周辺分布関数の関係
+
+$
+C(F_1(u_1),\ldots,F_N(u_N))=F(u_1,\ldots,u_N)
+$
+
+周辺分布(F_1,...F_N)が連続であればコピュラCは一意に定まる。
+逆に周辺分布とコピュラが与えられれば当式(5.67)で定義されたFは、これらを周辺分布として持つ同時分布関数である
+
+連続型の確率変数Xについて、
+$
+F_X(X)\sim U(0,1)
+X\sim F_X^{-1}(U(0,1))
+$
+が成立することに留意する。
+
+-----
+定義5.3.7 共単調コピュラの定義(ある関数で表す)
+
+X1,X2のコピュラが共単調コピュラの場合(X1,X2)はどのような2次の確率変数となるか.
+X1,X2の分布関数(の逆関数)を使って表わせ
+
+$
+C^+(u_1,\ldots,u_N)=\min\{u_1,\ldots,u_N\}
+$
+
+$
+(X_1,X_2)\sim (F^{-1}_{X_1}(U),F^{^1}_(X_2)(U))
+$
+
+共単調コピュラは正の向きの従属性が最大のコピュラである。
+
+5.68
+------
+定義5.3.8 反単調コピュラの定義(ある関数で表す)
+
+(X1,X2)はどのような2次の確率変数となるか.
+X1,X2の分布関数(の逆関数)を使って表わせ
+$
+C^-(u_1,u_2)=\max\{u_1+u_2-1,0\}
+$
+
+$
+(X_1,X_2)\sim (F^{-1}_{X_1}(U),F^{^1}_(X_2)(1-U))
+$
+
+反単調コピュラは負の向きの従属性が最大のコピュラである。
+
+5.69
+
+------
+定義5.3.9 積コピュラの定義(ある関数で表す)
+(X1,X2)はどのような2次の確率変数となるか.
+
+$
+C^\bot(u_1,\ldots,u_N)=u_1,\cdots,u_N
+$
+
+積コピュラならX1,X2(,...,XN)は独立.周辺分布が連続ならば逆も成り立つ。
+
+5.70
+------
+定義5.3.10 アルキメデス型コピュラの定義(生成作用素を使う)
+
+$
+C(u_1,\ldots,u_N;\varphi)=\varphi^{-1}(\varphi(u_1)+\cdots+\varphi(u_N))
+$
+
+生成作用素 [$]\varphi[/$]
+
+$
+[0,1]\rightarrow[0,\infty], \varphi(0)=\infty, \varphi(1)=0,(-1)^k\frac{d^k}{dx^k}\varphi(x)\geq 0
+$
+
+5.70
+
+------
+定義5.3.11 フランクコピュラ(n次,2次,アルキメデス型コピュラとしての作用素)
+
+n次元
+
+$
+C(u_1,\ldots,u_N)=-\frac{1}{\alpha}\log\left\{1+\frac{(e^{-\alpha u_1} -1)\cdots e^{-\alpha u_N} -1)}{(e^{-\alpha}-1)^{N-1}}\right\}
+$
+
+2次元
+
+$
+C(u_1,u_2)=-\frac{1}{\alpha}\log\left\{1+\frac{(e^{-\alpha u_1} -1)-e^{-\alpha u_2} -1)}{e^{-\alpha}-1}\right\}
+$
+
+フランクコピュラのアルキメデス型コピュラとしての作用素
+$
+\varphi(u)=-\log\frac{e^{-\alpha u}-1}{e^{-\alpha}-1}
+$
+
+5.72--5.74
+------
+定義5.3.12 グンベルコピュラ(n次,2次,アルキメデス型コピュラとしての作用素)
+
+n次元
+
+$
+C(u_1,\ldots,u_N)=\exp\left\{-\left((-\log u_1)^\alpha+\cdots+(-\log u_N)^\alpha\right)^{\frac{1}{\alpha}}\right\}
+$
+
+2次元
+
+$
+C(u_1,u_2)=\exp\left\{-\left((-\log u_1)^\alpha+(-\log u_2)^\alpha\right)^{\frac{1}{\alpha}}\right\}
+$
+
+フランクコピュラのアルキメデス型コピュラとしての作用素
+$
+\varphi(u)=(-\log u)^{\alpha}
+$
+
+5.75--5.77
+------
+定義5.3.13 クレイトンコピュラ(n次,2次,アルキメデス型コピュラとしての作用素)
+
+n次元
+
+$
+C(u_1,\ldots,u_N)=\left(u_1^{-\alpha}+\cdots+u_N^{-\alpha}-N+1\right)^{-\frac{1}{\alpha}}
+$
+
+2次元
+
+$
+C(u_1,u_2)=\left(u_1^{-\alpha}+u_2^{-\alpha}-1\right)^{-\frac{1}{\alpha}}
+$
+
+クレイトンコピュラのアルキメデス型コピュラとしての作用素
+$
+\varphi(u)=\frac{u^{-\alpha}-1}{\alpha}
+$
+
+5.78--5.80
+
+----
+スピアマンのρ,ケンドールのτ、をコピュラで表現
+
+$
+\rho=12\int_{0}^{1}\int_{0}^{1}(C(u_1,u_2)-u_1u_2)du_1du_2
+\tau=4\int_{0}^{1}\int_{0}^{1}C(u_1,u_2)dC(u_1,u_2) - 1
+$
+
+5.81,5.82
+
+------
+5.3.7裾従属係数
+左裾従属係数,右裾従属係数の定義
+
+$
+\lambda_l=\lim_{u\to+0}\frac{C(u,u)}{u}
+\lambda_u=2-\lim_{u\to 1-0}\frac{1-C(u,u)}{1-u}
+$

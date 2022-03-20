@@ -60,3 +60,6 @@ $ gparted
 manage flags というメニューを開く
 表示された hidden フラグのチェックを外す
 この作業をおこない，もう一度 Boot Repair にて，おすすめ修復 ボタンをおすと自動で修復が始まり，再起動したら grub のブートローダーが起動し，Ubuntu が起動できるようになりました．
+----------------------------
+http://d.sunnyone.org/2015/11/uefi-windows-safe-mode-with-linux.html
+
