@@ -1,0 +1,1064 @@
+Script started on 2022-03-20 08:38:37+09:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="93" LINES="24"]
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ exitfile Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso [A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ ls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64[1@.[C[C[C[C[A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ [30Psudo boot-repair
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Capt autoremove[3Pboot-repair
+[sudo] kazuyoshi のパスワード: 
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ sudo boot-repairexit[Kfile Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso [A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ ls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64[1@.[C[C[C[C[A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ [30Psudo boot-repair
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Capt autoremove[3Pboot-repairls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso [A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ file Downloads/ubuntu-ja-20.04.1-desktop-amd64.[1P[C[C[C[C[A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ exit[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Csudo boot-repair[Ksudo boot-repairexit[Kfile Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso [A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ ls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64[1@.[C[C[C[C[A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ [30Psudo boot-repair
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Capt autoremoveinstall boot-repair[9Pautoremove[3Pboot-repairls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso [A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ file Downloads/ubuntu-ja-20.04.1-desktop-amd64.[1P[C[C[C[C[A]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ exit[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ksu[Khiso[Ktory
+  998  sudo apt install default-jre icedtea-netx
+  999  echo $JAVA_HOME
+ 1000  ls -l /usr/lib/jvm/default-java
+ 1001  cd /usr/lib/jvm
+ 1002  ls
+ 1003  ls -l
+ 1004  sudo update-java-alternatives --jre --set java-1.8.0-openjdk-amd64
+ 1005  ls -l /usr/lib/jvm/java-1*
+ 1006  ls -l
+ 1007  sudo apt install openjdk
+ 1008  sudo apt list openjdk*
+ 1009  sudo apt list openjdk-8-*
+ 1010  sudo apt install openjdk-8-*
+ 1011  which java
+ 1012  java --version
+ 1013  sudo update-java-alternatives --jre --set java-1.8.0-openjdk-amd64
+ 1014  sudo update-java-alternatives --jre-headless --set java-1.8.0-openjdk-amd64
+ 1015  sudo update-java-alternatives --set java-1.8.0-openjdk-amd64
+ 1016  cd
+ 1017  vi .bashrc
+ 1018  vi .bash_aliases 
+ 1019  ls
+ 1020  echo $JAVA_HOME
+ 1021  $ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+ 1022  export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+ 1023  echo $JAVA_HOME
+ 1024  export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
+ 1025  echo $JAVA_HOME
+ 1026  javaws Desktop/ContestAppletProd.jnlp 
+ 1027  exit
+ 1028  sudo apt update
+ 1029  sudo apt upgrade
+ 1030  exit
+ 1031  sudo apt update
+ 1032  sudo apt upgrade
+ 1033  exit
+ 1034  cal 2020
+ 1035  sudo apt update
+ 1036  sudo apt upgrade
+ 1037  viber&
+ 1038  Viber&
+ 1039  ps -ef | grep video
+ 1040  ps -ef | grep -i video
+ 1041  exit
+ 1042  exit
+ 1043  cd Videos/latata/
+ 1044  ls
+ 1045  totem 0-02-08-90111d51fae1b401cdf2f3455ab83b760cbd7754cc7861eabd3e155b791e872e_2078e7b3fae418.mp4 
+ 1046  exit
+ 1047  sudo apt update
+ 1048  sudo apt upgrade
+ 1049  sudo apt update
+ 1050  sudo apt list --upgradable
+ 1051  exit
+ 1052  sudo apt update
+ 1053  sudo apt upgrade
+ 1054  date
+ 1055  cd workspace/
+ 1056  ls
+ 1057  cd
+ 1058  cd github/study/python/SRMs/
+ 1059  ls
+ 1060  ls -ltr
+ 1061  df
+ 1062  dc
+ 1063  cd github/study/python/pro-con-python/
+ 1064  ls
+ 1065  ls ch?
+ 1066  cd ch2/
+ 1067  ls
+ 1068  ls sec1_Recur_DFS_BFS/
+ 1069  cd sec1_Recur_DFS_BFS/
+ 1070  python fact.py 
+ 1071  more fact.py 
+ 1072  vi fact.py 
+ 1073  python fact.py 
+ 1074  vi fact.py 
+ 1075  python fact.py 
+ 1076  vi fact.py 
+ 1077  python fact.py 
+ 1078  fg
+ 1079  ls
+ 1080  more fib.py 
+ 1081  vi fib.py 
+ 1082  python fib.py 
+ 1083  fg
+ 1084  python fib.py 
+ 1085  fg
+ 1086  ls
+ 1087  more input 
+ 1088  ls
+ 1089  cd ..
+ 1090  ls
+ 1091  ls sec5_Graph/
+ 1092  pwd
+ 1093  ls
+ 1094  ls sec7
+ 1095  more sec7/MinimumScalarProduct.py 
+ 1096  ls
+ 1097  cd ..
+ 1098  ls
+ 1099  ls ch3
+ 1100  python
+ 1101  top
+ 1102  cd
+ 1103  cd /
+ 1104  ls
+ 1105  ls -lt
+ 1106  cd /var/lo
+ 1107  cd /var/log
+ 1108  ls
+ 1109  ls -ltr
+ 1110  ls -lt
+ 1111  less dmesg 
+ 1112  dmesg | head
+ 1113  less dmesg 
+ 1114  ls -lt
+ 1115  cd ..
+ 1116  ls
+ 1117  ls -lt
+ 1118  cd ..
+ 1119  ls -lt
+ 1120  ls -lt usr/
+ 1121  ls -lt /etc/
+ 1122  more etc/crontab 
+ 1123  ls -lt /etc/
+ 1124  stat /*
+ 1125  stat /* | grep Change
+ 1126  stat /* | grep Change | sort
+ 1127  sudo ls -l /root/
+ 1128  sudo ls -la /root/
+ 1129  df
+ 1130  tune2fs -l /dev/sda5 | grep filesystem
+ 1131  sudo tune2fs -l /dev/sda5 | grep filesystem
+ 1132  sudo tune2fs -l /dev/sda5 | grep -i filesystem
+ 1133  exit]
+ 1134  exit
+ 1135  sudo apt update
+ 1136  sudo apt upgrade
+ 1137  exit
+ 1138  df
+ 1139  sudu fdisk -l
+ 1140  sudo fdisk -l
+ 1141  sudo fsck /dev/sde2
+ 1142  sudo fsck /dev/sde
+ 1143  sudo fsck /dev/sde1
+ 1144  sudo fsck /dev/sde2
+ 1145  sudo badblocks -v -s /dev/sde1 | tee /tmp/badblocks-sde1.txt
+ 1146  sudo fdisk -l
+ 1147  sudo hdparm -i /dev/sdd
+ 1148  sudo hdparm -i /dev/sde
+ 1149  sudo hdparm -i /dev/sde1
+ 1150  sudo hdparm -i /dev/sde2
+ 1151  sudo fdisk -l
+ 1152  sudo dd if=/dev/sde of=/dev/sdd bc=4MB
+ 1153  sudo dd if=/dev/sde of=/dev/sdd bc=4M
+ 1154  sudo dd if=/dev/sde of=/dev/sdd bs=4MB
+ 1155  df
+ 1156  sudo parted
+ 1157  man parted
+ 1158  sudo parted /dev/sde
+ 1159  df
+ 1160  exit
+ 1161  ps -e|grep dd
+ 1162  kill -USR1 25892
+ 1163  sudo kill -USR1 25892
+ 1164  while (1); sudo kill -USR1 25892; sleep 10; 
+ 1165  while (1); sudo kill -USR1 25892; sleep 10; end; end
+ 1166  while (1); sudo kill -USR1 25892; sleep 10; 
+ 1167  while (1); sudo kill -USR1 25892; sleep 10; done
+ 1168  while (1); do sudo kill -USR1 25892; sleep 10; done
+ 1169  while do
+ 1170  while :; do sudo kill -USR1 25892; sleep 10; done
+ 1171  exit
+ 1172  more /etc/fd
+ 1173  more /etc/fstab
+ 1174  sudo vi /etc/fstab
+ 1175  mkdir /media
+ 1176  mkdir /media/disk1_pt1
+ 1177  sudo mkdir /media/disk1_pt1
+ 1178  df
+ 1179  mount /media/disk1_pt1
+ 1180  sudo mount /media/disk1_pt1
+ 1181  more /etc/fstab
+ 1182  ping ap002415c1cb3e
+ 1183  smbclient 
+ 1184  smbclient //AP0024A5C1CB3E
+ 1185  smbclient \\AP0024A5C1CB3E
+ 1186  smbclient \\\\AP0024A5C1CB3E
+ 1187  more /etc/fstab
+ 1188  sudo mount /media/disk1_pt1
+ 1189  df
+ 1190  sudo vi /etc/fstab
+ 1191  sudo mount /media/disk1_pt1
+ 1192  man mount.cifs
+ 1193  sudo mount.cifs //AP0024A5C1CB3E
+ 1194  sudo mount.cifs //AP0024A5C1CB3E/disk1_pt1/ /media/disk1_pt1/
+ 1195  sudo mount.cifs //AP0024A5C1CB3E/disk1_pt1/ /media/disk1_pt1
+ 1196  sudo mount.cifs //AP0024A5C1CB3E/disk1_pt1/ /media/disk1_pt1/
+ 1197  smbclient -L AP0024A5C1CB3E
+ 1198  sudo avahi-daemon --check
+ 1199  sudo avahi-daemon
+ 1200  sudo mount.cifs //AP0024A5C1CB3E.local/disk1_pt1/ /media/disk1_pt1/
+ 1201  sudo vi /etc/fstab
+ 1202  df
+ 1203  sudo mount /media/disk1_pt1/
+ 1204  sudo vi /etc/fstab
+ 1205  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/
+ 1206  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/ -u guest
+ 1207  man mount.cifs
+ 1208  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/ -o user=guest
+ 1209  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/ -o user=kazuyoshi
+ 1210  df
+ 1211  more /etc/fstab
+ 1212  sudo gparted /dev/sdd
+ 1213  sudo parted /dev/sdd
+ 1214  sudo fsck /dev/sdd
+ 1215  sudo xfs_info
+ 1216  sudo apt install xfsprogs
+ 1217  xfs_info /media/kazuyoshi/4bed32d6-f95b-46cb-867b-1740d07597a3/
+ 1218  sudo xfs_repair -n /dev/sdd
+ 1219  sudo fsck /dev/sdd
+ 1220  sudo parted /dev/sdd
+ 1221  df
+ 1222  sudo mount.cifs //AP0024A5C1CB3E.local/disk1_pt1/ /media/disk1_pt1/
+ 1223  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/
+ 1224  sudo mount.cifs //192.168.11.1/disk1_pt1/ /media/disk1_pt1/ -o user=kazuyoshi
+ 1225  df
+ 1226  exit
+ 1227  gparted
+ 1228  sudo apt install gparted
+ 1229  sudo gparted
+ 1230  df
+ 1231  sudo umount /media/kazuyoshi/4bed32d6-f95b-46cb-867b-1740d07597a3 
+ 1232  sudo gparted
+ 1233  exit
+ 1234  nslookup 105.78.163.33
+ 1235  sudo apt update
+ 1236  sudo apt upgrade
+ 1237  exit
+ 1238  sudo apt update
+ 1239  sudo apt upgrade
+ 1240  exit
+ 1241  python3
+ 1242  exit
+ 1243  emacs
+ 1244  exit
+ 1245  sudo shutdown -r now
+ 1246  fdisk
+ 1247  sudo fdisk
+ 1248  fdisk --help
+ 1249  history
+ 1250  sudo gparted
+ 1251  exit
+ 1252  ls /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/
+ 1253  ls
+ 1254  ls /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/
+ 1255  file /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/
+ 1256  ls -R /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/
+ 1257  ls -alR /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/
+ 1258  ls -alR /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/
+ 1259  ls -alR /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/
+ 1260  file /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/*
+ 1261  file /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/info.dat 
+ 1262  more /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/info.dat 
+ 1263  file /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/00000000.dat 
+ 1264  cat /media/kazuyoshi/2c3c9899-b456-47e7-a15a-bcbf2088edb1/.toshibazze89d87388aee/log/00000000.dat 
+ 1265  exit
+ 1266  df
+ 1267  　　sudo apt-get install exfat-fuse exfat-utils
+ 1268  sudo apt-get install exfat-fuse exfat-utils
+ 1269  sudo add-apt-repository -y ppa:yannubuntu/boot-repair
+ 1270  sudo apt install -y boot-repair
+ 1271  exit
+ 1272  fdisk -l
+ 1273  sudo fdisk -l
+ 1274  sudo update-grub
+ 1275  sudo grub-install /dev/sda
+ 1276  sudo grub-install -recheck /dev/sda
+ 1277  sudo grub-install --recheck /dev/sda
+ 1278  sudo shutdow -r now
+ 1279  sudo shutdown -r now
+ 1280  df
+ 1281  ls /boot/efi
+ 1282  ls /boot/efi/
+ 1283  ls /boot/efi/EFI/
+ 1284  ls /boot/efi/EFI/Boot/
+ 1285  ls /boot/efi/EFI/ubuntu/
+ 1286  ls /boot/efi/EFI/Microsoft/
+ 1287  ls /boot/efi/EFI/Microsoft/Recovery/
+ 1288  ls /boot/efi/EFI/Microsoft/Boot/
+ 1289  df
+ 1290  ls -l /boot/efi
+ 1291  ls -l /boot/efi/
+ 1292  ls -l /boot/efi/EFI
+ 1293  ls -l /boot/efi/EFI/Microsoft/
+ 1294  ls -l /boot/efi/EFI/Microsoft/Boot/
+ 1295  more /etc/default/grub
+ 1296  exit
+ 1297  [ -d /sys/firmware/efi ] && echo UEFI || echo BIOS
+ 1298  efibootmgr
+ 1299  efibootmgr -v
+ 1300  df
+ 1301  ls /boot/efi/EFI/
+ 1302  ls /boot/efi/EFI/ubuntu/
+ 1303  ls /boot/efi/EFI/ubuntu/*.efi
+ 1304  ls -l /boot/efi/EFI/ubuntu/*.efi
+ 1305  df
+ 1306  sudo efibootmgr --create --disk /dev/sda --part 1 --loader \\EFI\\ubuntu\\grubx64.efi --label UbuntuGrubx64
+ 1307  sudo efibootmgr --create --disk /dev/sda --part 1 --loader \\EFI\\ubuntu\\mmx64.efi --label UbuntuMmx64
+ 1308  sudo efibootmgr --create --disk /dev/sda --part 1 --loader \\EFI\\ubuntu\\fwupx64.efi --label UbuntuFwupx64
+ 1309  efibootmgr --help
+ 1310  sudo efibootmgr -t 10
+ 1311  sudo shutdown -r now
+ 1312  efibootmgr
+ 1313  efibootmgr -v
+ 1314  efibootmgr -h
+ 1315  cd Downloads/
+ 1316  ls
+ 1317  ls -ltr
+ 1318  tar tzg quasi88-0.6.4.tgz 
+ 1319  tar tzf quasi88-0.6.4.tgz 
+ 1320  tar tf quasi88-0.6.4.tgz 
+ 1321  tar xf quasi88-0.6.4.tgz 
+ 1322  cd quasi88-0.6.4/
+ 1323  ls
+ 1324  make
+ 1325  ls
+ 1326  ls src
+ 1327  cd ..
+ 1328  ls -ltr
+ 1329  tar tf x88_1_5_1.tar.gz 
+ 1330  exit
+ 1331  ls -l /etc/apt/apt.conf.d/20*
+ 1332  less /etc/apt/apt.conf.d/20auto-upgrades 
+ 1333  less /usr/share/unattended-upgrades/20auto-upgrades-disabled 
+ 1334  exit
+ 1335  sudo apt update
+ 1336  sudo apt upgrade
+ 1337  ps -ef | less
+ 1338  sudo apt upgrade
+ 1339  sudo apt update
+ 1340  sudo apt upgrade
+ 1341  cat /etc/apt/apt.conf.d/20auto-upgrades 
+ 1342  sudo apt update
+ 1343  sudo apt upgrade
+ 1344  cat /etc/issue
+ 1345  sudo apt install update-manager
+ 1346  ls -l /var/lib/dpkg/lock-frontend 
+ 1347  lslocks
+ 1348  lslocks | grep /var/lib
+ 1349  lslocks | less
+ 1350  sudo apt install update-manager
+ 1351  sudo lslocks | less
+ 1352  ps -ef|grep unatt
+ 1353  df
+ 1354  ps -ef|grep unatt
+ 1355  top
+ 1356  ps -ef|grep unatt
+ 1357  top
+ 1358  cd /
+ 1359  ls
+ 1360  cd home
+ 1361  ls
+ 1362  cd temuser/
+ 1363  ls
+ 1364  cd ..
+ 1365  sudo su
+ 1366  cd kazuyoshi/
+ 1367  ls -l
+ 1368  cd ダウンロード
+ 1369  ls
+ 1370  ls -l
+ 1371  rm *gz
+ 1372  df .
+ 1373  ls
+ 1374  rm viber.deb 
+ 1375  rm KeePass-2.34-Japanese.zip 
+ 1376  df .
+ 1377  cd ..
+ 1378  ls
+ 1379  cd 'VirtualBox VMs'/
+ 1380  ls -ltr
+ 1381  cd win10-cloned/
+ 1382  ls -ltr
+ 1383  cd Logs/
+ 1384  ls -ltr
+ 1385  cd ../..
+ 1386  ls -ltr
+ 1387  ls -l vbox-win10/
+ 1388  ls -l vbox-win10/Snapshots/
+ 1389  ls -l vbox-win10/Logs/
+ 1390  cd
+ 1391  ls
+ 1392  du -sk [a-z]*
+ 1393  ls snap/
+ 1394  ls workspace/
+ 1395  ls
+ 1396  du -sk [a-z]*
+ 1397  ls rfriends2/
+ 1398  more rfriends2/tools_win.txt 
+ 1399  less rfriends2/tools_win.txt 
+ 1400  view rfriends2/tools_win.txt 
+ 1401  more rfriends2/tools_win.txt 
+ 1402  nkf rfriends2/tools_win.txt 
+ 1403  ls -ltr
+ 1404  cd rfriends2/
+ 1405  ls -ltr
+ 1406  du -sk *
+ 1407  more rfriends2.txt 
+ 1408  crontab -l
+ 1409  ls config
+ 1410  du -sk *
+ 1411  ls bin/
+ 1412  ls
+ 1413  ls bin/
+ 1414  ls tmp/
+ 1415  ls -l tmp/
+ 1416  ls -ltr
+ 1417  cd ..
+ 1418  rm -rf rfriends2
+ 1419  du -sk *
+ 1420  ls -l Music
+ 1421  ls -l Music/
+ 1422  pwd
+ 1423  df .
+ 1424  cd Music/
+ 1425  ls -l
+ 1426  pwd
+ 1427  cd ..
+ 1428  rm -rf Music
+ 1429  ls
+ 1430  du -sk *
+ 1431  df .
+ 1432  df -sk .
+ 1433  df --help
+ 1434  df -h .
+ 1435  du -sk *
+ 1436  cd MEGAsync/
+ 1437  ls -ltr
+ 1438  cd ..
+ 1439  du -sk *
+ 1440  rm 0-02-08-9499afb92154da6ff1d5442398fcb945c12ff467408244cce5ea8cc3980635c0_2078e7b3faf889.mp4 
+ 1441  du -sk *
+ 1442  ls 32bit/
+ 1443  ls 32bit/jre1.8.0_131/
+ 1444  rm -rf 32bit
+ 1445  du -sk *
+ 1446  cd Downloads/
+ 1447  ls -ltr
+ 1448  ls *zip
+ 1449  zip -h
+ 1450  unzip -l
+ 1451  unzip -l *zip
+ 1452  unzip -l Photos.zip 
+ 1453  rm *
+ 1454  ls
+ 1455  rm -rf viber 
+ 1456  ls GCJ/
+ 1457  rmdir GCJ
+ 1458  ls -l quasi88-0.6.4/
+ 1459  rm -rf quasi88-0.6.4
+ 1460  cd ..
+ 1461  df .
+ 1462  df -h .
+ 1463  du -sk *
+ 1464  ls bin/
+ 1465  cd bin/
+ 1466  ls -ltr
+ 1467  more signmod.sh 
+ 1468  ls -ltr
+ 1469  more linux-brjprinter-installer-2.2.1-1 
+ 1470  ls -ltr
+ 1471  file Bitwarden-1.15.2-x86_64.AppImage 
+ 1472  cd ..
+ 1473  du -sk *
+ 1474  rm Rakuten_RAS_VPN_Setup-Other-kazuyoshi.hayase/
+ 1475  rm -rf Rakuten_RAS_VPN_Setup-Other-kazuyoshi.hayase/
+ 1476  du -sk *
+ 1477  ls Videos/
+ 1478  cd Videos/
+ 1479  ls 
+ 1480  rm -rf latata
+ 1481  cd 
+ 1482  du -sk *
+ 1483  cd ドキュメント
+ 1484  ls
+ 1485  rm -rf ViberDownloads/
+ 1486  cd 
+ 1487  du -sk *
+ 1488  less hs_err_pid1342.log 
+ 1489  ls *log
+ 1490  rm *log
+ 1491  ls
+ 1492  du -sk *
+ 1493  ls eclipse/
+ 1494  ls eclipse/java-neon/
+ 1495  ls eclipse/java-neon/eclipse/
+ 1496  ls Pictures/
+ 1497  ls Pictures/Passport/
+ 1498  ls Pictures/2019-10-21_0915/
+ 1499  cd Pictures/
+ 1500  rm *
+ 1501  rm -rf *
+ 1502  cd 
+ 1503  ls
+ 1504  du -sk *
+ 1505  du -sh *
+ 1506  cd MEGAsync/
+ 1507  ls
+ 1508  rm -rf bitcoin install_win3_0.pdf mx_s300_100.pdf ML Javascript+programming DB\&Tx
+ 1509  ls
+ 1510  cd
+ 1511  du -sh *
+ 1512  df -sk .
+ 1513  df -h 
+ 1514  df
+ 1515  top
+ 1516  sudo dpkg-reconfigure -plow unattended-upgrades
+ 1517  top
+ 1518  man grap-install
+ 1519  man grab-install
+ 1520  man grub-install
+ 1521  exit
+ 1522  sudo apt updaet
+ 1523  sudo apt update
+ 1524  sudo apt dist-upgrade
+ 1525  exit
+ 1526  cat /etc/issue
+ 1527  cd MEGAsync/
+ 1528  ls
+ 1529  ls -al
+ 1530  ls
+ 1531  ls *
+ 1532  ubuntu@ubuntu:~$ sudo apt install update-manager
+ 1533  Reading package lists... Done
+ 1534  Building dependency tree       
+ 1535  Reading state information... Done
+ 1536  (以降、省略)
+ 1537  sudo apt install update-manager
+ 1538  sudo apt autoremove
+ 1539  sudo apt dist-upgrade
+ 1540  sudo do-release-upgrade -d
+ 1541  uname -m
+ 1542  sudo apt dist-upgrade
+ 1543  sudo do-release-upgrade -d
+ 1544  exit
+ 1545  du -sh
+ 1546  du
+ 1547  df
+ 1548  df -h
+ 1549  exit
+ 1550  cd /mnt/wsl/home/kazu/
+ 1551  diff .profile*
+ 1552  cd .config/
+ 1553  ls
+ 1554  ls -ltr
+ 1555  cd ..
+ 1556  cd .emacs.d/
+ 1557  ls
+ 1558  ls -ltr
+ 1559  cd ..
+ 1560  cd
+ 1561  cd .emacs.d
+ 1562  ls -al
+ 1563  cd ..
+ 1564  mv .emacs.d .emacs.d.org-20220313
+ 1565  cd
+ 1566  ls
+ 1567  cd github/
+ 1568  ls
+ 1569  cd study/
+ 1570  ls
+ 1571  ls work/
+ 1572  ls python/
+ 1573  cp -pr /mnt/wsl/home/kazu/anki .
+ 1574  git add anki
+ 1575  git commit 
+ 1576  git push
+ 1577  evince&
+ 1578  fcitx-config-gtk3 
+ 1579  sudo apt install emacs-mozc
+ 1580  cd /mnt/Windows/
+ 1581  ls
+ 1582  cd Recovery/
+ 1583  ls
+ 1584  cd ..
+ 1585  ls
+ 1586  cd '$Recycle.Bin'/
+ 1587  ls
+ 1588  ls *
+ 1589  cd ..
+ 1590  ls
+ 1591  ls Windows
+ 1592  cd
+ 1593  ls
+ 1594  ls VirtualBox\ VMs/
+ 1595  ls VirtualBox\ VMs/vbox-win10/
+ 1596  ls VirtualBox\ VMs/win10-cloned/
+ 1597  ls -l VirtualBox\ VMs/win10-cloned/
+ 1598  ls -l VirtualBox\ VMs
+ 1599  ls -l VirtualBox\ VMs/vbox-win10/
+ 1600  cd /mnt/Windows/
+ 1601  ls
+ 1602  df
+ 1603  ln -s /media/kazuyoshi/WinMac0001/VMWare ./
+ 1604  cd VMWare
+ 1605  ls
+ 1606  ls -l
+ 1607  cd Win10-64bit/
+ 1608  ls -l
+ 1609  exit
+ 1610  sudo apt install libxcb-xinerama0
+ 1611  sudo apt autoremove
+ 1612  ls
+ 1613  mkdir local-installs
+ 1614  mv *deb local-installs/
+ 1615  cd local-installs/
+ 1616  tar xjf ../Downloads/anki-2.1.49-linux.tar.bz2 
+ 1617  cd anki-2.1.49-linux/
+ 1618  sudo ./install.sh 
+ 1619  anki
+ 1620  bg
+ 1621  anki&
+ 1622  cd ..
+ 1623  ls
+ 1624  cd
+ 1625  mv Downloads/code_1.65.2-1646927742_amd64.deb local-installs/
+ 1626  cd local-installs/
+ 1627  ls
+ 1628  sudo apt install ./code_1.65.2-1646927742_amd64.deb 
+ 1629  code&
+ 1630  mv ../Downloads/microsoft-edge-beta_99.0.1150.38-1_amd64.deb .
+ 1631  history 
+ 1632  sudo apt install ./microsoft-edge-beta_99.0.1150.38-1_amd64.deb 
+ 1633  microsoft-edge&
+ 1634  ls
+ 1635  sudo apt remove ./microsoft-edge-beta_99.0.1150.38-1_amd64.deb 
+ 1636  sudo apt help
+ 1637  microsoft-edge&
+ 1638  sudo apt-get remove ./microsoft-edge-beta_99.0.1150.38-1_amd64.deb 
+ 1639  sudo apt-get remove ./microsoft-edge-beta
+ 1640  sudo apt list
+ 1641  sudo apt list | grep microsoft
+ 1642  sudo apt-get remove microsoft-edge-beta
+ 1643  ls
+ 1644  mv ../Downloads/microsoft-edge-dev_100.0.1181.0-1_amd64.deb ./
+ 1645  history 
+ 1646  sudo apt install ./microsoft-edge-dev_100.0.1181.0-1_amd64.deb 
+ 1647  microsoft-edge-dev &
+ 1648  sudo apt install emacs27
+ 1649  df
+ 1650  ls /mnt/Windows/Users/kazuyoshi.hayase/AppData/Local/Packages/
+ 1651  cd /mnt/Windows/Users/kazuyoshi.hayase/AppData/Local/Packages/
+ 1652  ls
+ 1653  ls *ubuntu*
+ 1654  ls *buntu*
+ 1655  file *buntu*
+ 1656  cd *buntu*
+ 1657  ls
+ 1658  ls LocalState/
+ 1659  cd
+ 1660  sudo apt install libguestfs-tools
+ 1661  sudo mkdir -p /mnt/wsl
+ 1662  sudo guestmount -o allow_other -add /mnt/Windows/Users/kazuyoshi.hayase/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/ext4.vhdx -i /mnt/wsl
+ 1663  ls -l /mnt/wsl
+ 1664  ls -dl /mnt/wsl
+ 1665  sudo guestmount -o allow_other --add /mnt/Windows/Users/kazuyoshi.hayase/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/ext4.vhdx -i /mnt/wsl
+ 1666  ls /mnt/wsl
+ 1667  ls bin
+ 1668  head bin/signmod.sh 
+ 1669  cat > bin/gmount-wsl.sh
+ 1670  chmod +x bin/gmount-wsl.sh 
+ 1671  guestunmount /mnt/wsl
+ 1672  sudo guestunmount /mnt/wsl
+ 1673  ls /mnt/wsl/
+ 1674  sudo bin/gmount-wsl.sh 
+ 1675  ls /mnt/wsl/
+ 1676  cp bin/gmount-wsl.sh bin/gunmount-wsl.sh
+ 1677  vi bin/gunmount-wsl.sh 
+ 1678  chmod +x bin/gunmount-wsl.sh 
+ 1679  df
+ 1680  sudo gunmount-wsl.sh 
+ 1681  sudo bin/gunmount-wsl.sh 
+ 1682  df
+ 1683  ls /mnt/wls
+ 1684  ls /mnt/wsl/
+ 1685  sudo bin/gmount-wsl.sh 
+ 1686  cd /mnt/wsl/home/kazu/
+ 1687  ls
+ 1688  more install.sh 
+ 1689  ls
+ 1690  more .bashrc 
+ 1691  ls -ltr .[a-z]*
+ 1692  ls -dltr .[a-z]*
+ 1693  more .emacs.d/init.el
+ 1694  less .emacs.d/init.el
+ 1695  cd
+ 1696  git
+ 1697  cd github/
+ 1698  ls
+ 1699  ls -al
+ 1700  ls -a study/
+ 1701  more study/.project 
+ 1702  more study/.git
+ 1703  more study/.git/
+ 1704  more study/.git/config 
+ 1705  cd study/
+ 1706  cp -pr /mnt/wsl/home/kazu/.emacs.d .
+ 1707  git clone .emacs.d
+ 1708  git clone study .emacs.d
+ 1709  git
+ 1710  git add .emacs.d
+ 1711  git commit
+ 1712  cd 
+ 1713  cd github/study/
+ 1714  cd .emacs.d/
+ 1715  ls
+ 1716  cat > .gitignore
+ 1717  more .gitignore 
+ 1718  git commit
+ 1719  git add .gitignore 
+ 1720  git commit
+ 1721  cd
+ 1722  ls -al
+ 1723  grep -i url github/study/.git/config
+ 1724  git clone .recentf
+ 1725  server/
+ 1726  auto-save-list/
+ 1727  eshell/
+ 1728  kkcrc
+ 1729  ac-comphist.dat
+ 1730  git clone git@github.com:kazuhayase/study.git .emacs.d
+ 1731  ls
+ 1732  ls -l .ssh/
+ 1733  git help
+ 1734  git clone git@github.com:kazuhayase/study.git .emacs.d
+ 1735  ls .ssh/
+ 1736  ssh -T git@github.com
+ 1737  cd .ssh/
+ 1738  more id_rsa.pub 
+ 1739  cd
+ 1740  git clone git@github.com:kazuhayase/study.git .emacs.d
+ 1741  cd .emacs.d
+ 1742  ls
+ 1743  ls -al
+ 1744  cd ..
+ 1745  rm -rf .emacs.d
+ 1746  cd github/
+ 1747  ls
+ 1748  cd study/
+ 1749  ls
+ 1750  ls -al
+ 1751  ls .emacs.d/
+ 1752  ls
+ 1753  ls -al
+ 1754  git commit
+ 1755  git help
+ 1756  git log
+ 1757  git push
+ 1758  git pull
+ 1759  git commit python
+ 1760  git pull
+ 1761  file python/SRMs/.settings/org.eclipse.core.resources.prefs 
+ 1762  ls -l python/SRMs/.settings/org.eclipse.core.resources.prefs 
+ 1763  rm python/SRMs/.settings/org.eclipse.core.resources.prefs 
+ 1764  git commit python
+ 1765  git pull
+ 1766  git rm python/SRMs/.settings/org.eclipse.core.resources.prefs 
+ 1767  git pull
+ 1768  git commit
+ 1769  git pull
+ 1770  git push
+ 1771  cd
+ 1772  git clone git@github.com:kazuhayase/study.git/.emacs.d 
+ 1773  git help clone 
+ 1774  git init
+ 1775  ls .git
+ 1776  more .git/config 
+ 1777  ls -ltra
+ 1778  git config core.sparsecheckout true
+ 1779  git remote add origin https://github.com/kazuhayase/stury.git
+ 1780  ls .git
+ 1781  ls .git/
+ 1782  ls .git/info/
+ 1783  more .git/config 
+ 1784  cat > .git/info/sparse-checkout
+ 1785  git pull origin master
+ 1786  ls .git
+ 1787  ls .ssh
+ 1788  git remote set-url origin git@github.com
+ 1789  git pull origin master
+ 1790  grep url github/study/*
+ 1791  grep url github/study/*/*
+ 1792  grep url github/study/*/*/*
+ 1793  grep url github/*
+ 1794  grep url github/.*
+ 1795  grep url github/study/.*
+ 1796  grep url github/study/.*/*
+ 1797  git remote set-url origin git@github.com:kazuhayase/study.git
+ 1798  git pull origin master
+ 1799  ls
+ 1800  ls -ltr
+ 1801  ls -ltra
+ 1802  ls .emacs.d
+ 1803  ls
+ 1804  cd .emacs.d
+ 1805  ls
+ 1806  cde
+ 1807  cd
+ 1808  snap
+ 1809  sudo snap
+ 1810  emacs&
+ 1811  pwd
+ 1812  cd
+ 1813  ls -ald
+ 1814  ls -al
+ 1815  emacs &
+ 1816  sudo apt install -y texlive-lang-japanese  texlive-latex-extra xdvik-ja evince
+ 1817  evince MEGAsync/Actuary-ebook/アクチュアリー*pdf
+ 1818  cd MEGAsync/Actuary-Doc/
+ 1819  ls
+ 1820  cd 2022/
+ 1821  ls
+ 1822  cd ../2021
+ 1823  ls
+ 1824  evince sompo/sonpoworkbookniwachankaitou_000*pdf
+ 1825  bg]
+ 1826  bg
+ 1827  anki&
+ 1828  emacs&
+ 1829  cat /etc/issue
+ 1830  cd
+ 1831  cd local-installs/
+ 1832  mv ../Downloads/megasync-xUbuntu_20.04_amd64.deb ./
+ 1833  sudo apt install ./megasync-xUbuntu_20.04_amd64.deb 
+ 1834  cd ..
+ 1835  ls -l
+ 1836  mv MEGAsync MEGAsymlink
+ 1837  ls MEGAsymlink/
+ 1838  mv MEGAsymlink MEGAsync 
+ 1839  mv Downloads/nautilus-megasync-xUbuntu_20.04_amd64.deb local-installs/
+ 1840  cd local-installs/
+ 1841  sudo apt install ./nautilus-megasync-xUbuntu_20.04_amd64.deb 
+ 1842  sudo apt install zoom
+ 1843  zoom &
+ 1844  zoom --version
+ 1845  zoom -version
+ 1846  zoom -h
+ 1847  zoom
+ 1848  cd
+ 1849  which zoom
+ 1850  exit
+ 1851  cd MEGAsync/
+ 1852  ls
+ 1853  ls Actuary-Doc
+ 1854  df .
+ 1855  du -sk .
+ 1856  du -sh .
+ 1857  rm -rf *
+ 1858  ls
+ 1859  mkdir document
+ 1860  mkdir ebooks
+ 1861  authy
+ 1862  bitwarden
+ 1863  bg
+ 1864  authy 
+ 1865  bg
+ 1866  bc
+ 1867  calc
+ 1868  evince&
+ 1869  cd 
+ 1870  pwd
+ 1871  ls VirtualBox\ VMs/vbox-win10/
+ 1872  ls -ltr
+ 1873  ls -l VirtualBox\ VMs/vbox-win10/
+ 1874  exit
+ 1875  ls -l VirtualBox\ VMs/vbox-win10/
+ 1876  date
+ 1877  ls -l VirtualBox\ VMs/vbox-win10/Snapshots/
+ 1878  ls -l VirtualBox\ VMs/vbox-win10/
+ 1879  cd VirtualBox\ VMs/vbox-win10/
+ 1880  ls
+ 1881  less vbox-win10.vbox
+ 1882  grep mnt vbox-win10.vbox
+ 1883  ls /mnt/Windows/VMWare/Win10-64bit/
+ 1884  ls -l /mnt/Windows/VMWare/Win10-64bit/
+ 1885  less vbox-win10.vbox
+ 1886  ls -l
+ 1887  cd /mnt/Windows/
+ 1888  ls -l VMWare
+ 1889  cd
+ 1890  ls
+ 1891  ls /home
+ 1892  cd Downloads/
+ 1893  ls -l VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1894  md5 VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1895  sha256sum VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1896  head VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1897  head -50 VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1898  sudo apt install build-essential
+ 1899  mv VMware-Player-Full-16.2.3-19376536.x86_64.bundle ../local-installs/
+ 1900  cd ../local-installs/
+ 1901  sudo sh VMware-Player-Full-16.2.3-19376536.x86_64.bundle 
+ 1902  exit
+ 1903  anthy&
+ 1904  authy&
+ 1905  bitwarden &
+ 1906  evince&
+ 1907  evince &
+ 1908  exit
+ 1909  sudo fdisk -l
+ 1910  df
+ 1911  emacs github/
+ 1912  bg
+ 1913  which evince
+ 1914  cd MEGAsync/ebooks/
+ 1915  ls
+ 1916  cd Actuary-ebook/
+ 1917  ls
+ 1918  evince アクチュアリー試験*
+ 1919  bg
+ 1920  evince &
+ 1921  exit
+ 1922  cd github
+ 1923  ls
+ 1924  git
+ 1925  git status
+ 1926  git fetch
+ 1927  ls
+ 1928  cd study/
+ 1929  ls
+ 1930  cd work/
+ 1931  ls
+ 1932  git fetch
+ 1933  ls
+ 1934  git pull
+ 1935  ls
+ 1936  git fetch
+ 1937  ls
+ 1938  cd ..
+ 1939  ls
+ 1940  more ubuntu-win10.txt 
+ 1941  cd
+ 1942  ls
+ 1943  cd workspace/
+ 1944  ls
+ 1945  ls Qualification/
+ 1946  ls
+ 1947  cd ..
+ 1948  ls
+ 1949  cd workspace/
+ 1950  mkdir efi_backup
+ 1951  cp -r /boot/efi efi_backup/
+ 1952  ls efi_backup/
+ 1953  ls efi_backup/efi/
+ 1954  ls efi_backup/efi/EFI/
+ 1955  ls efi_backup/efi/boot-repair/
+ 1956  ls efi_backup/efi/boot-repair/log/
+ 1957  ls efi_backup/efi/boot-repair/log/20200209_171232/
+ 1958  ls efi_backup/efi/boot-repair/log/20200209_171232/boot-repair.log 
+ 1959  file efi_backup/efi/boot-repair/log/20200209_171232/boot-repair.log 
+ 1960  file efi_backup/efi/boot-repair/log/20200209_171232/sda
+ 1961  ls efi_backup/efi/boot-repair/log/20200209_171232/sda
+ 1962  ls
+ 1963  man grub-install
+ 1964  ls /boot/efi/EFI/
+ 1965  ls /boot/efi/EFI/Boot/
+ 1966  ls /boot/efi/EFI/Microsoft/
+ 1967  ls /boot/efi/EFI/Microsoft/Boot/
+ 1968  ls /boot/efi/EFI/Microsoft/
+ 1969  ls /boot/efi/EFI/Microsoft/Recovery/
+ 1970  ls /boot/efi/EFI/ubuntu/
+ 1971  sudo update-grub
+ 1972  cd ../github/
+ 1973  ls
+ 1974  study/
+ 1975  ls
+ 1976  more study/ubuntu-win10.txt 
+ 1977  cd /boot/efi/
+ 1978  ls
+ 1979  efibootmgr
+ 1980  sudo efibootmgr -o "0002,0000,0008,0009,000A"
+ 1981  efibootmgr
+ 1982  exit
+ 1983  cd MEGAsync/ebooks/Actuary-ebook/
+ 1984  ls
+ 1985  cd
+ 1986  evince MEGAsync/ebooks/Actuary-ebook/アクチュアリー*pdf&
+ 1987  evince MEGAsync/ebooks/Actuary-ebook/損保数理.pdf &
+ 1988  evince MEGAsync/document/Actuary+数理統計/2021/sompo/sonpoworkbookniwachankaitou_0002.pdf &
+ 1989  exit
+ 1990  sudo apt install boot-repair
+ 1991  sudo apt autoremove
+ 1992  sudo boot-repair
+ 1993  ls -l Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso 
+ 1994  file Downloads/ubuntu-ja-20.04.1-desktop-amd64.iso 
+ 1995  exit
+ 1996  sudo boot-repair
+ 1997  history
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ sudo parted /dev/sda print
+モデル: ATA ASP550SS7-480GM- (scsi)
+ディスク /dev/sda: 480GB
+セクタサイズ (論理/物理): 512B/512B
+パーティションテーブル: gpt
+ディスクフラグ: 
+
+番号  開始    終了   サイズ  ファイルシステム  名前                          フラグ
+ 1    1049kB  274MB  273MB   fat32             EFI system partition          boot, esp
+ 2    274MB   290MB  16.8MB                    Microsoft reserved partition  msftres
+ 3    290MB   379GB  379GB   ntfs              Basic data partition          msftdata
+ 4    379GB   380GB  623MB   ntfs                                            hidden, diag
+ 5    380GB   463GB  83.0GB  ext4
+ 6    463GB   480GB  17.1GB  linux-swap(v1)                                  swap
+
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ ls
+ 20220320.log   [0m[01;34mPublic[0m                   [01;34meclipse[0m            [01;34msnap[0m
+ [01;34mDesktop[0m        [01;34mTemplates[0m                examples.desktop   [01;32muninstaller_MFCJ6973CDW[0m
+ [01;34mDocuments[0m      [01;34mVideos[0m                   [01;34mgPodder[0m            [01;32muninstaller_brscan-skey[0m
+ [01;34mDownloads[0m     [01;34m'VirtualBox VMs'[0m          [01;34mgdrive[0m             [01;32muninstaller_brscan4[0m
+ [01;34mDropbox[0m        [01;34mbin[0m                      [01;34mgithub[0m             [01;34mworkspace[0m
+ [01;34mMEGAsync[0m       contestapplet.conf       [01;34mlocal-installs[0m     [01;34mダウンロード[0m
+ [01;34mPictures[0m       contestapplet.conf.bak   [01;34msmb4k[0m              [01;34mドキュメント[0m
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ ls -l sc[Kls -l 22[K0220320.log 
+-rw-rw-r-- 1 kazuyoshi kazuyoshi 28672  3月 20 08:39 20220320.log
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ [H[2J]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: ~[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m~[00m$ cd /boot/efi/EFI/
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ ls -l
+合計 12
+drwxr-xr-x 2 root root 4096  3月 13 12:43 [0m[01;34mBoot[0m
+drwxr-xr-x 4 root root 4096  9月 14  2016 [01;34mMicrosoft[0m
+drwxr-xr-x 2 root root 4096  3月 13 11:41 [01;34mubuntu[0m
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ sudo cp -pr Microsoft/[K Microsoft/[KSaf eMode
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ sudo apt-get install libwin-hivex- perl
+パッケージリストを読み込んでいます... 0%パッケージリストを読み込んでいます... 100%パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています... 0%          依存関係ツリーを作成しています... 0%依存関係ツリーを作成しています... 50%依存関係ツリーを作成しています... 50%依存関係ツリーを作成しています       
+状態情報を読み取っています... 0%状態情報を読み取っています... 0%状態情報を読み取っています... 完了
+libwin-hivex-perl はすでに最新バージョン (1.3.18-2ubuntu0.1) です。
+libwin-hivex-perl は手動でインストールしたと設定されました。
+アップグレード: 0 個、新規インストール: 0 個、削除: 0 個、保留: 0 個。
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ hivexregedit --unsage[K[Kfe-prin[Kntable-st rings --expoert /,m[K[Kmnt/e[K[K[K[K[Kboot/efi/EFI/Microsofts[KSafeMode/Boot/BCD '\' > /tmp/bcd.reg
+Unknown option: expoert
+Usage:
+     hivexregedit --merge [--prefix prefix] [--encoding enc] \
+             hivefile [regfile]
+
+     hivexregedit --export [--prefix prefix] hivefile key > regfile
+
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ hivexregedit --unsafe-printable-strings --expoert /boot/efi/EFI/MicrosoftSafeMode/Boot/BCD '\' > /tmp/bcd.reg[C[1P
+Wide character in printf at /usr/lib/x86_64-linux-gnu/perl5/5.30/Win/Hivex/Regedit.pm line 608.
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ hivexregedit --unsafe-printable-strings --export /boot/efi/EFI/MicrosoftSafeMode/Boot/BCD '\' > /tmp/bcd.reg
+Wide character in printf at /usr/lib/x86_64-linux-gnu/perl5/5.30/Win/Hivex/Regedit.pm line 608.
+]0;kazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01: /boot/efi/EFI[01;32mkazuyoshi@1607LM-iHS303S-A-IIYAMA-H110M-S01[00m:[01;34m/boot/efi/EFI[00m$ exit
+exit
+
+Script done on 2022-03-20 08:51:54+09:00 [COMMAND_EXIT_CODE="0"]
