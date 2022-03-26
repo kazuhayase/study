@@ -63,3 +63,58 @@ manage flags というメニューを開く
 ----------------------------
 http://d.sunnyone.org/2015/11/uefi-windows-safe-mode-with-linux.html
 
+--------------
+20220326
+https://guminote.sakura.ne.jp/archives/316
+
+今回は、 Ubuntu Live USB（Ubuntuインストールディスク）で 任意の EFIシステムパーティションに Grub をインストールします。
+
+    /dev/sda1 ：GrubをインストールしたいEFIシステムパーティション
+    /dev/sda5 ：Ubuntu
+sudo -s
+mkdir /chroot
+mount /dev/sda2 /chroot
+mount --bind /dev /chroot/dev
+mount --bind /dev/pts /chroot/dev/pts
+mount --bind /proc /chroot/proc
+mount --bind /sys /chroot/sys
+mount --bind /run /chroot/run
+chroot /chroot
+
+mount /dev/sda1 /boot/efi
+grub-install --efi-directory=/boot/efi
+update-grub
+
+root@ubuntu:/# update-grub
+Sourcing file `/etc/default/grub'
+Sourcing file `/etc/default/grub.d/init-select.cfg'
+Generating grub configuration file ...
+Linux イメージを見つけました: /boot/vmlinuz-5.4.0-104-generic
+Found initrd image: /boot/initrd.img-5.4.0-104-generic
+Linux イメージを見つけました: /boot/vmlinuz-4.15.0-171-generic
+Found initrd image: /boot/initrd.img-4.15.0-171-generic
+  /dev/sdc: open failed: メディアが見つかりません
+  /dev/sdd: open failed: メディアが見つかりません
+  /dev/sdc: open failed: メディアが見つかりません
+  /dev/sdd: open failed: メディアが見つかりません
+grub-probe: エラー: cannot find a GRUB drive for /dev/sdb1.  Check your device.map.
+Found Windows Boot Manager on /dev/sda1@/EFI/Microsoft/Boot/bootmgfw.efi
+Adding boot menu entry for UEFI Firmware Settings
+完了
+
+blkid /dev/sda1
+/dev/sda1: LABEL="SYSTEM" UUID="ACAA-FA53" TYPE="vfat" PARTLABEL="EFI system partition" PARTUUID="2892735e-032d-4493-bdaa-6ebf1d62b18d"
+-------
+https://ciksiti.com/ja/chapters/5389-how-to-repair-the-grub-bootloader-using-a-ubuntu-live-usb-dr
+
+sudo apt-add-repository ppa：yannubuntu / boot-repair
+sudo apt-get update
+sudo apt-get install boot-repair -y
+
+GRUBブート修復ツールの最初の画面に、メインオプション、グラブの場所、GRUBオプション、およびその他の役立つタブが表示されます。 メインオプションには、UbuntuマシンにGRUBブートローダーを再インストールして修復するためのチェックボックスがあります。
+
+ルートファイルとGRUBファイルに別々のディレクトリがある場合は、EFIファイルを使用してGRUBの場所を選択します。 システムがMBRパーティションで実行されている場合は、MBRオプションの内部を調べて、MBRブート修復オプションを確認してください。 [その他のオプション]タブには、Windowsまたはその他のオペレーティングシステムのブートローダーファイルをレスキューするための選択肢があります。
+
+ここで、UbuntuのGRUBブートローダーを修復するには、[メインオプション]を選択して[GRUBを再インストール]を選択し、[適用]ボタンに進みます。 プロセス全体が完了するまでに5分以上かかることはありません。 ファイルシステムに追加のパーティショニングエラーがある場合は、問題を検出して表示します。
+
+GRUBブートローダーの修復が成功すると、「Bootsuccessfullyrepaired」というメッセージが画面に表示されます。 それはあなたがブーツ修理に関するすべての情報を見つけるURLを提供します。 これで、再起動してシステムを構築し、修復されたGRUBブートローダーを使用してシステムを起動できます。
