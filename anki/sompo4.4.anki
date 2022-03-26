@@ -1,0 +1,170 @@
+4.4[保険料算出原理]
+
+4.4.1[各原理の定義式]
+[$]P(X)[/$]を保険料, [$]\mu_X[/$]をXの期待値, [$]\sigma^2_X[/$]をXの分散, [$]h>0[/$]とする
+
+(1)期待値原理: 
+$P(X)=(1+h)\mu_x$
+4.70.1
+(2)分散原理: 
+$P(X)=\mu_x+h\sigma^2_X$
+4.70.2
+
+(3)標準偏差原理: 
+$P(X)=\mu_x+h\sigma_X$
+4.70.3
+
+(4)指数原理: 
+$P(X)=\frac{\log{M_X(h)}}{h}$
+4.70.4
+
+(5)パーセンタイル原理: 
+$P(X)=\min{\{p|F_X(p)\geq 1-h\}}$
+4.70.5
+
+(6)エッシャー原理: 
+$P(X)
+=\frac{E(Xe^{hX})}{E(e^{hX})}
+=\frac{d}{dh}\log{M_X(h)}
+=\frac{M'_X(h)}{M_X(h)}
+$
+4.70.6
+
+(7)ワンの算出原理: 
+$P(X)=E^Q(X)
+=\int x\left\{
+\frac{d}{dx}\Phi(\Phi^{-1}(F_X(x))-h)\right\}dx$
+4.70.7
+
+4.4.2 保険料算出原理に求められる性質
+
+(A)リスクプレミアムは非負
+[$$]P(X)\geq \mu_X[/$$]
+
+(B)保険料は保険金の上限以下
+
+[$$]P(X)\leq \min\{p|F_X(p)=1\}[/$$]
+
+(C)平行移動不変性 
+任意の定数cに対して
+[$$]P(X+c) = P(X)+c[/$$]
+
+(D)正の同時性
+
+任意の定数c>0に対して
+[$$]P(cX) = cP(X)[/$$]
+
+(E)独立なリスクに対する加法性
+
+[$$]P(X+Y) = P(X)+P(Y)[/$$]
+
+---------
+4.4.3.1
+期待値原理
+
+「保険料は保険金の上限以下」の反例
+$X\sim U(0,1), h=2 \Rightarrow P(x)=1.5 > max(X)=1)$
+
+「平行移動不変性」の反例
+$X\sim U(0,1), h=2 \Rightarrow P(x)+1=2.5, P(X+1)=4.5$
+
+---------
+4.4.3.2
+分散原理
+
+「保険料は保険金の上限以下」の反例
+$X\sim U(0,1), h=12 \Rightarrow P(x)=E(X)+hV(X)=0.5+1=1.5 > max(X)=1)$
+
+「正の同時性」の反例
+$X\sim U(0,1), h=2 \Rightarrow E(cX)=cE(X), V(cX)=c^2V(X)$
+
+---------
+4.4.3.3
+標準偏差原理
+
+「保険料は保険金の上限以下」の反例
+$X\sim U(0,1), h=12 \Rightarrow P(x)=E(X)+h\sqrt{V(X)}=0.5+2\sqrt{3} > max(X)=1)$
+
+「独立なリスクに対する加法性」の反例
+$\sqrt{V(X+Y)}\neq \sqrt{V(X)}+\sqrt{V(Y)}$
+
+---------
+4.4.3.4
+指数原理
+
+「正の同時性」の反例
+$X\sim N(\mu,\sigma^2) \Rightarrow P(X)=\frac{\log M_X(h)}{h}=\mu+\frac{h}{2}\sigma^2$
+
+$X\sim N(\mu,\sigma^2) \Rightarrow P(X)=\frac{\log M_X(h)}{h}=\mu+\frac{h}{2}\sigma^2$
+
+---------
+4.4.3.5
+パーセンタイル原理
+
+「リスクプレミアムは非負」の反例
+X\sim U(0,1),h=0.7 \Rightarrow P(X)=\min\{p|F_X(p)\geq 0.3\}=0.3
+
+「独立なリスクに対する加法性」の反例
+
+$X,Y\sim U(0,1),h=0.7 \Rightarrow$
+
+$P(X)+P(Y)=0.6$
+
+$
+F_{X+Y}(z)=\begin{cases}
+\frac{z^2}{2}&(0\leq z \leq 1)\\
+1-\frac{(2-z)^2}{2}&(1\leq z \leq 2)	     
+	    \end{cases}
+$
+
+$P(X+Y)=\sqrt{0.6}\neq P(X)+P(Y)$
+
+
+---------
+4.4.3.6
+エッシャー原理
+
+「正の同時性」の反例
+
+$X\sim N(\mu,\sigma^2) \Rightarrow P(X)=\frac{d}{dh}\log M_X(h)=\mu+h\sigma^2$
+
+-----------
+4.4.3.7
+ワンの算出原理
+
+「独立なリスクに対する加法性」の反例
+
+$X\sim N(0,1) \Rightarrow P(X)=h$
+
+$
+\frac{d}{dx}\Phi(\Phi^{-1}(F_x(x))-h)
+=\frac{d}{dx}\Phi(x-h)
+=\phi(x-h)
+$
+
+$
+P(X)=
+\int_{-\infty}^{\infty} x\phi(x-h)dx
+=h
+$
+
+$X,Y\sim N(0,1) \Rightarrow X+Y\sim N(0,2)
+\Rightarrow F_{X+Y}(z)=\Phi(\frac{z}{\sqrt{2}})
+$
+
+$
+\frac{d}{dx}\Phi(\Phi^{-1}(F_{X+Y}(x))-h)
+=\frac{d}{dx}\Phi(\frac{x}{\sqrt{2}}-h)
+=\frac{1}{\sqrt{2}}\phi(\frac{x}{\sqrt{2}}-h)
+$
+
+$
+P(X+Y)
+=\int_{-\infty}^{\infty}\frac{x}{\sqrt{2}}\phi(\frac{x}{\sqrt{2}}-h)dx
+=\sqrt{2}h
+$
+
+よって
+
+$P(X+Y)\neq P(X)+P(Y)$
+

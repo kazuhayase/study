@@ -1,0 +1,14 @@
+モデル: ATA ASP550SS7-480GM- (scsi)
+ディスク /dev/sda: 480GB
+セクタサイズ (論理/物理): 512B/512B
+パーティションテーブル: gpt
+ディスクフラグ: 
+
+番号  開始    終了   サイズ  ファイルシステム  名前                          フラグ
+ 1    1049kB  274MB  273MB   fat32             EFI system partition          boot, esp
+ 2    274MB   290MB  16.8MB                    Microsoft reserved partition  msftres
+ 3    290MB   379GB  379GB   ntfs              Basic data partition          msftdata
+ 4    379GB   380GB  623MB   ntfs                                            hidden, diag
+ 5    380GB   463GB  83.0GB  ext4
+ 6    463GB   480GB  17.1GB  linux-swap(v1)                                  swap
+
