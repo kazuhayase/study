@@ -1,0 +1,65 @@
+https://unix.stackexchange.com/questions/68581/how-can-i-prevent-windows-from-overwriting-grub-when-using-a-dual-boot-machine
+
+Boot from a live CD (CD/DVD or flash drive).
+Become root or use sudo with commands below.
+List the available partitions if needed: fdisk -l
+Windows will almost certainly exist on /dev/sda1: mount /dev/sda1 /mnt
+Reinstall GRUB in the MBR: grub-install --root-directory=/mnt/ /dev/sda
+Reboot: shutdown -r now
+Restore the GRUB menu: update-grub
+
+----
+https://unix.stackexchange.com/questions/241809/grub2-gone-every-time-i-boot-windows-10
+bcdedit /set {bootmgr} path \EFI\ubuntu\shimx64.efi
+
+----
+https://qiita.com/gpioblink/items/708b2a5add6c854965cf
+STEP4: bootの優先順位をあげる
+# efibootmgr 
+Timeout: 0 seconds
+BootOrder: 0001,0002,2001,2002,2003
+Boot0000* EFI USB Device (TOSHIBA)
+Boot0001* Windows Boot Manager
+Boot0002* arch_grub
+Boot2001* EFI USB Device
+Boot2002* EFI DVD/CDROM
+Boot2003* EFI Network
+
+# efibootmgr -o "0002,0001,2001,2002,2003"
+Timeout: 0 seconds
+BootOrder: 0002,0001,2001,2002,2003
+Boot0000* EFI USB Device (TOSHIBA)
+Boot0001* Windows Boot Manager
+Boot0002* arch_grub
+Boot2001* EFI USB Device
+Boot2002* EFI DVD/CDROM
+Boot2003* EFI Network
+
+-----
+https://blog.foresta.me/posts/repair-broken-ubuntu-after-windows-update/
+# PPA を追加
+$ sudo add-apt-repository -y ppa:yannubuntu/boot-repair
+
+# Install
+$ sudo apt install -y boot-repair
+
+インストールが完了したら Boot Repair を起動して，おすすめ修復 (reommended repair) というボタンを押すと自動で良い感じに問題を発見して修復してくれます．便利．
+
+https://kledgeb.blogspot.com/2018/06/ubuntu-1804-146-boot-repair.html?m=1
+一点，自分の環境でおすすめ修復を押したときに以下のようなエラーが表示されました．
+
+Boot ようのパーティションは作ってあるのでなぜだろうと思ってしらべたら，どうやら hidden フラグを外せば良いとのことでした．
+
+https://askubuntu.com/questions/1240391/problem-with-dual-boot-win-10-boot-repair-unsuccessful
+以下のように，gparted コマンドを Terminal から入力すると，パーティションの設定が立ち上がります．
+
+$ gparted
+立ち上がったら以下の手順で hidden フラグを外します
+
+ブート用の EFI パーティションを右クリック
+manage flags というメニューを開く
+表示された hidden フラグのチェックを外す
+この作業をおこない，もう一度 Boot Repair にて，おすすめ修復 ボタンをおすと自動で修復が始まり，再起動したら grub のブートローダーが起動し，Ubuntu が起動できるようになりました．
+----------------------------
+http://d.sunnyone.org/2015/11/uefi-windows-safe-mode-with-linux.html
+
