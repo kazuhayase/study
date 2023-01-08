@@ -1,0 +1,405 @@
+7.1.1連生生命確率
+
+l_xyの定義
+$
+l_{xy}=l_x\cdot l_y
+$
+7.1
+
+(x),(y) t年後共存確率を(1)lx等を使った定義, (2)tPxとの関係
+$
+\px[t]{xy}=\frac{l_{x+t,y+t}}{l_{xy}}=\px[t]{x}\cdot\px[t]{y}
+$
+7.2
+
+(x),(y) s+t年後共存確率 sPxyとの関係
+$
+\px[s+t]{xy}=\px[s]{xy}\cdot\px[t]{x+s,y+s}
+$
+7.3
+
+[t,t+1]で(x)(y)が共存しなくなる確率
+$
+\qx[t|]{xy}=\px[t]{xy}-\px[t+1]{xy}
+$
+7.4
+
+t年後に(x)(y)が共存しなくなる(少なくとも1人が死亡)確率を(1)tPxyで定義, (2)非共存確率 ?qxyの数列和で
+$
+\qx[t]{xy}=1-\px[t]{xy}=\qx{xy}+\qx[1|]{xy}+\cdots+\qx[t-1|]{xy}
+$
+7.5
+
+(x),(y)最終生存者t年後生存確率を tPx等を使った式
+$
+\px[t]{\joint{xy}}=\px[t]{x}+\px[t]{y}-\px[t]{xy}
+$
+7.6
+
+(x),(y)最終生存者s+t年後生存確率を sPxyを使った式. (hint; sPxyを使う項は, s年後共存し,そのt年後最終生存者が生存するという形. 残りの2項は s年後どちらかが死亡 sq?,を使う)
+$
+\px[s+t]{\joint{xy}}=\px[s+t]{x}\cdot\qx[s]{y}+\px[s+t]{y}\cdot\qx[s]{x}+
+\px[s]{xy}\cdot\px[t]{\joint{x+s,y+s}}
+$
+7.7
+
+[t,t+1]で(x),(y)の最終生存者が死亡する確率を(1)最終生存確率の差, (2)死亡率/非共存率 ?q??の式
+$
+\qx[t|]{\joint{xy}}=\px[t]{\joint{xy}}-\px[t+1]{\joint{xy}}=\qx[t|]{x}+\qx[t|]{y}-\qx[t|]{xy}
+$
+7.8
+
+(x)(y)の最終生存者がt年以内に死亡している確率を(1)最終生存確率で定義,(2) 各(x),(y)単生存確率を使った式, (3) 単・最終・共いずれかの死亡率の組み合わせ, (4) 最終死亡率の数列和
+$
+\qx[t]{\joint{xy}}
+=1-\px[t]{\joint{xy}}
+=(1-\px[t]{x})(1-\px[t]{y})
+=\qx[t]{x}+\qx[t]{y}-\qx[t]{xy}
+=\qx[]{\joint{xy}}+\qx[1|]{\joint{xy}}+\cdots+\qx[t-1|]{\joint{xy}}
+$
+7.9
+
+(x)(y)のちょうど1人がt年後に生存している確率を(1) 各(x),(y)単生存確率を使った式,(2) 各(x),(y)単生存確率と共存確率を使った式
+$
+\px[t]{\joint{x}\nthtop{[1]}{\joint{y}}}
+=\px[t]{x}(1-\px[t]{y})+\px[t]{y}(1-\px[t]{x})
+=\px[t]{x}+\px[t]{y}-2\px[t]{xy}
+$
+7.10
+
+(x)(y)(z)のちょうど2人がt年後に生存している確率を,2者・3者共存確率を使った式
+$
+\px[t]{\joint{x}\nthtop{[2]}{\joint{yz}}}
+=\px[t]{xy}+\px[t]{xz}+\px[t]{yz}-3\px[t]{xyz}
+$
+7.11
+
+(x)(y)(z)の少なくとも2人がt年後に生存している確率を,2者・3者共存確率を使った式
+$
+\px[t]{\joint{x}\nthtop{2}{\joint{yz}}}
+=\px[t]{xy}+\px[t]{xz}+\px[t]{yz}-2\px[t]{xyz}
+$
+7.12
+
+(x)(y)(z)の3人中2番目の死亡が[t,t+1]で起こる確率を, (1)共存確率の差で定義, (2) 2者・3者非共存確率の式
+$
+\px[t]{\joint{x}\nthtop{2}{\joint{yz}}}
+-\px[t+1]{\joint{x}\nthtop{2}{\joint{yz}}}
+=\qx[t|]{xy}+\qx[t|]{xz}+\qx[t|]{yz}-2\qx[t|]{xyz}
+$
+7.13
+
+(y)(z)の最終生存者と(x)がt年後に共存する確率(1)定義記号,(2) (x)の単生存確率と(y)(z)の最終者生存確率で, (3) 2者・3者共存確率の式
+$
+\px[t]{x,\joint{yz}}=\px[t]{x}\cdot\px[t]{\joint{yz}}=\px[t]{xy}+\px[t]{xz}-\px[t]{xyz}
+$
+7.14
+
+7.1.2  連生の死力・余命
+(x+t,y+t)が共存でなくなるという意味での死力(定義及び満たす式)を(1)生存者数の連生積 lx,y, (2)連生生存確率 tPxy, (3)単生死力との関係
+$
+\mu_{x+t,y+t}=-\frac{1}{l_{x+t,y+t}}\cdot\frac{dl_{x+t,y+t}}{dt}
+=-\frac{1}{\px[t]{xy}}\cdot\frac{d\px[t]{xy}}{dt}
+=\mu_{x+t}+\mu_{y+t}
+$
+7.15-17
+
+(x+t,y+t)最終生存者の死力を(1)連生生存確率 tPxyで。
+$
+\mu_{\joint{x+t,y+t}}=-\frac{1}{\px[t]{\joint{xy}}}\cdot\frac{d\px[t]{\joint{xy}}}{dt}
+$
+7.18
+
+(x,y)最終生存者, t時点, 瞬間死亡率(生存率×死力) [積分用]
+$
+\px[t]{\joint{xy}}\cdot\mu_{\joint{x+t, y+t}}
+=\qx[t]{y}\cdot\px[t]{x}\mu_{x+t}+\qx[t]{x}\cdot\px[t]{y}\mu_{y+t}
+$
+7.19
+
+[t,t+1] (x,y)最終生存者死亡率 [積分で]
+$
+\qx[t|]{\joint{xy}}=\int_{t}^{t+1}\px[s]{\joint{xy}}\cdot\mu_{\joint{x+s,y+s}}ds
+$
+7.20
+
+tまでの(x,y)最終生存者死亡率 [積分で]
+$
+\qx[t]{\joint{xy}}=\int_{0}^{t}\px[s]{\joint{xy}}\cdot\mu_{\joint{x+s,y+s}}ds
+$
+7.21
+
+(x,y)連生完全余命 [積分で]
+$
+\eringx{xy}=\int_{0}^{\infty}\px[s]{xy}ds
+$
+7.22
+
+(x,y)最終生存者完全余命 (1)積分で,(2)単生・連生完全余命を用いて
+$
+\eringx{\joint{xy}}=\int_{0}^{\infty}\px[s]{\joint{xy}}ds
+=\eringx{x}+\eringx{y}-\eringx{xy}
+$
+7.23
+
+(x,x)最終生存者完全余命, 単生(x)・連生(x,x)完全余命を用いて
+$
+\eringx{\joint{xx}}=2\eringx{x}-\eringx{xx}
+$
+7.24
+
+(x)(y)がメーカムの法則(gの指数となる定数をc)に従う同じ生命表のとき, 均等年齢wの定義とwが満たす条件をc,x,yを使って.
+[メーカムの法則]
+$\px[t]{x}=s^tg^{c^x(c^t-1)}$
+
+均等年齢の定義
+$
+\px[t]{xy}=\px[t]{ww}
+$
+wの条件
+$
+2c^w=c^x+c^y
+$
+7.25,26
+
+----
+7.1.3 連生の条件付生命確率
+
+(x)の死亡が時間区間[t,t+1](観察期間)に属する時点sに起こり, かつ時点sに(y)が生存しているという条件が成り立つ確率
+$
+\qx[t|]{\itop{x}y}=\int_{t}^{t+1}\px[s]{xy}\cdot\mu_{x+s}ds
+$
+7.27
+
+(x)の死亡が観察期間[0,t]に属する時点sに起こり, かつ時点sに(y)が生存しているという条件が成り立つ確率を(1)据置連生死亡率の数列和, (2)積分,の2式で.
+$
+\qx[t]{\itop{x}y}=\sum_{f=0}^{t-1}\qx[f|]{\itop{x}y}
+=\int_{0}^{t}\px[s]{xy}\cdot\mu_{x+s}ds
+$
+7.28
+
+(x),(y)のうち(x)が観察期間[0,t]に属する時点に2番目に死亡するという条件が成り立つ確率を(1)(x)の死亡に着目した積分, (2) (y)の死亡に着目した積分, (3) {連生・単生}{生存率・死亡率}を組み合わせた式で
+$
+\qx[t]{\iitop{x}y}
+=\int_{0}^{t}\qx[s]{y}\cdot\px[s]{x}\mu_{x+s}ds
+=\int_{0}^{t}\px[s]{xy}\mu_{y+s}\cdot\qx[t-s]{x+s}ds
+=\qx[t]{x\itop{y}}-\qx[t]{y}\cdot\px[t]{x}
+$
+7.29
+
+(x,y)の連生死亡率を1番目の死亡に着目して2項の和に
+$
+\qx[t]{xy}=\qx[t]{\itop{x}y}+\qx[t]{x\itop{y}}
+$
+7.30
+
+(x,y)の最終生存者の死亡率を2番目の死亡に着目して2項の和に
+$
+\qx[t]{\joint{xy}}=\qx[t]{\iitop{x}y}+\qx[t]{x\iitop{y}}
+$
+7.31
+
+(x)の死亡率を(x,y)連生死亡率の2項の和に
+$
+\qx[t]{x}=\qx[t]{\itop{x}y}+\qx[t]{\iitop{x}y}
+$
+7.32
+
+(x)が(y)に先立って死亡する確率(hint: ∞を使って). 更に、逆のパターンの確率と足し合わせるといくつになるか?
+
+$
+\qx[\infty]{\itop{x}y}=\int_{0}^{\infty}\px[s]{xy}\mu_{x+s}ds
+\qx[\infty]{\itop{x}y}+\qx[\infty]{x\itop{y}}=1
+$
+7.33,34
+---
+(x),(y),(z)のうち(x)の死亡が1番目, (y)の死亡が2番目で観察期間[t,t+1]に属する時点sに起こり,かつ時点sで(z)が生存しているという条件が成り立つ確率
+$
+\qx[t|]{\ibottom{x}\iitop{y}z}=\int_{t}^{t+1}\qx[s]{x}\cdot\px[s]{yz}\mu_{y+s}ds
+$
+7.35
+(x),(y),(z)のうち(y)が(z)より先に,観察期間[t,t+1]に属する時点sに死亡するという条件が成り立つ確率
+$
+\qx[t|]{\itop{y}z}=\qx[t|]{x\itop{y}z}+\qx[t|]{\ibottom{x}\iitop{y}z}
+$
+7.36
+(x),(y),(z)の順に死亡し,かつ(z)の死亡が観察期間[t,t+1]に属する時点で起こるという条件が成り立つ確率を積分で [hint: (y)の死亡に着目]
+$
+\qx[t|]{\ibottom{x}\iibottom{y}\iiitop{z}}=\int_{t}^{t+1}\qx[s]{x\iitop{y}}\px[s]{z}\mu_{z+s}ds
+$
+7.37
+(x),(y),(z)の順に死亡し,かつ(z)の死亡が観察期間[0,t]に属する時点で起こるという条件が成り立つ確率を積分で [hint: (y)の死亡に着目]
+$
+\qx[t]{\ibottom{x}\iibottom{y}\iiitop{z}}=\int_{0}^{t}\qx[s]{x}\cdot\px[s]{yz}\mu_{y+s}\cdot\qx[t-s]{z+s}ds
+$
+7.37.1
+(x),(y),(z)のうち(x)の死亡が1番目, かつ観察期間[t,t+1]に属する時点に、(y)が2番目又は3番目に死亡するという条件が成り立つ確率を,2つの据置連生死亡率の和で
+$
+\qx[t|]{\ibottom{x}\nthtop{2:3}yz}=\qx[t|]{\ibottom{x}\iitop{y}z}+\qx[t|]{\ibottom{x}\iiitop{y}\iibottom{z}}
+$
+7.38
+観察期間[t,t+1]の時点sで(x,y)が共存でなくなり,かつ時点sで(z)が生存している確率(1)積分,(2)連生死亡率の和
+$
+\qx[t|]{\itop{\group{xy}},z}=\int_{t}^{t+1}\px[s]{xyz}\cdot\mu_{x+s,u+s}ds
+=\qx[t|]{\itop{x}yz}+\qx[t|]{x\itop{y}z}
+$
+7.39
+---
+7.1.4 連生の保険・年金
+(x)，(y)がn年後に共存している時に保険金を支払う連生生存保険の一時払純保険料
+$
+\Ax{\pureendow{xy}{n}}=v^n\px[n]{xy}
+$
+7.40
+
+(x)，(y)がn年間に共存している時に限り年金を支払う連生有期年金の現価(期始払,期末払,連続払)
+$
+\ax**{\endow{xy}{n}}=\sum_{t=0}^{n-1}v^t\px[t]{xy}
+\ax{\endow{xy}{n}}=\sum_{t=1}^{n}v^t\px[t]{xy}
+\ax*{\endow{xy}{n}}=\int_{0}^{n}v^t\px[t]{xy}dt
+$
+7.41-43
+
+(x)，(y)がn年間に共存でなくなった場合の年度末に保険金を支払う連生定期保険の一時払純保険料
+$
+\Ax{\term{\group{xy}}{n}}=\sum_{t=0}^{n-1}v^{t+1}\qx[t|]{xy}=1-d\ax**{\endow{xy}{n}}-v^n\px[n]{xy}
+$
+7.44
+
+連生養老保険の一時払純保険料,年払純保険料
+$
+\Ax{\endow{xy}{n}}=\Ax{\term{\group{xy}}{n}}+\Ax{\pureendow{\group{xy}}{n}}=1-d\ax**{\endow{xy}{n}}
+\Px{\endow{xy}{n}}=\frac{\Ax{\endow{xy}{n}}}{\ax**{\endow{xy}{n}}}=\frac{1}{\ax**{\endow{xy}{n}}}-d
+$
+7.45,46
+
+最終生存者連生生存保険の一時払純保険料
+$
+Ax{\pureendow{\joint{xy}}{n}}=v^n\px[n]{\joint{xy}}
+$
+7.47
+
+(x,y)最終生存者連生有期期始払年金の現価を(1)数列和, (2)単生・連生有期期始払年金現価で
+$
+\ax**{\endow{\joint{xy}{n}}}=\sum_{t=0}^{n-1}v^tp[t]{\joint{xy}}
+=\ax**{\endowxn}+\ax**{\endow{y}{n}}-\ax**{\endow{xy}{n}}
+$
+7.48
+
+(x,y,z)最終生存者連生有期期末払年金の現価を(1)数列和, (2)単生・連生有期期末払年金現価で
+$
+\ax{\endow{\joint{xyz}{n}}}=\sum_{t=1}^{n}v^tp[t]{\joint{xyz}}
+=\ax{\endowxn}+\ax{\endow{y}{n}}+\ax{\endow{z}{n}}
+-\ax{\endow{xy}{n}}
+-\ax{\endow{xz}{n}}
+-\ax{\endow{yz}{n}}
++\ax{\endow{xyz}{n}}
+$
+7.49
+
+(x,y,z)のちょうど2人が生存している時に限り年金を支払う期末払年金の現価
+$\ax{\endow{\joint{x}\nthtop{[2]}{\joint{yz}}}{n}}
+=\ax{\endow{xy}{n}}+\ax{\endow{xz}{n}}+\ax{\endow{yz}{n}}-3\ax{\endow{xyz}{n}}
+$
+7.50
+
+(x,y,z)の少なくとも2人が生存している時に限り年金を支払う期末払年金の現価
+$
+\ax{\endow{{\joint{x}}\nthtop{2}{\joint{yz}}}{n}}
+=\ax{\endow{xy}{n}}+\ax{\endow{xz}{n}}+\ax{\endow{yz}{n}}-2\ax{\endow{xyz}{n}}
+$
+7.51
+
+(y,z)のうちの最終生存者と(x)とが生存している時に限り年金を支払う期末払年金の現価
+$
+\ax{\endow{x,\joint{yz}}{n}}=\sum_{t=1}^{n}v^t\px[t]{x,\joint{yz}}
+=\ax{\endow{xy}{n}}+\ax{\endow{xz}{n}}-\ax{\endow{xyz}{n}}
+$
+7.52
+
+(x,y)最終生存者連生定期保険の一時払純保険料
+$
+\Ax{\term{\joint{xy}}{n}}=\Ax{\termxn}+\Ax{\term{y}{n}}-\Ax{\term{\group{xy}}{n}}
+$
+
+(注) 2人なので、上カギカップは不要のはず。つまり
+$
+\Ax{\term{\group{xy}}{n}}=\Ax{\term{xy}{n}}
+$
+(上カギカップは部分的な連生の時に使う記号)
+7.53
+
+(x,y)最終生存者連生養老保険の一時払純保険料,年払純保険料
+$
+\Ax{\endow{\joint{xy}}{n}}=\Ax{\term{\joint{xy}}{n}}+\Ax{\pureendow{\joint{xy}}{n}}=1 - d\ax**{\endow{\joint{xy}}{n}}
+\Px{\endow{\joint{xy}}{n}}=\frac{\Ax{\endow{\joint{xy}}{n}}}{\ax**{\endow{\joint{xy}}{n}}}=\frac{1}{\ax**{\endow{\joint{xy}}{n}}}-d
+$
+7.54,55
+
+
+(x,y)最終生存者連生養老保険,保険料年払,保険金年度末支払,の第t年度末責任準備金
+(1)両者とも生存, (2)(y)が(x)に先立って死亡, (3)(x)が(y)に先立って死亡
+
+(1)両者とも生存, 
+$
+\Vx[t]{\endow{\joint{xy}{n}}}=\Ax{\endow{\joint{x+t,y+t}{n-t}}}-\Px{\endow{\joint{xy}{n}}}\cdot\ax**{\endow{\joint{x+t,y+t}{n-t}}}=1-\frac{\ax**{\endow{\joint{x+t,y+t}{n-t}}}}{\ax**{\endow{\joint{xy}{n}}}}
+$
+(2)(y)が(x)に先立って死亡, 
+$
+\Vx[t]{}=\Ax{\endow{x+t}{n-t}}-\Px{\endow{\joint{xy}{n}}}\cdot\ax**{\endow{x+t}{n-t}}
+$
+(3)(x)が(y)に先立って死亡
+$
+\Vx[t]{}[']=\Ax{\endow{y+t}{n-t}}-\Px{\endow{\joint{xy}{n}}}\cdot\ax**{\endow{y+t}{n-t}}
+$
+7.56-58
+-----
+7.1.5 復帰年金
+
+(x),(y)のうち(x)が先立った年度末より開始し, (y)が生存している限り毎年度末に第n年度まで支払う年金の現価
+$
+\ax{\endow{x|y}{n}}=\ax{\endow{y}{n}}-\ax{\endow{xy}{n}}
+$
+7.59
+
+(x),(y),(z)のうち(x)が先立った年度末より開始し, (y)と(z)のうちの最終生存者が生存している限り毎年度末に第n年度まで支払う年金の現価
+$
+\ax{\endow{x|\joint{yz}}{n}}=\ax{\endow{\joint{yz}}{n}}-\ax{\endow{x,\joint{yz}}{n}}
+=\ax{\endow{x|y}{n}}+\ax{\endow{x|z}{n}}-\ax{\endow{x|yz}{n}}
+$
+7.60
+
+(x),(y),(z)のうち(x)と(y)の最終生存者が先立った年度末より開始し, (z)が生存している限り毎年度末に第n年度まで支払う年金の現価
+
+$
+\ax{\endow{\joint{xy}|z}{n}}=\sum_{t=1}^{n}\qx[t-1|]{\joint{xy}}\cdot v^t\px[t]{z}\ax**{\endow{z+t}{n-t+1}}
+=\ax{\endow{z}{n}}-\ax{\endow{\joint{xy},z}{n}}
+$
+7.61
+
+-----
+7.1.6 条件付連生保険
+
+(x),(y),保険期間n年, (x)が(y)に先立って死亡という条件, 年度末保険金支払,の一時払純保険料を数列和で
+$
+\Ax{\endow{\itop{x}y}{n}}=\sum_{t=0}^{n-1}v^{t+1}\qx[t|]{\endow{\itop{x}y}{n}}
+$
+7.62
+
+(x),(y),保険期間n年, 共存でなくなるという条件, 年度末保険金支払,の一時払純保険料を2つの条件付き一時払純保険料の和で(ほぼ定義)
+$
+\Ax{\term{\group{xy}}{n}}=\Ax{\endow{\itop{x}y}{n}}+\Ax{\endow{x\itop{y}}{n}}
+$
+7.63
+
+(x),(y),保険期間n年, (y)が(x)に先立って死亡,かつ(x)が死亡という条件, (x)死亡の年度末保険金支払,の一時払純保険料を数列和で
+$
+\Ax{\endow{\iitop{x}y}{n}}=\sum_{t=0}^{n-1}v^{t+1}\qx[t|]{\endow{\iitop{x}y}{n}}
+$
+7.64
+
+(x),(y),保険期間n年, 連生保険の一時払保険料で、(x)の同期間定期保険を表す
+$
+\Ax{\termxn}=\Ax{\endow{\itop{x}y}{n}}+\Ax{\endow{\iitop{x}y}{n}}
+$
+7.65

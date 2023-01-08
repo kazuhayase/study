@@ -1,0 +1,668 @@
+5.3純保険料
+5.3.1計算基数
+
+定義は飛ばし重要公式
+
+CxをDx2つで表わす
+$
+C_x = vD_x - D_{x+1}
+$
+5.112
+
+Mxを(1)Nx2つで表わす(2)DxとNxで表す
+$
+M_x = vN_x - N_{x+1} = D_x - dN_x
+$
+5.113
+
+Rxを(1)Sx2つで表わす(2)NxとSxで表す
+$
+R_x = vS_x - S_{x+1} = N_x - dS_x
+$
+5.114
+
+Mx,連続Mx,Dxの大小関係
+
+$
+D_x>\bar{M}_x>M_x
+$
+
+5.115
+
+----
+5.3.2 純保険料
+生命年金
+
+(x歳加入n年) 期始払生命年金現価を(1)数列和(2)計算基数の式
+$
+\ax**{\endowxn}=\sum_{t=0}^{n-1}v^t\px[t]{x}=\frac{N_x-N_{x+n}}{D_x}
+$
+5.116
+
+(x歳加入n年) 期末払生命年金現価を(1)数列和(2)計算基数の式
+$
+\ax{\endowxn}=\sum_{t=1}^{n}v^t\px[t]{x}=\frac{N_{x+1}-N_{x+n+1}}{D_x}
+$
+5.117
+
+(x歳加入) 期始払終身生命年金現価を(1)数列和(2)計算基数の式
+$
+\ax**{x}=\sum_{t=0}^{\omega-x}v^t\px[t]{x}=\frac{N_x}{D_x}
+$
+5.118
+
+(x歳加入) 期末払終身生命年金現価を(1)数列和(2)計算基数の式
+$
+\ax{x}=\sum_{t=1}^{\omega-x}v^t\px[t]{x}=\frac{N_{x+1}}{D_x}
+$
+5.119
+
+(x歳加入f年据置保険期間n年) 期始払生命年金現価を(1)計算基数の式, (2) f年生存率,ある年齢・保険期間の期始払生命年金現価を使った式, (3)ある2つの年齢・保険期間の期始払生命年金現価の式
+$
+\ax**[f|]{\endowxn}=\frac{N_{x+f}-N_{x+f+n}}{D_x}
+=v^f\px[f]{x}\ax**{\endow{x+f}{n}}
+=\ax**{\endow{x}{f+n}}-\ax**{\endow{x}{f}}
+$
+5.120
+
+(x歳加入保険期間n年) 連続払生命年金現価積分式
+$
+\ax*{\endowxn}=\int_{0}^{n}v^t\px[t]{x}dt
+$
+5.121
+
+
+(x歳加入) 連続払終身生命年金現価積分式
+$
+\ax*{x}=\int_{0}^{\omega-x}v^t\px[t]{x}dt
+$
+5.122
+-----
+一時払純保険料
+
+(x歳加入保険期間n年) 生存保険の一時払保険料を,(1)n年生存率を使った式,(2)計算基数式
+$
+\Ax{\pureendowxn}=v^n\px[n]{x}=\frac{D_{x+n}}{D_x}
+$
+5.123
+
+
+(x歳加入保険期間n年) 定期保険の一時払保険料を、(1) 各t年据置死亡率を使った式,(2)計算基数式
+$
+\Ax{\termxn}=\sum_{t=1}^{n}v^t\qx[t-1|]{x}=\frac{M_x-M_{x+n}}{D_x}
+$
+5.124
+
+(x歳加入保険期間n年保険金即時払) 定期保険の一時払保険料を、(1) 各t年据置死亡率を使った式,(2)計算基数式,(3)積分式
+$
+\Ax*{\termxn}
+=\sum_{t=1}^{n}v^{t-\frac{1}{2}}\qx[t-1|]{x}
+=\frac{\bar{M}_x-\bar{M}_{x+n}}{D_x}
+=\int_{0}^{n}v^t\px[t]{x}\mu_{x+t}dt
+$
+
+5.125
+
+(x歳加入保険期間n年保険金年度末支払) 養老保険の一時払純保険料, (1)他の保険の一時払純保険料で, (2)計算基数式
+
+$
+\Ax{\endowxn}=
+\Ax{\termxn}+\Ax{\pureendowxn}
+=\frac{M_x-M_{x+n}+D_{x+n}}{D_x}
+$
+
+5.126
+
+(x歳加入f年生存据置保険期間n年保険金年度末支払) 養老保険の一時払純保険料, (1)計算基数式, (2)他の保険と組み合わせて一時払純保険料を使った式
+
+$
+\Ax[f|]{\endowxn}=
+\frac{M_{x+f}-M_{x+f+n}+D_{x+f+n}}{D_x}
+=\Ax{\pureendow{x}{f}}\cdot\Ax{\term{x+f}{n}}
+$
+5.127
+
+(x歳加入保険期間n年保険金即時払) 養老保険の一時払純保険料, (1)他の保険の一時払純保険料で, (2)計算基数式
+
+$
+\Ax*{\endowxn}=
+\Ax*{\termxn}+\Ax{\pureendowxn}
+=\frac{\bar{M}_x-\bar{M}_{x+n}+D_{x+n}}{D_x}
+$
+5.128
+
+(x歳加入) 終身保険の一時払保険料を、(1) 各t年据置死亡率を使った式,(2)計算基数式
+$
+\Ax{x}=\sum_{t=1}^{\omega-x}v^t\qx[t-1|]{x}=\frac{M_x}{D_x}
+$
+5.129
+
+(x歳加入)保険金即時払終身保険の一時払保険料を、(1) 各t年据置死亡率を使った式,(2)計算基数式
+$
+\Ax*{x}=\sum_{t=1}^{\omega-x}v^{t-\frac{1}{2}}\qx[t-1|]{x}=\frac{\bar{M}_x}{D_x}
+$
+5.130
+
+---
+変動年金・変動保険の一時払純保険料
+
+(x歳加入保険期間n年) 期始払累加生命年金現価
+$
+\Ia**_{\endowxn}=\sum_{t=0}^{n-1}(t+1)v^t\px[t]{x}
+=\frac{S_x-S_{x+n}-nN_{x+n}}{D_x}
+$
+5.131
+
+(x歳加入) 期始払終身累加生命年金現価
+$
+\Ia**_{x}=\frac{S_x}{D_x}
+$
+5.132
+
+(x歳加入保険期間n年) 連続払累加生命年金現価
+$
+(\bar{I}\bar{a})_{\endowxn}=\int_{0}^{n}tv^t\px[t]{x}dt
+$
+5.133
+
+(x歳加入) 期始払累加(n到達後nのまま)終身生命年金現価
+
+$
+(\actsymb{I}{\angln}\ax**{})_x 
+=\frac{D_x+2D_{x+1}+\cdots+nD_{x+n-1}+nD_{x+n}+\cdots}{D_x}
+=\frac{S_x-S_{x+n}}{D_x}
+$
+5.134
+
+(x歳加入保険期間n年) 期始払累減生命年金現価
+$
+\Da**_{\endowxn}=\frac{nD_x+(n-1)D_{x+1}+\cdots+D_{x+n-1}}{D_x}
+=\frac{nN_x-(S_{x+1}-S_{x+n+1})}{D_x}
+$
+期末払については,期始払における基数表現の分子の添字に1を加えればよい
+5.135
+
+(x歳加入) 期始払累減(1到達後1のまま)終身生命年金現価
+
+$
+(\actsymb{D}{\angln}\ax**{})_x 
+=\frac{nD_x+(n-1)D_{x+1}+\cdots+D_{x+n-1}+D_{x+n}+\cdots}{D_x}
+=\frac{nN_x-(S_{x+1}-S_{x+n})}{D_x}
+$
+期末払については,期始払における基数表現の分子の添字に1を加えればよい
+
+5.136
+
+(x歳加入保険期間n年) 累加定期保険の一時払純保険料を,(1)数列和での定義,(2)計算基数式,(3) (x)の保険期間t年累加定期保険と(x+t)の保険期間n-t年累加定期保険と他の種類の保険を使った式 [t年で分ける式]
+
+$
+\IA_{\termxn}=v\cdot q_x+2v^2\cdot\qx[1|]{x}+\cdots+nv^n\cdot\qx[n-1|]{x}
+=\frac{R_x-R_{x+n}-nM_{x+n}}{D_x}
+=\IA_{\term{x}{t}}+\Ax{\pureendow{x}{t}}(t\Ax{\term{x+t}{n-t}}+\IA_{\term{x+t}{n-t}})
+$
+
+5.137-139
+
+(x歳加入,保険期間n年,即時払) 累加定期保険の一時払純保険料を,(1)計算基数式,(2)年度毎の積分式をsumする形
+$
+>\IA*_{\termxn}=\frac{\bar{R}_x-\bar{R}_{x+n}-n\bar{M}_{x+n}}{D_x}
+=\sum_{t=1}^{n}t\int_{t-1}^{t}v^s\px[s]{x}\mu_{x+s}ds
+$
+5.140
+
+
+(x歳加入,年度末払) 累加終身保険の一時払純保険料を,(1)計算基数式
+$
+\IA_{x}=\frac{R_x}{D_x}
+$
+5.141
+
+(x歳加入,即時払) 累加終身保険の一時払純保険料を,(1)計算基数式
+$
+\IA*_{x}=\frac{\bar{R}_x}{D_x}
+$
+5.142
+
+(x歳加入,即時払,保険金額=経過年数) 累加終身保険の一時払純保険料を、(1)積分のみ, (2) [0,1]区間積分をsumする形で
+
+$
+\IbA*_{\termxn}=\int_{0}^{n}tv^t\px[t]{x}\mu_{x+t}dt
+=\sum_{t=0}^{n-1}\int_{0}^{1}(t+s)v^{t+s}\px[t+s]{x}\mu_{x+t+s}ds
+$
+
+5.143
+
+(x歳加入,保険期間n年,年度末払,保険金額がn到達後 nのまま続く) 累加定期保険の一時払純保険料を,(1)計算基数C,Dを使った式,(2)R,Dを使った式
+
+$
+(I_{\angln}A)_x=\frac{C_x+2C_{x+1}+\cdots+nC_{x+n-1}+nC_{x+n}+\cdots}{D_x}
+=\frac{R_x-R_{x+n}}{D_x}
+$
+5.144
+
+(x歳加入保険期間n年) 累減定期保険の一時払純保険料を,(1)計算基数C,Dを使った式,(2)計算基数M,R,Dを使った式,(3) (x)の保険期間t年累減定期保険と(x+t)の保険期間n-t年累減定期保険と他の種類の保険を使った式 [t年で分ける式]
+
+$
+\DA_{\termxn}=\frac{nC_x+(n-1)C_{x+1}+\cdots+C_{x+n-1}}}{D_x}
+=\frac{nM_{x}-(R_{x+1}-R_{x+n+1})}{D_x}
+=\DA_{\term{x}{t}}+(n-t)\Ax_{\term{x}{t}}+\Ax{\pureendow{x}{t}}\DA_{\term{x+t}{n-t}}
+$
+
+5.145-146
+
+(x歳加入,,年度末払,保険金額が1到達後 1のまま続く)累減終身保険の一時払純保険料を,(1)計算基数C,Dを使った式,(2)M,R,Dを使った式
+
+$
+(D_{\angln}A)_x=\frac{nC_x+(n-1)C_{x+1}+\cdots+C_{x+n-1}+C_{x+n}+\cdots}{D_x}
+=\frac{nM_x-(R_{x+1}-R_{x+n})}{D_x}
+$
+5.147
+
+---
+年払平準純保険料
+
+(x)加入, n年満期, 保険料全期払込, 生存保険, 年払平準純保険料
+$
+P_{\pureendowxn}=\frac{D_{x+n}}{N_x-N_{x+n}}=\frac{\Ax{\pureendowxn}}{\ax**{\endowxn}}
+$
+5.148
+
+(x)加入,保険期間n年, 保険料全期払込, 保険金年度末支払, 定期保険, 年払平準純保険料
+$
+P_{\termxn}=\frac{M_x-M_{x+n}}{N_x-N_{x+n}}=\frac{\Ax{\termxn}}{\ax**{\endowxn}}
+$
+5.149
+
+(x)加入, 保険料全期払込,保険金即時払, 終身保険, 年払平準純保険料
+$
+\bar{\Px{x}}=\frac{\bar{M}_x}{N_x}=\frac{\Ax*{x}}{\ax**{x}}
+$
+5.150
+
+(x)加入,保険期間n年, 保険料m年短期払込(m<n), 保険金年度末支払, 終身保険, 年払平準純保険料
+$
+\Px[m]{\termxn}=\frac{M_x-M_{x+n}}{N_x-N_{x+m}}=\frac{\Ax{\termxn}}{\ax**{\endow{x}{m}}}
+$
+5.151
+
+(x)加入,保険期間n年, 保険料m年短期払込(m<n), 保険金即時払, 定期保険, 年払平準純保険料
+$
+\bar{\Px[m]{\termxn}}=\frac{\bar{M}_x-\bar{M}_{x+n}}{N_x-N_{x+m}}=\frac{\Ax*{\termxn}}{\ax**{\endow{x}{m}}}
+$
+5.152
+
+(x)加入,保険期間n年, 保険料全期払込, 保険金年度末支払, 養老保険, 年払平準純保険料
+$
+P_{\endowxn}=\frac{M_x-M_{x+n}+D_{x+n}}{N_x-N_{x+n}}=\frac{\Ax{\endowxn}}{\ax**{\endowxn}}
+$
+5.153
+
+(x)加入,保険期間n年, 保険料m年短期払込(m<n), 保険金即時払, 養老保険, 年払平準純保険料
+$
+\bar{\Px[m]{\endowxn}}=\frac{\bar{M}_x-\bar{M}_{x+n}+D_{x+n}}{N_x-N_{x+m}}=\frac{\Ax*{\endowxn}}{\ax**{\endow{x}{m}}}
+$
+5.154
+
+年k回払純保険料
+
+(x)加入,保険期間n年,保険金1/k年末払, 定期保険,一時払保険料
+
+$
+\Ax{\termxn}[(k)]=\frac{1}{l_x}\left\{v^{\frac{1}{k}}(l_x-l_{x+\frac{1}{k}})+v^{\frac{2}{k}}(l_{x+\frac{1}{k}}-l_{x+\frac{2}{k}})+\cdots+v^n(l_{x+n-\frac{1}{k}}-l_{x+n})\right\}
+=1-d^{(k)}\cdot\ax**{\endowxn}[(k)]-v^n\px[n]{x}
+$
+
+5.155,156
+
+(x)加入,保険期間n年,1/k年(末)払,期始払生命年金現価の定義と年始払生命年金現価を用いた近似
+
+$
+\ax**{\endowxn}[(k)]=\frac{1}{k}\left(1+v^{\frac{1}{k}}\px[\frac{1}{k}]{x}+v^{\frac{2}{k}}\px[\frac{2}{k}]{x}+\cdots+v^{n-\frac{1}{k}}\px[n-\frac{1}{k}]{x}\right)
+\approx \ax**{\endowxn}-\frac{k-1}{2k}(1-v^n\px[n]{x})
+$
+
+5.157, 158
+
+(x)加入,保険期間n年,保険料年k回払m年短期払込(m<n),保険金1/k年末払,定期保険,平準純保険料の年間総額
+
+$
+\Px[m]{\termxn}[(k)]=\frac{\Ax{\termxn}[(k)]}{\ax**{\endow{x}{m}}[(k)]}
+$
+
+各回に振込まれる保険料は
+$
+\frac{\Px[m]{\termxn}[(k)]}{k}
+$
+5.159
+
+(x)加入,保険期間n年,保険金1/k年末払,養老保険の一時払純保険料
+$
+\Ax{\endowxn}[(k)]=\Ax{\termxn}[(k)]+\Ax{\pureendowxn}
+$
+5.160
+
+(x)加入,保険期間n年,保険料年k回全期払込,保険金1/k年末払,養老保険の平準純保険料の年間総額
+$
+\Px{\endowxn}[(k)]
+=\frac{\Ax{\endowxn}[(k)]}{\ax**{\endowxn}[(k)]}
+\approx\frac{\Px{\endowxn}+\frac{k-1}{2k}i\Px{\termxn}}{1-\frac{k-1}{2k}(\Px{\termxn}+d)}
+$
+5.161,2
+
+
+(x)加入,保険料m年年k回短期払込(m<n),保険金1/k年末払,終身保険の平準純保険料の年間総額
+$
+\Px[m]{x}[(k)]=\frac{\Ax{x}[(k)]}{\ax**{\endow{x}{m}}[(k)]}
+$
+5.163
+
+[$] \Px{\endowxn}, \Px{\endowxn}[(k)] [/$]の大小関係
+
+$
+\Px{\endowxn} < \Px{\endowxn}[(k)]
+$
+死亡保険金は年度末支払のほうが遅いので
+5.164
+
+(x)加入,保険期間n年,保険料年k回全期払込,保険金即時払,養老保険の平準純保険料の年間総額
+$
+\bar{\Px{\endowxn}[(k)]}
+=\frac{\Ax*{\endowxn}}{\ax**{\endowxn}[(k)]}
+$
+5.165
+
+連続払保険料
+(x)加入,保険期間n年,保険料連続払全期払込,保険金即時払,養老保険の連続払平準純保険料の年間総額
+$
+\bar{\Px{\endowxn}[(\infty)]}
+=\frac{\Ax*{\endowxn}}{\ax*{\endowxn}}
+$
+5.166
+
+------
+確率論的表示
+
+(x)加入,期始払,期間n年, 生命年金現価の確率論的表示
+$
+\ax**{\endowxn}=\ax**{\angl{1}}\cdot\qx{x} 
++ \ax**{\angl{2}}\cdot\qx[1|]{x}\cdots
++ \ax**{\angl{n}}\cdot\qx[n-1|]{x}
++ \ax**{\angl{n}}\cdot\px[n]{x}
+=\sum_{t=1}^{n}\ax**{\angl{t}}\cdot\qx[t-1|]{x} + \ax**{\angl{n}}\cdot\px[n]{x}
+=\frac{1}{D_x}\sum_{t=1}^{n}C_{x+t-1}\sx**{\angl{t}} + \frac{D_{x+n}}{D_x}\sx**{\angln}
+$
+
+5.167,8
+
+(x)加入, 1/k年期末払,期間n年, 生命年金現価の確率論的表示
+$
+\ax{\endowxn}[(k)]
+=\sum_{t=0}^{nk-1}\ax{\angl{\frac{t}{k}}}[(k)]\cdot\left(\px[\frac{t}{k}]{x}-\px[\frac{t+1}{k}]{x}\right) + \ax{\angl{n}}[(k)]\cdot\px[n]{x}
+$
+5.169
+
+(x)加入,連続払, 期間n年, 生命年金現価の確率論的表示
+$
+\ax*{\endowxn}
+=\int_{0}^{n}\ax*{\angl{t}}\cdot\px[t]{x}\mu_{x+t}dt + \ax*{\angln}\cdot\px[n]{x}
+$
+5.170
+
+(x)加入,年始払,期間n年,累加生命年金現価の確率論的表示
+
+$
+\Ia**_{\endowxn}=\sum_{t=1}^{n}\Ia**_{\angl{t}}\cdot\qx[t-1|]{x}+\Ia**_{\angln}\cdot\px[n]{x}
+$
+5.171
+
+-----
+保険料返還付保険
+
+(x)加入, n年満期, 保険料全期払込, 生存保険, 死亡保障 既振込営業保険料を年度末支払,の一時払純保険料
+
+$
+A=P^*\IA_{\termxn}+\Ax{\pureendowxn}
+$
+5.172
+
+(x)加入, n年満期, 保険料全期払込, 生存保険, 死亡保障 既振込営業保険料に予定利率と等しい利率による利息をつけて年度末支払,の一時払純保険料
+
+$
+A'=\sum_{t=1}^{n}P*\sx**{\angl{t}}\cdot v^t\cdot\qx[t-1|]{x}+\Ax{\pureendowxn}
+=P^*\sum_{t=1}^{n}\ax**{\angl{t}}\cdot\qx[t-1|]{x}+\Ax{\pureendowxn}
+=P^*(\ax**{\endowxn}-\ax**{\angln}}\cdot\px[n]{x})+\Ax{\pureendowxn}
+$
+
+5.173
+
+完全年金
+期末から死亡までの端数期間(0<α<1)年間とするとき,年金額のα倍を追加して支払う
+(x)加入,n年満期,期末払,生存保険,の完全年金現価を(1)同期間n年期末払生命年金に加算する形, (2) n年生存者分を切り出した形
+
+$
+\aringx{\endowxn}
+=\ax{\endowxn}+\sum_{t=0}^{n-1}\int_{0}^{1}s\cdot v^{t+s}\cdot\px[t+s]{x}\cdot\mu_{x+t+s}ds
+=\sum_{t=0}^{n-1}\int_{0}^{1}(\ax{\angl{t}}+sv^{t+s})\px[t+s]{x}\cdot\mu_{x+t+s}ds + \ax{\angln}\cdot\px[n]{x}
+$
+
+2つ目の式の第2項は合ストでは連続払となっていたが期末払とした
+5.174--175
+
+期末から死亡までの端数期間(0<α<1)年間とするとき,年金額のα倍を追加して支払う
+(x)加入,n年満期,期末払,生存保険,の完全年金現価を, 同期間n年連続払生命年金での近似
+
+$
+\aringx{\endowxn}
+\approx\frac{\delta}{i}\cdot\ax*{\endowxn}
+$
+5.176
+
+期末から死亡までの端数期間(0<α<1)年間とするとき,年金額のα倍を追加して支払う
+(x)加入,n年満期,年k回期末払,生存保険,の完全年金現価を, 同期間(n年)年k回期末払生命年金での近似
+
+$
+\aringx{\endowxn}[(k)]
+\approx\ax{\endowxn}[(k)]+\frac{1}{2k}\Ax*{\termxn}
+$
+
+5.177
+
+---
+連続払の年金現価・純保険料の微分公式
+
+(x)加入,n年満期,連続払,生命年金現価を xで微分
+$
+\frac{d}{dx}\ax*{\endowxn}=\mu_x\cdot\ax*{\endowxn}-\Ax*{\termxn}
+$
+5.178
+
+(x)加入,連続払,終身生命年金現価を xで微分
+$
+\frac{d}{dx}\ax*{x}=(\mu_x+\delta)\ax*{x}-1
+$
+5.179
+
+生存人数lxと(x)加入,連続払,終身生命年金現価の積 xで微分
+$
+\frac{d}{dx}(l_x\ax*{x})=-l_x\Ax*{x}
+$
+5.180
+
+(x)加入,n年満期,連続払,生命年金現価を iで微分
+$
+\frac{d}{di}\ax*{\endowxn}=-v(\bar{I}\bar{a})_{\endowxn}
+$
+5.181
+
+(x)加入,n年満期,連続払,生命年金現価をδで微分
+$
+\frac{d}{d\delta}\ax*{\endowxn}=-(\bar{I}\bar{a})_{\endowxn}
+$
+5.182
+
+(x)加入,保険期間n年,保険料連続払全期払込,保険金即時払,養老保険の連続払平準純保険料の年間総額をxで微分
+$
+\frac{d}{dx}\bar{\Px{\endowxn}[(\infty)]}
+=\left(\bar{\Px{\endowxn}[(\infty)]}+\delta\right)
+\left(\bar{\Px{\termxn}[(\infty)]}-\mu_x\right)
+$
+5.183
+
+(x)加入,保険期間n年, 保険金年度末支払, 定期保険, 一時払純保険料をiで微分
+$
+\frac{i}{di}\Ax{\termxn}=-v\IA_{\termxn}
+$
+5.184
+
+----
+純保険料に関する重要公式
+
+
+(x歳加入,保険期間n年,保険金年度末支払) 養老保険の一時払純保険料を,(1)(x歳加入n年) 期始払生命年金現価とdで,(2)(x歳加入?,??年の2つの期間) 期始払生命年金現価とvで
+$
+\Ax{\endowxn}=1-d\ax**{\endowxn}=v\cdot\ax**{\endowxn}-\ax{\endow{x}{n-1}}
+$
+5.185
+
+(x歳加入,保険金年度末支払)終身保険の一時払純保険料を,(x歳加入) 期始払終身生命年金現価とdで
+$
+\Ax{x}=1-d\ax**{x}
+$
+5.186
+
+(x歳加入,保険期間n年,保険金年度末支払)定期保険の一時払純保険料を,(x歳加入n年) 期始払生命年金現価, n年生存率等de
+$
+\Ax{\termxn}=1-d\ax**{\endowxn}-v^n\px[n]{x}
+$
+5.187
+
+(x歳加入,保険期間n年,保険金連続支払) 養老保険の一時払純保険料を,(x歳加入n年)連続払生命年金現価とδで
+$
+\Ax*{\endowxn}=1-\delta\ax*{\endowxn}
+$
+5.188
+
+(x歳加入,保険期間n年,保険金年度末支払) 養老保険の年払平準純保険料を,(x歳加入n年) 期始払生命年金現価とdで
+$
+\Px{\endowxn}=\frac{1}{\ax**{\endowxn}}-d
+$
+5.189
+
+(x歳加入,保険期間n年,保険金連続支払) 養老保険の連続払平準純保険料の年間総額を,(x歳加入n年)連続払生命年金現価とδで
+
+$
+\bar{\Px{\endowxn}[(\infty)]}=\frac{1}{\ax*{\endowxn}}-\delta
+$
+5.190
+
+(x歳加入保険期間n年) 定期保険の一時払保険料を、(x歳加入n年) 期始払生命年金現価, 期末払生命年金現価を使って
+$
+\Ax{\termxn}=v\cdot\ax**{\endowxn}-\ax{\endowxn}
+$
+5.191
+----
+(x歳加入, 保険期間n年, 保険金期末払) 累加養老保険の一時払純保険料を,(x歳加入, 保険期間n年) 累加定期保険の一時払純保険料と, n倍の(x歳加入, 保険期間n年)生存保険の和であると定義した上で、
+
+(x歳加入, 保険期間n年) 累加養老保険の一時払純保険料を、(x歳加入, n年) 生命年金・累加生命年金で表わせ
+
+$
+\IA_{\endowxn} = \ax**{\endowxn}-d\Ia**_{\endowxn}
+$
+5.192
+
+(x歳加入, 期間n年) 累加生命年金現価の期始払と期末払の差
+$
+\Ia**_{\endowxn}-\Ia_{\endowxn}=\ax**{\endowxn}-n\cdot v^n\px[n]{x}
+$
+5.193
+
+
+(x)加入, 期間n年, 期始払 累加生命年金現価の (x+1)加入,期間n-1年,期始払との漸化式
+$
+\Ia**_{\endowxn}=\ax**{\endowxn}+v\px{x}\Ia**_{\endow{x+1}{n-1}}
+$
+5.194
+
+(x) 加入, 期間n年, 期始払累加生命年金現価と (x) 加入, 期間n-1年, 期末払累加生命年金現価の差分
+$
+\Ia**_{\endowxn}-\Ia_{\endow{x}{n-1}}=\ax**{\endowxn}
+$
+5.195
+
+(x) 加入, 期間n年, 期始払 累加・累減生命年金現価の和
+$
+\Ia**_{\endowxn}+\Da**_{\endowxn} = (n+1)\ax**{\endowxn}
+$
+5.196
+
+(x) 加入, 保険期間n年, 保険金期末払 累加・累減定期保険一時払保険料の和
+$
+\IA_{\termxn}+\DA_{\termxn}=(n+1))\Ax{\termxn}
+$
+5.197
+
+-----
+再帰公式
+
+(x),期間n年,期始払生命年金の再帰公式(漸化式)を(1) (x+1),期間n-1年と, (2) (x+t),期間n-t年で
+$
+\ax**{\endowxn}=1+v\px{x}\cdot\ax**{\endow{x+1}{n-1}}=\ax**{\endow{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\ax**{\endow{x+t}{n-t}}
+$
+5.198
+
+(x),期間終身,期始払生命年金の再帰公式(漸化式)を(1) (x+1)と, (2) (x+t)で
+$
+\ax**{}=1+v\px{x}\cdot\ax**{x+1}=\ax**{\endow{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\ax**{x+t}
+$
+5.199
+
+(x),保険期間n年,保険金期末支払,養老保険の再帰公式(漸化式)を(1) (x+1),期間n-1年と, (2) (x+t),期間n-t年で
+$
+\Ax{\endowxn}=v\qx{x}+v\px{x}\cdot\Ax{\endow{x+1}{n-1}}=\Ax{\term{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\Ax{\endow{x+t}{n-t}}
+$
+5.200
+
+(x),保険期間n年,保険金期末支払,定期保険の再帰公式(漸化式)を(1) (x+1),期間n-1年と, (2) (x+t),期間n-t年で
+$
+\Ax{\termxn}=v\qx{x}+v\px{x}\cdot\Ax{\term{x+1}{n-1}}=\Ax{\term{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\Ax{\term{x+t}{n-t}}
+$
+5.201
+
+(x),保険期間n年,保険金期末支払,生存保険の再帰公式(漸化式)を(1) (x+1),期間n-1年と, (2) (x+t),期間n-t年で
+$
+\Ax{\pureendowxn}=v\px{x}\cdot\Ax{\pureendow{x+1}{n-1}}=\Ax{\term{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\Ax{\pureendow{x+t}{n-t}}
+$
+5.202
+
+(x),保険金期末支払,終身保険の再帰公式(漸化式)を(1) (x+1), (2) (x+t),で
+$
+\Ax{x}=v\qx{x}+v\px{x}\cdot\Ax{x+1}=\Ax{\term{x}{t}}+\Ax{\pureendow{x}{t}}\cdot\Ax{x+t}
+$
+5.203
+
+(x),保険期間n年,期始払,遺族年金現価:: 第t年度内(1≦t<n)の死亡に対し,第t+1年度始から第n年度始ま
+で,年金額1を支払う年金の現価を、(1)期始払(生命・確定)年金現価で, (2) 数列和, (3)計算基数を使った数列和で
+$
+\ax**{\angln}-\ax**{\endowxn}=\sum_{t=1}^{n-1}\qx[t-1|]{x}\cdot v^t\ax**{\angl{n-t}}
+=\frac{1}{D_x}\sum_{t=1}^{n-1}C_{x+t-1}\cdot\ax**{\angl{n-t}}
+$
+5.204
+
+(x),保険期間n年,期始払,累加遺族年金現価:: 第t年度内(1≦t<n)の死亡に対し,第t+1年度始から第n年度始まで,累加年金額(1,2,...)を支払う年金の現価を、(1)期始払(生命・確定)(累加?)年金現価で,  (2)計算基数を使った数列和で
+$
+\Ia**_{\angln}-\Ia**_{\endowxn}=\frac{1}{D_x}\sum_{t=1}^{n-1}C_{x+t-1}
+\left\{\Ia**_{\angl{n-t}}+t\cdot\ax**{\angl{n-t}}
+\right\}
+$
+5.205
+
+(x),保険料年払m年払込,保険金年度末支払,保険金額1の終身保険の年払平準営業保険料P*について.
+
+予定新契約費は保険金額1あたりα,予定集金費は年払平準営業保険料1あたりβ,予定維持費は保険料払込期間中は保険金額1あたりγ,保険料払込期間後は保険金額1あたりγ'とする。
+
+収支相等の式を示せ
+
+$
+P^*\ax**{\endow{x}{m}}=\Ax{x}+\alpha+\beta P^*\ax**{\endow{x}{m}}+\gamma\ax**{\endow{x}{m}}+\gamma'\ax**[m]{x}
+$
+5.206

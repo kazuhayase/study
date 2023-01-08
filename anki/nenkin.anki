@@ -1,0 +1,27 @@
+合スト
+p.164-1
+S^a_{FS}, S^a_{PS}, ^{In}C を ^{T}C/n=l_{x_r}\ax**{x_r} を使って表す。
+
+$
+S^a_{FS} = \frac{^TC}{n}\cdot\Ia{\angln}
+S^a_{PS} = \frac{^TC}{n}\cdot\Da{\angl{n-1}}
+^{In}C = \frac{^TC}{n}\cdot nv^n
+$
+
+p.164-2
+^{In}C, ^{U}C, S^a_{FS}, S^a_{PS}, を ^{T}C=l_{x_r}\ax**{x_r} を使って表す。
+
+$
+^{In}C = v^n\cdot ^TC
+^{U}C = \frac{\ax{\angln}}{n}\cdot ^TC
+S^a_{PS} = \frac{1}{d}(v\cdot ^TC - ^UC) = \frac{1}{d}(v - \frac{\ax{\angln}}{n})^TC
+S^a_{FS} = \frac{1}{d}(^UC - v\cdot ^{In}C) = \frac{1}{d}(\frac{\ax{\angln}}{n}-v^{n+1})^TC
+$
+
+過去問
+2020-2-(3)
+定常状態(C,B,F)から、保険料をα倍(αC)と変更してn年後に、(更に別の保険料で)定常状態(C',B,Fn)になったとした場合のαを求める公式
+
+$
+\alpha = \frac{1}{1-v^n}\cdot\left(1-v^n\cdot\frac{C'}{C}\right)
+$

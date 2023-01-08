@@ -1,0 +1,106 @@
+A.2.2.5.1 1次元変数変換
+A.2.2.6分布の和差積商
+
+変数変換後の確率密度関数
+
+U=φ(X),Y=aX+b (積率母関数も), Y=|X|, Y=1/X, Y=X^2
+U=X+Y, X-Y, XY, X/Y
+
+Xの確率密度関数がf(x), U=φ(X)により変数変換
+$
+g(u)=f(x)\left|\frac{dx}{du}\right|=f\left(\phi^{-1}(u)\right)\left|\frac{dx}{du}\right|
+$
+
+Y=aX+bにより変数変換.確率密度関数と積率母関数
+
+$
+g_Y(y)=\frac{1}{|a|}f_X\left(\frac{y-b}{a}\right)
+M_Y(t)=e^{bt}M_X(at)
+$
+
+U=X+Y
+$
+g(u)=\int_{-\infty}^{\infty} f_X(x)f_Y(u-x)dx
+$
+
+U=X-Y
+$
+g(u)=\int_{-\infty}^{\infty} f_X(x)f_Y(x-u)dx
+$
+
+U=XY
+$
+g(u)=\int_{-\infty}^{\infty} f_X(x)f_Y(\frac{u}{x})\frac{1}{|x|}dx
+$
+
+U=X/Y
+$
+g(u)=\int_{-\infty}^{\infty} f_X(uy)f_Y(y)|y|dy
+$
+
+A.2.2.7分布の再生性を持つ分布
+
+代表的なものに,二項分布,ポアソン分布,正規分布,ガンマ分布,負の二項分布
+
+A.2.2.8 条件付期待値
+事象AのもとでのXの期待値. Xは整数値のみとする (連続は積分)
+Xは整数値のみ, 事象Aは A=\{a\leq X \leq b\}.
+
+E(E(X|Y)),独立な場合のE(X|Y), E(X|X), E(g(X)h(Y)|X)
+
+
+$
+E(X|A)=\sum_{k}kP(X=k|A)=\frac{\sum_{k}kP(X=x\cap A)}{P(A)}
+$
+
+$
+E(X|a\leq X \leq b)=\sum_{-\infty}^{\infty}kP(X=k|a\leq X\leq b)=\frac{\sum_{k=a}^{b}kP(X=x)}{P(a\leq X\leq b)}
+$
+
+$
+E(E(X|Y))=E(X)
+E(X|Y)=E(X)  (independent)
+E(X|X)=X 
+E(g(X)h(Y)|X) = g(X)E(h(Y)|X)
+f_{X|Y}(x,y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+$
+
+A2.3 多変数の確率分布
+
+A.2.3.1 2次元正規分布
+
+$
+(X,Y)\sim \left(N\left(
+\begin{pmatrix}
+ \mu_1\\
+ \mu_2
+\end{pmatrix}\right)
+,
+\begin{pmatrix}
+ \sigma_1^2 & \rho\sigma_1\sigma_2 \\
+ \rho\sigma_1\sigma_2 & \sigma_2^2
+\end{pmatrix}\right)
+\right)
+=N(\vect(\mu),V)
+$
+
+2次元正規分布
+
+$
+S,T \sim N(0,1), 
+X=\mu_1+\sigma_1S,
+Y=\mu_2+\sigma_2(\rho S+\sqrt{1-\rho^2}T)
+$
+のときのf(x,y), E(X), E(Y), V(X), V(Y), Cov(X,Y), E(X|Y=y)
+
+
+$
+f_{(X,Y)}(x,y)=\frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}e^{-\frac{1}{2}\frac{1}{1-\rho^2}}Q
+Q=\left(\frac{x-\mu_1}{\sigma_1}\right)^2 
+- 2\rho\frac{x-\mu_1}{\sigma_1}\frac{y-\mu_2}{\sigma_2} 
++ \left(\frac{y-\mu_2}{\sigma_2}\right)^2 
+E(X)=\mu_1, E(Y)=\mu_2
+V(X)=\sigma_1, V(Y)=\sigma_2
+Cov(X,Y)=\rho\sigma_1\sigma_2
+E(X|Y=y)=\mu_1+\rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y)
+$
