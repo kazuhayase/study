@@ -1,5 +1,25 @@
 20230115 virtual box p2v from windows install
 
+(1) clonezilla backup
+
+SSD 全体-> Backup　もしくは各パーティション指定で
+
+/dev/sda1 : UUID="ACAA-FA53" : /boot/efi  273MB, FAT(32bit), EFI System
+/dev/sda2 : 17MB, Microsoft Reserved 
+/dev/sda3 : UUID="9AEEB068EEB03DF7" : /mnt/Windows 379GB - 95GB空き, NTFS, Basic Data
+/dev/sda4 : UUID="2E9C11279C10EADB" : 623MB, NTFS, Microsoft Windows Recovery Environment (System, No Automount)
+/dev/sda5 : UUID="207dcc00-9e2f-4a35-a472-3501ab906455" : / (root), 83GB - 7.7GB空き, Ext4, Linux Filesystem
+/dev/sda6 : UUID="4a2d9b84-3352-481d-9304-dae9371c98ff" : swap, 17GB, Linux Swap (No Automount)
+未割り当て 473MB
+
+(2) dd | VBoxManage convertfromraw でのP2V
+
+(3) Vboxで読み込んで見る
+
+
+
+
+
 https://wiki.archlinux.org/title/VirtualBox
 
 MBR + EFI + MS reserve + MS base primary + Windows recovery
@@ -35,6 +55,8 @@ I/O サイズ (最小 / 推奨): 512 バイト / 512 バイト
 
 
 ----
+https://wiki.archlinux.org/title/VirtualBox
+
 Tasks on GNU/Linux
 Tip: Skip the partition-related parts if you created VHD image with Disk2vhd.
 Reduce the native Windows partition size to the size Windows actually needs with ntfsresize available from ntfs-3g. The size you will specify will be the same size of the VDI that will be created in the next step. If this size is too low, you may break your Windows install and the latter might not boot at all.
