@@ -1,5 +1,14 @@
 20230115 virtual box p2v from windows install
 
+https://www.kerislab.jp/posts/2021-01-05-ntfs-hdd-rescue/
+
+(1) ddrescue /dev/sda 
+sudo ddrescue /dev/sda /mnt/Backup/DD-H110M/sda-ASP550SS7-480GM.img ddrescue_hdd.map
+
+
+-----
+
+
 (1) clonezilla backup
 
 SSD 全体-> Backup　もしくは各パーティション指定で
@@ -15,7 +24,29 @@ SSD 全体-> Backup　もしくは各パーティション指定で
 (2) dd | VBoxManage convertfromraw でのP2V
 
 (3) Vboxで読み込んで見る
+ --> grub プロンプトになる。
+ 　　　grub> 
 
+ https://stackoverflow.com/questions/51101487/booting-raw-disk-windows-10-vm-in-virtualbox-boots-to-grub-shell
+ https://kernhack.hatenablog.com/entry/2018/05/03/220214
+
+を参考に。
+
+setコマンドでrootを確認。(hd0,gpt5)
+
+set
+
+
+insmod chain
+set root=(hd0,gpt5)
+chainloader (hd0,gpt1)/efi/Microsoft/Boot/bootmgfw.efi
+^---> /EndEntire と出てくる？
+
+boot失敗すると、青い画面になるので、EFIファームの画面を選ぶ
+
+https://mattintosh.hatenablog.com/entry/20180308/1520518082
+
+のBoot From Fileを参考に。
 
 
 
@@ -49,6 +80,41 @@ I/O サイズ (最小 / 推奨): 512 バイト / 512 バイト
 /dev/sda4  740073472 741289983   1216512   594M Windows リカバリ環境
 /dev/sda5  741292032 903475199 162183168  77.3G Linux ファイルシステム
 /dev/sda6  903475200 936779775  33304576  15.9G Linux スワップ
+
+-------
+230122 update
+HD-PETU2 500GB (/dev/sdf) でdd|VBoxManage
+
+CloneZillaでコピーしたので、下の値は同じ。
+MBR + EFI + MS reserve + MS base primary + Windows recovery
+BS=512
+sectnum=741289984
+
+512*741289984
+=379540471808
+
+なので、
+
+# sudo dd if=/dev/sdf bs=512 count=741289984 | VBoxManage convertfromraw stdin /mnt/WinMac0001/VMWare/p2vwin10.vdi 379540471808
+# sudo cp /mnt/WinMac0001/VMWare/p2vwin10.vdi /mnt/Backup/VM-H110M/
+
+
+ディスク /dev/sdf: 465.76 GiB, 500107862016 バイト, 976773168 セクタ
+Disk model: HD-PETU2        
+単位: セクタ (1 * 512 = 512 バイト)
+セクタサイズ (論理 / 物理): 512 バイト / 512 バイト
+I/O サイズ (最小 / 推奨): 512 バイト / 512 バイト
+ディスクラベルのタイプ: gpt
+ディスク識別子: 2B745F08-0CD9-4ED6-8AF6-3315EFEA1EA0
+
+デバイス    開始位置  最後から    セクタ サイズ タイプ
+/dev/sdf1       2048    534527    532480   260M EFI システム
+/dev/sdf2     534528    567295     32768    16M Microsoft 予約領域
+/dev/sdf3     567296 740071852 739504557 352.6G Microsoft 基本データ
+/dev/sdf4  740073472 741289983   1216512   594M Windows リカバリ環境
+/dev/sdf5  741292032 903475199 162183168  77.3G Linux ファイルシステム
+/dev/sdf6  903475200 936779775  33304576  15.9G Linux スワップ
+
 
 
 
