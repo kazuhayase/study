@@ -5,6 +5,15 @@ https://www.kerislab.jp/posts/2021-01-05-ntfs-hdd-rescue/
 (1) ddrescue /dev/sda 
 sudo ddrescue /dev/sda /mnt/Backup/DD-H110M/sda-ASP550SS7-480GM.img ddrescue_hdd.map
 
+(2) P2V
+    VBoxManage convertfromraw --format VDI sda-ASP550SS7-480GM.img dd2vdi-win10.vdi
+
+(3) VirtualBox 起動はできたが、ものすごく時間がかかる。ファイルが大きいからかも。(317GB)
+https://golorih.exblog.jp/11730663/
+を見ると、ntfscloneが効率良いらしい。
+[-q 　優先度: ntfsclone > partimage > dd]
+partcloneはpartimageよりも新しいらしい
+
 
 -----
 
