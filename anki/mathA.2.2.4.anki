@@ -1,0 +1,275 @@
+A.2.2.4.1 連続型一様分布
+X〜U(a,b) (a<x<b)
+確率密度関数,積率母関数,平均,分散,最尤推定量,分布関数
+
+$
+f_X(x)=\frac{1}{b-a}
+M_X(t)=\frac{e^{bt}-e^{at}}{(b-a)t}
+E[X]=\frac{a+b}{2}
+V[X]=\frac{(b-a)^2}{12}
+\hat{b}=\max{x_i}
+\hat{a}=\min{x_i}
+F(x)=\frac{x-a}{b-a}
+$
+
+標準一様分布
+X〜U(0,1) (0<x<1)
+確率密度関数,積率母関数,平均,分散,分布関数
+
+$
+f_X(x)=1
+M_X(t)=\frac{e^{t}-1}{t}
+E[X]=\frac{1}{2}
+V[X]=\frac{1}{12}
+F(x)=x
+$
+
+三角分布
+X,Y〜U(0,1) (0<x<1)のとき X+Y, X-Yの分布は三角分布
+Z=X+Yの確率密度関数
+
+$
+f_Z(z)=\begin{cases}
+	z & (0\leq z < 1)\\
+	2-z & (1\leq z < 2)\\
+	0 & \text{(other)}
+       \end{cases}
+$
+
+A.2.2.4.2 正規分布
+X〜N(μ,σ^2)   (-∞<μ<∞, 0<σ<∞)
+確率密度関数,積率母関数,平均,分散,最尤推定量
+
+$
+f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+M_X(t)=e^{\mu t +\frac{\sigma^2 t^2}{2}} 
+E[X]=\mu
+V[X]=\sigma^2
+\hat{\mu}=\bar{X}
+\hat{\sigma^2}=\frac{1}{n}\sum_{i=1}^{n}(X_i-\bar(X))^2
+$
+
+再生性: X〜N(μ1,σ1^2), Y〜N(μ2,σ2^2), X,Yが独立 ⇒ 
+$
+X+Y \sim N(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2)
+$
+
+標準化: Y〜N(μ,σ2) ⇒ 
+$
+X=\frac{Y-\mu}{\sigma}\sim N(0,1)
+N(\mu,\sigma^2)=\sigma N(0,1)+\mu
+$
+
+
+標準正規分布 X〜N(0,1)
+確率密度関数,積率母関数,平均,分散
+
+$
+f_X(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+M_X(t)=e^{\frac{t^2}{2}} 
+E[X]=0
+V[X]=1
+$
+
+X〜N(0,1), a≠0のとき
+$
+aX+b \sim N(a\mu+b, a^2\sigma^2)
+$
+
+X〜N(0,1) のn乗(8,6,4)の平均値=モーメント
+
+$
+E(X^8)=7\cdot5\cdot3\cdot1, 
+E(X^6)=5\cdot3\cdot1, 
+E(X^4)=3\cdot1
+$
+(確か,偶関数なので、nが奇数のときは 0)
+
+|X|の平均値
+$
+E(|X|) = \sqrt{\frac{2}{\pi}}
+$
+
+
+A.2.2.4.3 対数正規分布
+X〜LN(μ,σ^2)   (x>0, -∞<μ<∞, 0<σ<∞)
+確率密度関数,積率母関数,平均,分散
+
+$
+f_X(x)=\frac{1}{\sqrt{2\pi}\sigma x}e^{-\frac{(\log{x}-\mu)^2}{2\sigma^2}}
+M_X(t): N/A
+E[X]=e^{\mu+\frac{\sigma^2}{2}}
+V[X]=e^{2\mu+sigma^2}(e^{\sigma^2}-1)
+$
+
+Y〜N(μ,σ^2)のとき 
+$
+e^Y \sim LN(\mu, \sigma^2)
+$
+
+原点周りのモーメント
+$
+E(X^k)=\exp{(\mu k + \frac{\sigma^2}{2}k^2)}
+$
+
+A.2.2.4.4 指数分布
+X〜Γ(1,β)   (0<x<∞, 0<β)
+確率密度関数,積率母関数,平均,分散,最尤推定量,分布関数,性質
+
+$
+f_X(x)=\beta e^{-\beta x}
+M_X(t)=\frac{\beta}{\beta-t}
+E[X]=\frac{1}{\beta}
+V[X]=\frac{1}{\beta^2}
+\hat{\beta}=\frac{1}{\bar{x}}
+F_X(x)=1-e^{-\beta x}   \;\;\;\; (x\geq 0)
+$
+
+変数変換: X〜Γ(1,1)のとき Y=α・exp(X/β)と変数変換したとき Y〜Pa(β,α)
+
+ガンマ分布との混合分布: X|Λ〜Γ(1,Λ), Λ〜Γ(α,β)のとき X〜Pa2(α,β)
+
+指数分布の商の分布: X〜Γ(1,λ1),Y〜Γ(1,λ2)のとき, Y/X〜Pa2(1,λ1/λ2)
+
+A.2.2.4.5 ガンマ分布
+
+X〜Γ(α,β)   (0<x<∞, 0<α,β<∞)
+確率密度関数,積率母関数,平均,分散,最尤推定量,分布関数(αが正の整数のとき),性質
+$
+f_X(x)=\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+M_X(t)=\left(\frac{\beta}{\beta-t}\right)^\alpha
+E[X]=\frac{\alpha}{\beta}
+V[X]=\frac{\alpha}{\beta^2}
+\hat{\beta}=\frac{\alpha}{\bar{x}}
+F_X(x)=1-e^{-\beta x}\sum_{k=0}^{\alpha-1}\frac{(\beta x)^k}{k!}
+$
+
+再生性: X〜Γ(α1,β), Y〜Γ(α2,β), X,Yが独立であれば X+Y〜Γ(α1+α2,β)
+
+原点周りのモーメント: 
+$
+E(X^k)=\frac{\Gamma(\alpha+k)}{\Gamma(\alpha)\beta^k}
+$
+
+キュムラント: 
+$
+C^{(k)}_X(0)=\frac{\alpha\Gamma(k)}{\beta^k}
+$
+
+β=1のガンマ分布との関係: 
+$
+\Gamma(\alpha, \beta)=\frac{1}{\beta}\Gamma(\alpha,1)
+$
+
+
+A.2.2.4.6 Χ^2分布(カイ二乗分布)
+
+自由度n
+X〜Χ^2(n)=Γ(n/2,1/2)   (0<x<∞)
+
+Xi〜N(0,1)のとき, X^2+X^2+．．．+X^2〜X^2(n)
+
+A.2.2.4.7 ベータ分布
+
+X〜Beta(p,q)   (0<x<1, 0<p,q<∞)
+確率密度関数,積率母関数,平均,分散,モーメント, ガンマ分布との関係, 1-Xの分布
+
+$
+f_X(x)=\frac{1}{B(p,q)}x^{p-1}(1-x)^{q-1}
+M_X(t): N/A
+E[X]=\frac{p}{p+q}
+V[X]=\frac{pq}{(p+q)^2(p+q+1)}
+X\sim\Gamma(\alpha,q), Y\sim\Gamma(\beta,q) \Rightarrow \frac{X}{X+Y}\sim Beta(\alpha,\beta)
+1-X\sim Beta(q,p)
+$
+
+A.2.2.4.8 パレート分布
+
+X〜Pa(α,β)   (0<α<∞, 0<β<x<∞)
+確率密度関数,積率母関数,平均,分散,分布関数,モーメント,最尤推定量
+
+$
+f_X(x)=\frac{\alpha\beta^\alpha}{x^{\alpha+1}}
+M_X(t):N/A
+E[X]=\frac{\alpha\beta}{\alpha-1}\;\;\; (\alpha>1)
+V[X]=\frac{\alpha\beta^2}{(\alpha-1)^2(\alpha-2)}\;\;\; (\alpha>2)
+F_X(x)=1-\left(\frac{\beta}{x}\right)^\alpha
+E[X^k]=\frac{\alpha\beta^k}{\alpha-k}\;\;\; (\alpha>k)
+\hat{\alpha}=\frac{n}{\sum_{i=1}^{n}\log{x_i}-n\log{\beta}}
+$
+
+A.2.2.4.9 第2種パレート分布
+
+X〜Pa2(α,β)   (0<α, 0<β<∞, 0<x<∞, )
+確率密度関数,積率母関数,平均,分散,分布関数,モーメント,最尤推定量
+
+$
+f_X(x)=\frac{\alpha\beta^\alpha}{(x+\beta)^{\alpha+1}}
+M_X(t):N/A
+E[X]=\frac{\beta}{\alpha-1}\;\;\; (\alpha>1)
+V[X]=\frac{\alpha\beta^2}{(\alpha-1)^2(\alpha-2)}\;\;\; (\alpha>2)
+F_X(x)=1-\left(\frac{\beta}{x+\beta}\right)^\alpha
+E[(X+\beta)^k]=\frac{\alpha\beta^k}{\alpha-k}\;\;\; (\alpha>k)
+$
+
+A.2.2.4.10 t分布
+自由度n X〜t(n)
+確率密度関数,積率母関数,平均,分散
+
+$
+f_X(x)=\frac{1}{\sqrt{n}B(n/2,1/2)}\left(1+\frac{x^2}{n}\right)^{-\frac{n+1}{2}}
+M_X(t):N/A
+E[X]=0\;\;\; (n\geq 2)
+V[X]=\frac{n}{n-2}\;\;\; (n\geq 3)
+$
+
+X〜N(0,1), Y〜X^2(n), X,Y独立のとき, 
+$
+\frac{X}{\sqrt{Y/n}} \sim t(n)
+$
+
+A.2.2.4.11 F分布
+自由度m,n X〜F(m,n)  (x>0)
+確率密度関数,積率母関数,平均,分散
+
+$
+f_X(x)=\frac{1}{B(m/2,n/2)}\left(\frac{m}{n}\right)^{\frac{m}{2}}x^{\frac{m}{2}-1}\left(1+\frac{m}{n}x\right)^{-\frac{m+n}{2}}
+f_X(x)=\frac{m^{\frac{m}{2}}n^{\frac{n}{2}}}{B(m/2,n/2)}x^{\frac{m}{2}-1}\left(mx+n\right)^{-\frac{m+n}{2}}
+M_X(t):N/A
+E[X]=\frac{n}{n-2}\;\;\; (n\geq 3)
+V[X]=\frac{2n^2(m+n-2)}{m(n-2)^2(n-4)}\;\;\; (n\geq 5)
+$
+
+X〜X^2(m), Y〜X^2(n), X,Y独立のとき, 
+$
+\frac{X/m}{Y/n}\sim F(m.n)
+$
+
+X〜F(m,n)のとき 1/X〜F(n,m)
+
+m,n の変換: 
+$
+F^m_n(\alpha)=\frac{1}{F^n_m(1-\alpha)}
+$
+
+F分布とベータ分布:
+
+$
+\frac{1}{1+\frac{m}{n}F(m,n)}
+=
+\frac{n}{n+mF(m,n)}
+=
+\frac{nF(m,n)}{nF(m,n)+m}
+\sim
+Beta(\frac{n}{2},\frac{m}{2})
+$
+
+A.2.2.4.12 ワイブル分布
+
+0<p,θ,x<∞
+
+$
+f_X(x)=\frac{p}{\theta}\left(\frac{x}{\theta}\right)^{p-1}\exp{\left(-\left(\frac{x}{\theta}\right)^p\right)}
+E[X]=\theta\Gamma\left(1+\frac{1}{p}\right)
+V[X]=\theta^2\left\{\Gamma\left(1+\frac{2}{p}\right)-\Gamma\left(1+\frac{2}{p}\right)^2\right\}
+$

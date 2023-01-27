@@ -1,0 +1,327 @@
+A.1 基礎公式
+A.1.1 二項定理
+
+二項定理 [$](x+y)^n[/$]
+[$$]
+\sum^n_{k=0} \binom{n}{k}x^k y^{n-k} = (x+y)^n
+[/$$]
+
+
+二項定理 [$](x+1)^n[/$]
+[$$]
+\sum^n_{k=0} \binom{n}{k}x^k = (x+1)^n
+[/$$]
+
+負の二項定理 [$](1-x)^{-n}[/$]
+[$$]
+\sum^\infty_{k=0} \binom{n+k-1}{k}x^k = (1-x)^{-n}
+\binom{-n}{k} = (-1)^{k}\binom{n+k-1}{k}
+[/$$]
+
+負の二項定理 [$](1-x)^{-n}[/$] n=1の場合,その微分
+
+[$$]
+\sum^\infty_{k=0} x^k = \frac{1}{1-x} = 1+x+x^2+\cdots
+[/$$]
+
+[$$]
+\sum^\infty_{k=1} kx^{k-1} = \frac{1}{(1-x)^2} = 1+2x+3x^2+\cdots
+[/$$]
+
+-----------------
+A.1.2 重要関数
+A.1.2.1 ガンマ関数
+
+ガンマ関数Γ(α) 正の実数αに対しての定義
+$
+\Gamma(\alpha)=\int_{0}^{\infty} x^{\alpha -1}e^{-x}dx
+$
+
+ガンマ関数Γ(α)を β(>0)のα乗で割ったもの
+
+$
+\frac{\Gamma(\alpha)}{\beta^{\alpha}}=\int_{0}^{\infty} x^{\alpha -1}e^{-\beta x}dx
+$
+
+ガンマ関数Γ(α) α>1のときの漸化式
+$
+\Gamma(\alpha)=(\alpha-1)\Gamma(\alpha -1)
+$
+
+ガンマ関数Γ(α) αが正の整数のとき
+$
+\Gamma(\alpha)=(\alpha-1)!
+$
+
+ガンマ関数Γ(1/2) 
+$
+\Gamma(\frac{1}{2})=\sqrt{\pi}
+$
+
+---
+
+A.1.2.3ベータ関数
+
+ベータ関数の定義とΓ関数への展開
+
+$
+B(p,q)=\int_{0}^{1}x^{p-1}(1-x)^{q-1}dx
+=\frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}
+$
+
+
+A.1.3 微分積分
+A.1.3.1 極限
+ネイピア数eに関して、 e^xを n\to\infty, h\to\0 の極限として表す。
+x=1のものを eの定義とする。
+
+$
+\lim_{n\to\infty}\left(1+\frac{x}{n}\right)^n 
+=
+\lim_{h\to 0}\left(1+hx\right)^{\frac{1}{n}}
+=e^x
+$
+
+-----
+
+A.1.3.2 微分法
+
+$
+y=c, y=cx, y=x^n, y=f(x)\cdot g(x), y=\frac{f(x)}{g(x)}, y=a^x (a>0), y=e^x, y=log x
+$
+の微分.
+
+$
+y=c; \frac{dy}{dx}=0
+y=cx; \frac{dy}{dx}=c
+y=x^n; \frac{dy}{dx}=n\cdot x^{n-1}
+y=f(x)\cdot g(x); \frac{dy}{dx}=f'(x)\cdot g(x)+f(x)\cdot g'(x)
+y=\frac{f(x)}{g(x)}; \frac{dy}{dx}=\frac{f'(x)\cdot g(x)-f(x)\cdot g'(x)}{\{g(x)\}^2}
+y=a^x (a>0); \frac{dy}{dx}= a^x\cdot\log{a}
+y=e^x; \frac{dy}{dx}= e^x
+y=\log{x}; \frac{dy}{dx}= \frac{1}{x}
+$
+
+A.1.3.3積分法
+
+
+$
+f(x) = x^a (a\neq -1),
+f(x) = \frac{1}{x},
+f(x) = a^x (a>0, a\neq 1),
+f(x) = e^x,
+a\cdot f(x) \pm b\cdot g(x),
+f(x) = \frac{g'(x)}{g(x)}
+$
+の積分.
+
+
+[$$]f(x) = x^a (a\neq -1); \int f(x)dx = \frac{x^{a+1}}{a+1}[/$$]
+[$$]f(x) = \frac{1}{x}; \int f(x)dx = \log{|x|}[/$$]
+[$$]f(x) = a^x (a>0; a\neq 1); \int f(x)dx = \frac{a^x}{\log{a}}[/$$]
+[$$]f(x) = e^x; \int f(x)dx = e^x[/$$]
+[$$]a\cdot f(x) \pm b\cdot g(x); a\cdot\int f(x)dx \pm b\cdot \int g(x)dx[/$$]
+[$$]f(x) = \frac{g'(x)}{g(x)}; \log{|g(x)|}[/$$]
+
+A.1.3.3.1 部分積分の公式
+
+$
+\int f'(x)\cdot g(x)dx 
+$
+
+$
+\int f'(x)\cdot g(x)dx = f(x)\cdot g(x) - \int f(x)\cdot g'(x) dx
+$
+
+A.1.3.3.1有用な積分公式
+$
+\int f(x)\cdot e^{-ax}dx
+$
+
+$
+\int f(x)\cdot e^{-ax}dx = -e^{-ax}\left\{ \frac{f(x)}{a}+\frac{f'(x)}{a^2}+\frac{f''(x)}{a^3}+\cdots\right\}
+$
+
+ガウスの公式
+
+$
+\int_{-\infty}^{\infty} e^{-ax^2}
+$
+
+$
+\int_{-\infty}^{\infty} e^{-ax^2} =
+\int_{-\infty}^{\infty} e^{-a(x-b)^2}
+=\sqrt{\frac{\pi}{a}}  (a>0)
+$
+
+A.1.4 テイラー展開
+
+テイラー展開, マクローリン展開, e^x, \log{1+x}, \log{p}
+
+$
+f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)(a)}}{n!}(x-a)^n
+f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)(0)}}{n!}(x)^n
+e^x=\sum_{n=0}^{\infty}\frac{x^n}{n!}
+\log{(1+x)}=\frac{x}{1}-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}\cdots
+\log{p}=-\sum_{n=1}^{\infty}\frac{q^n}{n}
+$
+
+A.1.5 線形代数
+A.1.5.1.1 単位行列,行列の積,逆行列,行列式
+
+
+単位行列
+[$$]E =
+\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}
+[/$$]
+
+行列の積
+[$$]
+\begin{pmatrix}
+a & b
+\end{pmatrix}
+\begin{pmatrix}
+x & y\\
+s & t
+\end{pmatrix}
+=
+\begin{pmatrix}
+ax+bs & ay+bt
+\end{pmatrix},
+[/$$]
+
+[$$]
+\begin{pmatrix}
+a&b\\
+c&d
+\end{pmatrix}
+\begin{pmatrix}
+x&y\\
+s&t
+\end{pmatrix}
+=
+\begin{pmatrix}
+ax+bs & ay+bt\\
+cx+ds & cy+dt
+\end{pmatrix}
+[/$$]
+
+逆行列
+
+[$$]
+A=
+\begin{pmatrix}
+a&b\\
+c&d
+\end{pmatrix}
+, ad-bc\neq 0 \Rightarrow
+A^{-1}=\frac{1}{ad-bc}
+\begin{pmatrix}
+d&-b\\
+-c&a
+\end{pmatrix}
+[/$$]
+
+行列式
+
+[$$]
+A=
+\begin{pmatrix}
+a&b\\
+c&d
+\end{pmatrix}
+\Rightarrow
+\det{(A)}=|A|=ad-bc
+[/$$]
+
+[$$]
+A=
+\begin{pmatrix}
+a_{11}&a_{12}&a_{13}\\
+a_{21}&a_{22}&a_{23}\\
+a_{31}&a_{32}&a_{33}
+\end{pmatrix}
+\Rightarrow
+\det{(A)}=|A|=
+a_{11}a_{22}a_{33}
++a_{21}a_{32}a_{13}
++a_{31}a_{23}a_{12}
+-a_{11}a_{32}a_{23}
+-a_{12}a_{21}a_{33}
+-a_{13}a_{22}a_{31}
+[/$$]
+
+A.1.6.1クラメールの公式
+
+例として重回帰の正規方程式
+$
+\begin{pmatrix}
+ 1 & \bar{x_1} & \bar{x_2}\\
+ \bar{x_1} & \bar{x_1^2} &  \bar{x_1x_2}\\
+ \bar{x_2} & \bar{x_1x_2}& \bar{x_2^2}
+\end{pmatrix}
+\begin{pmatrix}
+ \alpha\\
+\beta_1\\
+\beta_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+ \bar{y} \\
+ \bar{x_1y}\\
+ \bar{x_2y}
+\end{pmatrix}
+$
+
+$
+\alpha=\frac{
+\begin{pmatrix}
+\bar{y} & \bar{x_1} & \bar{x_2} \\
+\bar{x_1y} & \bar{x_1^2} & \bar{x_1x_2} \\
+\bar{x_2y} & \bar{x_1x_2} & \bar{x_2^2} 
+\end{pmatrix}
+}{
+\begin{pmatrix}
+1 & \bar{x_1} & \bar{x_2} \\
+\bar{x_1} & \bar{x_1^2} & \bar{x_1x_2} \\
+\bar{x_2} & \bar{x_1x_2} & \bar{x_2^2} 
+\end{pmatrix}
+}
+$
+
+$
+\beta_1=\frac{
+\begin{pmatrix}
+1 & \bar{y} & \bar{x_2} \\
+\bar{x_1} & \bar{x_1y} & \bar{x_1x_2} \\
+\bar{x_2} & \bar{x_2y} & \bar{x_2^2} 
+\end{pmatrix}
+}{
+\begin{pmatrix}
+1 & \bar{x_1} & \bar{x_2} \\
+\bar{x_1} & \bar{x_1^2} & \bar{x_1x_2} \\
+\bar{x_2} & \bar{x_1x_2} & \bar{x_2^2} 
+\end{pmatrix}
+}
+$
+
+$
+\beta_2=\frac{
+\begin{pmatrix}
+1 & \bar{x_1} & \bar{y} \\
+\bar{x_1} & \bar{x_1^2} & \bar{x_1y} \\
+\bar{x_2} & \bar{x_1x_2} & \bar{x_2y} 
+\end{pmatrix}
+}{
+\begin{pmatrix}
+1 & \bar{x_1} & \bar{x_2} \\
+\bar{x_1} & \bar{x_1^2} & \bar{x_1x_2} \\
+\bar{x_2} & \bar{x_1x_2} & \bar{x_2^2} 
+\end{pmatrix}
+}
+$
+
+分母は方程式左辺の行列式,分子は左辺の各1-3列を右辺に置き換えたものの

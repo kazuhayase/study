@@ -1,0 +1,16 @@
+aku-1
+テイル確率を用いたn次モーメント算出公式
+[$$]E(X^n) = \int^{\infty}{0} n x^{n-1}(1-F_X(x))dx[/$$]
+[$$]E(X) = \int^{\infty}{0}  (1-F_X(x))dx[/$$]
+[$$]E(X^2) = \int^{\infty}{0} 2 x(1-F_X(x))dx[/$$]
+
+
+aku-2
+エクセス方式（免責d, カバーリミットc）の保有部分に関する分布関数
+
+[$$]
+F_Y(y)=\begin{cases}\\
+	F_X(x) & (0\leq x<d)\\
+	F_X(x+c) & (d\leq x)\\
+       \end{cases}
+[/$$]

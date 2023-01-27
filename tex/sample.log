@@ -1,0 +1,78 @@
+This is e-upTeX, Version 3.141592653-p3.9.1-u1.27-210218-2.6 (utf8.uptex) (TeX Live 2022/dev/Debian) (preloaded format=uplatex 2022.12.17)  3 JAN 2023 09:59
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/kazuyoshi/github/study/tex/sample
+(/home/kazuyoshi/github/study/tex/sample.tex
+pLaTeX2e <2021-11-15u04> (based on LaTeX2e <2021-11-15> patch level 1)
+L3 programming layer <2022-01-21> (/usr/share/texlive/texmf-dist/tex/uplatex/base/ujarticle.cls
+Document Class: ujarticle 2020/09/30 v1.8f-u00 Standard upLaTeX class
+\c@@paper=\count184
+(/usr/share/texlive/texmf-dist/tex/uplatex/base/ujsize10.clo
+File: ujsize10.clo 2020/09/30 v1.8f-u00 Standard upLaTeX file (size option)
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 9.6222pt on input line 28.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 9.6222pt on input line 28.
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\symmincho=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
+(Font)                  JY2/mc/m/n --> JY2/gt/m/n on input line 616.
+\toclineskip=\dimen154
+\@lnumwidth=\dimen155
+\bibindent=\dimen156
+\heisei=\count193
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
+File: l3backend-dvips.def 2022-01-12 L3 backend support: dvips
+\l__pdf_internal_box=\box67
+\g__pdf_backend_object_int=\count194
+\l__pdf_backend_content_box=\box68
+\l__pdf_backend_model_box=\box69
+\g__pdf_backend_annotation_int=\count195
+\g__pdf_backend_link_int=\count196
+\g__pdf_backend_link_sf_int=\count197
+) (./sample.aux)
+\openout1 = `sample.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+ [1
+
+] (./sample.aux) ) 
+Here is how much of TeX's memory you used:
+ 466 strings out of 479842
+ 8419 string characters out of 5887288
+ 302524 words of memory out of 5000000
+ 18874 multiletter control sequences out of 15000+600000
+ 471900 words of font info for 46 fonts, out of 8000000 for 9000
+ 264 hyphenation exceptions out of 8191
+ 35i,5n,38p,179b,170s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on sample.dvi (1 page, 324 bytes).

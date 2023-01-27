@@ -76,11 +76,11 @@
 
 		    ;; 初期フレームの設定
 		    (setq initial-frame-alist
-			  '((width . 86) (height . 45)))
+			  '((width . 95) (height . 30)))
 
 		    ;; 新規フレームのデフォルト設定
 		    (setq default-frame-alist
-			  '((width . 86) (height . 45)))
+			  '((width . 95) (height . 30)))
 
 		    ))
 
@@ -210,8 +210,39 @@
                 (concat YaTeX-prefix ">") 'YaTeX-comment-region)
               (define-key reftex-mode-map
                 (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+
+;;mozc-tempの変換候補文字に関する正規表現を変更する
+;(add-hook 'yatex-mode-hook
+;   '(lambda ()
+;      (custom-set-variables '(mozc-temp-prefix-regexp
+;        (let ((convertibles "][,.:0-9A-Za-z-"))
+;          (format "\\(?:^\\|[^%s]\\)\\([%s]+\\)\\=" convertibles convertibles)))
+;       )))
+
 (setq YaTeX-use-AMS-LaTeX t)
 
+;;Magit 20220320
+
+(defalias 'magit 'magit-status)
+(global-set-key "\C-xg" 'magit-status)
+
+(setenv "GIT_EDITOR" "emacsclient")
+(add-hook 'shell-mode-hook 'with-editor-export-git-editor)
+
+;;migemo
+;;http://emacs.rubikitch.com/migemo/
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+
+;; 辞書ファイルを環境に合わせて設定してください！
+(setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
+
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
 
 
 (custom-set-variables
@@ -226,7 +257,7 @@
      ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (mozc-temp yatex mozc markdown-mode undo-tree auto-complete)))
+    (migemo magit mozc-temp yatex mozc markdown-mode undo-tree auto-complete)))
  '(show-paren-mode t))
 
 (custom-set-faces
