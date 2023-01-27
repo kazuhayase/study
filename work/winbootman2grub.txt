@@ -1,0 +1,115 @@
+Windows boot manager --> Grun
+
+https://teratail.com/questions/262142
+https://askubuntu.com/questions/838780/windows-10-changes-uefi-boot-order-every-time
+
+
+Microsoft Windows [Version 10.0.19044.2364]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\WINDOWS\system32>bcdedit /enum firmware
+
+ファームウェアのブート マネージャー
+--------------------------------
+identifier              {fwbootmgr}
+displayorder            {bootmgr}
+                        {4ecbba0a-9762-11ec-ac5e-cea2c591618e}
+                        {c4813188-e9e9-11ec-acba-806e6f6e6963}
+                        {15a7f267-12b4-11ed-ace3-806e6f6e6963}
+timeout                 1
+
+Windows ブート マネージャー
+--------------------------------
+identifier              {4ecbba0a-9762-11ec-ac5e-cea2c591618e}
+device                  partition=\Device\HarddiskVolume1
+path                    \EFI\UBUNTU\SHIMX64.EFI
+description             Ubuntu Secure Boot
+locale                  ja-JP
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {b7cf41aa-5387-11eb-b8dc-fab9805b58cb}
+displayorder            {current}
+                        {16ab2deb-4a48-11ea-9c7d-ea6de03fddf5}
+toolsdisplayorder       {memdiag}
+timeout                 5
+
+Windows ブート マネージャー
+--------------------------------
+identifier              {bootmgr}
+device                  partition=\Device\HarddiskVolume1
+path                    \EFI\MICROSOFT\BOOT\BOOTMGFW.EFI
+description             Windows Boot Manager
+locale                  ja-JP
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {b7cf41aa-5387-11eb-b8dc-fab9805b58cb}
+displayorder            {current}
+                        {16ab2deb-4a48-11ea-9c7d-ea6de03fddf5}
+toolsdisplayorder       {memdiag}
+timeout                 5
+
+ファームウェア アプリケーション (101fffff
+--------------------------------
+identifier              {15a7f267-12b4-11ed-ace3-806e6f6e6963}
+description             UEFI: IP6 Realtek PCIe GBE Family Controller
+
+ファームウェア アプリケーション (101fffff
+--------------------------------
+identifier              {c4813188-e9e9-11ec-acba-806e6f6e6963}
+description             UEFI: IP4 Realtek PCIe GBE Family Controller
+
+-->
+
+C:\WINDOWS\system32>bcdedit /set {bootmgr} path \EFI\UBUNTU\SHIMX64.EFI
+この操作を正しく終了しました。
+
+C:\WINDOWS\system32>bcdedit /enum firmware
+
+ファームウェアのブート マネージャー
+--------------------------------
+identifier              {fwbootmgr}
+displayorder            {bootmgr}
+                        {4ecbba0a-9762-11ec-ac5e-cea2c591618e}
+                        {c4813188-e9e9-11ec-acba-806e6f6e6963}
+                        {15a7f267-12b4-11ed-ace3-806e6f6e6963}
+timeout                 1
+
+Windows ブート マネージャー
+--------------------------------
+identifier              {4ecbba0a-9762-11ec-ac5e-cea2c591618e}
+device                  partition=\Device\HarddiskVolume1
+path                    \EFI\UBUNTU\SHIMX64.EFI
+description             Ubuntu Secure Boot
+locale                  ja-JP
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {b7cf41aa-5387-11eb-b8dc-fab9805b58cb}
+displayorder            {current}
+                        {16ab2deb-4a48-11ea-9c7d-ea6de03fddf5}
+toolsdisplayorder       {memdiag}
+timeout                 5
+
+Windows ブート マネージャー
+--------------------------------
+identifier              {bootmgr}
+device                  partition=\Device\HarddiskVolume1
+path                    \EFI\UBUNTU\SHIMX64.EFI
+description             Windows Boot Manager
+locale                  ja-JP
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {b7cf41aa-5387-11eb-b8dc-fab9805b58cb}
+displayorder            {current}
+                        {16ab2deb-4a48-11ea-9c7d-ea6de03fddf5}
+toolsdisplayorder       {memdiag}
+timeout                 5
+
+ファームウェア アプリケーション (101fffff
+--------------------------------
+identifier              {15a7f267-12b4-11ed-ace3-806e6f6e6963}
+description             UEFI: IP6 Realtek PCIe GBE Family Controller
+
+ファームウェア アプリケーション (101fffff
+--------------------------------
+identifier              {c4813188-e9e9-11ec-acba-806e6f6e6963}
+description             UEFI: IP4 Realtek PCIe GBE Family Controller
