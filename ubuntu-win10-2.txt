@@ -107,7 +107,7 @@ blkid /dev/sda1
 -------
 https://ciksiti.com/ja/chapters/5389-how-to-repair-the-grub-bootloader-using-a-ubuntu-live-usb-dr
 
-sudo apt-add-repository ppa：yannubuntu / boot-repair
+sudo apt-add-repository ppa:yannubuntu/boot-repair
 sudo apt-get update
 sudo apt-get install boot-repair -y
 
@@ -118,3 +118,21 @@ GRUBブート修復ツールの最初の画面に、メインオプション、�
 ここで、UbuntuのGRUBブートローダーを修復するには、[メインオプション]を選択して[GRUBを再インストール]を選択し、[適用]ボタンに進みます。 プロセス全体が完了するまでに5分以上かかることはありません。 ファイルシステムに追加のパーティショニングエラーがある場合は、問題を検出して表示します。
 
 GRUBブートローダーの修復が成功すると、「Bootsuccessfullyrepaired」というメッセージが画面に表示されます。 それはあなたがブーツ修理に関するすべての情報を見つけるURLを提供します。 これで、再起動してシステムを構築し、修復されたGRUBブートローダーを使用してシステムを起動できます。
+
+
+
+ブートが正常に修復されました。
+
+新しいファイル（/var/log/boot-repair/20220326_050820/Boot-Info_20220326_0508.txt）はテキストビューアーの中で開かれます。
+
+
+万が一、まだブートに問題がある場合は、その内容を次のメールアドレスに送ってください:
+boot.repair@gmail.com またはあなたの好みのフォーラムに。
+
+今すぐコンピューターを再起動することができます。
+Please do not forget to make your UEFI firmware boot on the Ubuntu 20.04.4 LTS entry (sda1/efi/ubuntu/shimx64.efi file) !
+If your computer reboots directly into Windows, try to change the boot order in your UEFI firmware.
+If your UEFI firmware does not allow to change the boot order, change the default boot entry of the Windows bootloader.
+例えばWindowsを起動した後、管理者権限で次のコマンドを実行します:
+bcdedit /set {bootmgr} path \EFI\ubuntu\shimx64.efi
+

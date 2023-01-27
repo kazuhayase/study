@@ -1,0 +1,139 @@
+A.2.2.3離散型確率分布
+
+A.2.2.3.1 離散一様分布
+
+X〜DU{1,2,3,...,n}の確率関数,平均,分散
+X〜DU{0,1,2,3,...,n}の確率関数,平均,分散
+
+
+X〜DU{1,2,3,...,n}
+$
+f_X(x)=\frac{1}{n}
+E[X]=\frac{n+1}{2}
+V[X]=\frac{(n+1)(n-1)}{12}
+$
+X〜DU{0,1,2,3,...,n}
+$
+f_X(x)=\frac{1}{n+1}
+E[X]=\frac{n}{2}
+V[X]=\frac{n(n+2)}{12}
+$
+
+A.2.2.3.2 二項分布
+X〜Bin(n,p) (nは正の整数, 0<p<1, q=1-p) の確率関数,積率母関数,平均,分散,最尤推定量,性質
+n回ベルヌーイ試行の成功回数x
+
+X〜Bin(n,p) (nは正の整数, 0<p<1, q=1-p)
+$
+f_X(x)=\binom{n}{x}p^xq^{n-x}
+M_X(t)=(pe^t+q)^n
+E[X]=np
+V[X]=npq
+\hat{p}=\frac{\bar{x}}{n}
+$
+
+再生性: 
+X〜Bin(m,p), Y〜Bin(n,p),  X, Yが独立であれば X+Y 〜Bin(m+n,p)
+
+A.2.2.3.3 ポアソン分布
+X〜Po(λ) (x=0,1,2,...) の確率関数,積率母関数,平均,分散,最尤推定量,キュムラント,性質
+ベルヌーイ試行の試行回数が多く, pが小さい場合
+
+X〜Po(λ) (x=0,1,2,...) 
+$
+f_X(x)=e^{-\lambda}\frac{\lambda^x}{x!}
+M_X(t)=e^{\lambda(e^t-1)}
+E[X]=\lambda
+V[X]=\lambda\swarrow
+\hat{p}=\bar{x}
+C_X^{(n)}(0)=\lambda
+$
+
+二項分布の極限として
+$
+\lim_{n\to\infty}=P[Bin(n,\frac{\lambda}{n})=x]=e^{-\lambda}\frac{\lambda^x}{x!}
+$
+
+ポアソン分布の階乗モーメント
+$
+E[X(X-1)]=\lambda^2
+E[X(X-1)(X-2)]=\lambda^3
+$
+
+再生性: 
+X〜Po(λ1), Y〜Po(λ2), X,Yが独立
+X+YPo(λ1+λ2)
+
+A.2.2.3.4
+幾何分布
+X〜NB(1,p) = Ge(p) (x=0,1,2,...)の確率関数,積率母関数,平均,分散,最尤推定量,性質
+独立なベルヌーイ試行で初めて成功するまでに,失敗した回数xの分布
+負の二項分布で成功回数を1としたもの
+
+$
+f_X(x)=pq^x
+M_X(t)=\frac{p}{1-qe^t}
+E[X]=\frac{q}{p}
+V[X]=\frac{q}{p^2}
+\hat{p}=\frac{1}{1+\bar{x}}
+$
+
+無記憶性: 
+$P(X\geq k)=q^k$であり$P(X\geq k+l|X\geq k)=P(X\geq l)=q^l$となる
+
+再生性: X〜 Ge(p), Y〜 Ge(p), X, Yが独立 X+Y 〜 NB(2,p)
+
+最小値の分布: 
+$
+\min{\{X_1,X_2\}}\sim Ge(1-q^2)
+P(\min{\{X_1,X_2,\ldots X_n\}}<x) = 1-(1-P(X_1<x))^n = 1-(q^{x+1})^n= 1-(q^n)^{x+1}
+$
+
+ファーストサクセス分布
+X〜Fs(p) (x=1,2,...)の確率関数,積率母関数,平均,分散
+独立なベルヌーイ試行で初めて成功するまでの回数.幾何分布より1回多い
+$
+f_X(x)=pq^{x-1}
+M_X(t)=\frac{pe^t}{1-qe^t}
+E[X]=\frac{1}{p}
+V[X]=\frac{q}{p^2}
+$
+
+A.2.2.3.5
+負の二項分布
+X〜NB(α,p) (x=0,1,2,...)の確率関数,積率母関数,平均,分散,最尤推定量,性質
+独立なベルヌーイ試行で初めてα回成功するまでに,失敗した回数xの分布
+
+$
+f_X(x)=\binom{\alpha+x-1}{x}p^\alpha q^x
+M_X(t)=\left(\frac{p}{1-qe^t}\right)^\alpha
+E[X]=\frac{\alpha q}{p}
+V[X]=\frac{\alpha q}{p^2}
+\hat{p}=\frac{\alpha}{\alpha+\bar{x}}
+$
+
+再生性: X〜NB(α,p), Y〜NB(β,p), X,Yが独立 ⇒ X+Y〜NB(α+β,p)
+二項分布との関係: n回のうち少なくともk回成功 = k回成功するまでに失敗が n-k以下
+$
+P(Bin(n,p)\geq k)=P(NB(k,p)\leq n-k)
+$
+
+A.2.2.3.6 対数級数分布
+X〜LS(p) (x=1,2,...)の確率関数,積率母関数,平均,分散,性質
+
+$
+f_X(x)=-\frac{q^x}{x\log{p}}
+M_X(t)=\frac{\log{(1-qe^t)}}{\log{p}}
+E[X]=-\frac{q}{p\log{p}}
+V[X]=-\frac{q(1+\frac{q}{\log{p}})}{p^2\log{p}}
+$
+
+$
+c=-\frac{1}{\log{p}}
+$
+として、E(X),E(X^2)
+
+$
+E(X)=\frac{cq}{p}
+E(X^2)=\frac{cq}{p^2}
+$

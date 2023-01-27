@@ -1,0 +1,169 @@
+20230115 virtual box p2v from windows install
+
+https://www.kerislab.jp/posts/2021-01-05-ntfs-hdd-rescue/
+
+(1) ddrescue /dev/sda 
+sudo ddrescue /dev/sda /mnt/Backup/DD-H110M/sda-ASP550SS7-480GM.img ddrescue_hdd.map
+
+(2) P2V
+    VBoxManage convertfromraw --format VDI sda-ASP550SS7-480GM.img dd2vdi-win10.vdi
+
+(3) VirtualBox 起動はできたが、ものすごく時間がかかる。ファイルが大きいからかも。(317GB)
+https://golorih.exblog.jp/11730663/
+を見ると、ntfscloneが効率良いらしい。
+[-q 　優先度: ntfsclone > partimage > dd]
+partcloneはpartimageよりも新しいらしい
+
+
+-----
+
+
+(1) clonezilla backup
+
+SSD 全体-> Backup　もしくは各パーティション指定で
+
+/dev/sda1 : UUID="ACAA-FA53" : /boot/efi  273MB, FAT(32bit), EFI System
+/dev/sda2 : 17MB, Microsoft Reserved 
+/dev/sda3 : UUID="9AEEB068EEB03DF7" : /mnt/Windows 379GB - 95GB空き, NTFS, Basic Data
+/dev/sda4 : UUID="2E9C11279C10EADB" : 623MB, NTFS, Microsoft Windows Recovery Environment (System, No Automount)
+/dev/sda5 : UUID="207dcc00-9e2f-4a35-a472-3501ab906455" : / (root), 83GB - 7.7GB空き, Ext4, Linux Filesystem
+/dev/sda6 : UUID="4a2d9b84-3352-481d-9304-dae9371c98ff" : swap, 17GB, Linux Swap (No Automount)
+未割り当て 473MB
+
+(2) dd | VBoxManage convertfromraw でのP2V
+
+(3) Vboxで読み込んで見る
+ --> grub プロンプトになる。
+ 　　　grub> 
+
+ https://stackoverflow.com/questions/51101487/booting-raw-disk-windows-10-vm-in-virtualbox-boots-to-grub-shell
+ https://kernhack.hatenablog.com/entry/2018/05/03/220214
+
+を参考に。
+
+setコマンドでrootを確認。(hd0,gpt5)
+
+set
+
+
+insmod chain
+set root=(hd0,gpt5)
+chainloader (hd0,gpt1)/efi/Microsoft/Boot/bootmgfw.efi
+^---> /EndEntire と出てくる？
+
+boot失敗すると、青い画面になるので、EFIファームの画面を選ぶ
+
+https://mattintosh.hatenablog.com/entry/20180308/1520518082
+
+のBoot From Fileを参考に。
+
+
+
+
+https://wiki.archlinux.org/title/VirtualBox
+
+MBR + EFI + MS reserve + MS base primary + Windows recovery
+BS=512
+sectnum=741289984
+
+512*741289984
+=379540471808
+
+
+なので、
+
+# dd if=/dev/sda bs=512 count=741289984 | VBoxManage convertfromraw stdin /mnt/WinMac0001/VMWare/p2vwin10.vdi 379540471808
+
+ディスク /dev/sda: 447.13 GiB, 480103981056 バイト, 937703088 セクタ
+Disk model: ASP550SS7-480GM-
+単位: セクタ (1 * 512 = 512 バイト)
+セクタサイズ (論理 / 物理): 512 バイト / 512 バイト
+I/O サイズ (最小 / 推奨): 512 バイト / 512 バイト
+ディスクラベルのタイプ: gpt
+ディスク識別子: 2B745F08-0CD9-4ED6-8AF6-3315EFEA1EA0
+
+デバイス    開始位置  最後から    セクタ サイズ タイプ
+/dev/sda1       2048    534527    532480   260M EFI システム
+/dev/sda2     534528    567295     32768    16M Microsoft 予約領域
+/dev/sda3     567296 740071852 739504557 352.6G Microsoft 基本データ
+/dev/sda4  740073472 741289983   1216512   594M Windows リカバリ環境
+/dev/sda5  741292032 903475199 162183168  77.3G Linux ファイルシステム
+/dev/sda6  903475200 936779775  33304576  15.9G Linux スワップ
+
+-------
+230122 update
+HD-PETU2 500GB (/dev/sdf) でdd|VBoxManage
+
+CloneZillaでコピーしたので、下の値は同じ。
+MBR + EFI + MS reserve + MS base primary + Windows recovery
+BS=512
+sectnum=741289984
+
+512*741289984
+=379540471808
+
+なので、
+
+# sudo dd if=/dev/sdf bs=512 count=741289984 | VBoxManage convertfromraw stdin /mnt/WinMac0001/VMWare/p2vwin10.vdi 379540471808
+# sudo cp /mnt/WinMac0001/VMWare/p2vwin10.vdi /mnt/Backup/VM-H110M/
+
+
+ディスク /dev/sdf: 465.76 GiB, 500107862016 バイト, 976773168 セクタ
+Disk model: HD-PETU2        
+単位: セクタ (1 * 512 = 512 バイト)
+セクタサイズ (論理 / 物理): 512 バイト / 512 バイト
+I/O サイズ (最小 / 推奨): 512 バイト / 512 バイト
+ディスクラベルのタイプ: gpt
+ディスク識別子: 2B745F08-0CD9-4ED6-8AF6-3315EFEA1EA0
+
+デバイス    開始位置  最後から    セクタ サイズ タイプ
+/dev/sdf1       2048    534527    532480   260M EFI システム
+/dev/sdf2     534528    567295     32768    16M Microsoft 予約領域
+/dev/sdf3     567296 740071852 739504557 352.6G Microsoft 基本データ
+/dev/sdf4  740073472 741289983   1216512   594M Windows リカバリ環境
+/dev/sdf5  741292032 903475199 162183168  77.3G Linux ファイルシステム
+/dev/sdf6  903475200 936779775  33304576  15.9G Linux スワップ
+
+
+
+
+
+
+----
+https://wiki.archlinux.org/title/VirtualBox
+
+Tasks on GNU/Linux
+Tip: Skip the partition-related parts if you created VHD image with Disk2vhd.
+Reduce the native Windows partition size to the size Windows actually needs with ntfsresize available from ntfs-3g. The size you will specify will be the same size of the VDI that will be created in the next step. If this size is too low, you may break your Windows install and the latter might not boot at all.
+Use the --no-action option first to run a test:
+# ntfsresize --no-action --size 52Gi /dev/sda1
+If only the previous test succeeded, execute this command again, but this time without the aforementioned test flag.
+Install VirtualBox on your GNU/Linux host (see #Installation steps for Arch Linux hosts if your host is Arch Linux).
+Create the Windows disk image from the beginning of the drive to the end of the first partition where is located your Windows installation. Copying from the beginning of the disk is necessary because the MBR space at the beginning of the drive needs to be on the virtual drive along with the Windows partition. In this example two following partitions sda2 and sda3will be later removed from the partition table and the MBR bootloader will be updated.
+# sectnum=$(( $(cat /sys/block/sda/sda1/start) + $(cat /sys/block/sda/sda1/size) ))
+Using cat /sys/block/sda/sda1/size will output the number of total sectors of the first partition of the disk sda. Adapt where necessary.
+# dd if=/dev/sda bs=512 count=$sectnum | VBoxManage convertfromraw stdin windows.vdi $(( $sectnum * 512 ))
+We need to display the size in byte, $(( $sectnum * 512 )) will convert the sector numbers to bytes.
+Since you created your disk image as root, set the right ownership to the virtual disk image:
+# chown your_user:your_group windows.vdi
+Create your virtual machine configuration file and use the virtual disk created previously as the main virtual hard disk.
+Try to boot your Windows VM, it may just work. First though remove and repair disks from the boot process as it may interfere (and likely will) booting into safe-mode.
+Attempt to boot your Windows virtual machine in safe mode (press the F8 key before the Windows logo shows up)... if running into boot issues, read #Fix MBR and Microsoft bootloader. In safe-mode, drivers will be installed likely by the Windows plug-and-play detection mechanism view. Additionally, install the VirtualBox Guest Additions via the menu Devices > Insert Guest Additions CD image.... If a new disk dialog does not appear, navigate to the CD drive and start the installer manually.
+You should finally have a working Windows virtual machine. Do not forget to read the #Known limitations.
+Performance tip: according to VirtualBox manual, SATA controller has a better performance than IDE. If you cannot boot Windows off virtual SATA controller right away, it is probably due to the lack of SATA drivers. Attach virtual disk to IDE controller, create an empty SATA controller and boot the VM - Windows should automatically install SATA drivers for the controller. You can then shutdown VM, detach virtual disk from IDE controller and attach it to SATA controller instead.
+Fix MBR and Microsoft bootloader
+If your Windows virtual machine refuses to boot, you may need to apply the following modifications to your virtual machine.
+
+Boot a GNU/Live live distribution inside your virtual machine before Windows starts up.
+Remove other partitions entries from the virtual disk MBR. Indeed, since we copied the MBR and only the Windows partition, the entries of the other partitions are still present in the MBR, but the partitions are not available anymore. Use fdisk to achieve this for example.
+fdisk ''/dev/sda''
+Command (m for help): a
+Partition number (''1-3'', default ''3''): ''1''
+Write the updated partition table to the disk (this will recreate the MBR) using the m command inside fdisk.
+Use testdisk (see here for details) to add a generic MBR:
+# testdisk > Disk /dev/sda... > [Proceed] >  [Intel] Intel/PC partition > [MBR Code] Write TestDisk MBR to first sector > Write a new copy of MBR code to first sector? (Y/n) > Y > Write a new copy of MBR code, confirm? (Y/N) > A new copy of MBR code has been written. You have to reboot for the change to take effect. > [OK]
+With the new MBR and updated partition table, your Windows virtual machine should be able to boot. If you are still encountering issues, boot your Windows recovery disk from on of the previous step, and inside your Windows RE environment, execute the commands described here.
+Known limitations
+Your virtual machine can sometimes hang and overrun your RAM, this can be caused by conflicting drivers still installed inside your Windows virtual machine. Good luck to find them!
+Additional software expecting a given driver beneath may either not be disabled/uninstalled or needs to be uninstalled first as the drivers that are no longer available.
+Your Windows installation must reside on the first partition for the above process to work. If this requirement is not met, the process might be achieved too, but this had not been tested. This will require either copying the MBR and editing in hexadecimal see VirtualBox: booting cloned disk or will require to fix the partition table manually or by repairing Windows with the recovery disk you created in a previous step. Let us consider our Windows installation on the second partition; we will copy the MBR, then the second partition where to the disk image. VBoxManage convertfromraw needs the total number of bytes that will be written: calculated thanks to the size of the MBR (the start of the first partition) plus the size of the second (Windows) partition. { dd if=/dev/sda bs=512 count=$(cat /sys/block/sda/sda1/start) ; dd if=/dev/sda2 bs=512 count=$(cat /sys/block/sda/sda2/size) ; } | VBoxManage convertfromraw stdin windows.vdi $(( ($(cat /sys/block/sda/sda1/start) + $(cat /sys/block/sda/sda2/size)) * 512 ))

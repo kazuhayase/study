@@ -1,0 +1,185 @@
+A3.2統計各論
+推定量, 統計量, 信頼区間, 棄却域
+A.3.2.1.1
+正規母集団 N(μ,σ^2)の母平均μの統計的推測,母分散σ^2は既知
+
+推定量
+\hat{\mu}=\bar{X}\sim N(\mu,\frac{\sigma^2}{n})
+
+統計量
+T=\frac{\bar{X}-\mu}{\sqrt{\sigma^2/n}}\sim N(0,1)
+
+信頼区間
+\bar{x}-u\left(\frac{\varepsilon}{2}\right)\cdot\sqrt{\frac{\sigma^2}{n}}
+\leq \mu \leq
+\bar{x}+u\left(\frac{\varepsilon}{2}\right)\cdot\sqrt{\frac{\sigma^2}{n}}
+
+棄却域(帰無仮説、統計量、対立仮説3パターンに対する棄却域）
+H_0: \mu=\mu_0
+T_0=\frac{\bar{X}-\mu_0}{\sqrt{\sigma^2/n}}
+
+H_1: \mu \neq \mu_0 \Rightarrow |T_0|>u\left(\frac{\varepsilon}{2}\right)
+H_1: \mu > \mu_0 \Rightarrow |T_0|>u\left(\varepsilon\right)
+H_1: \mu < \mu_0 \Rightarrow |T_0|<-u\left(\varepsilon\right)
+
+A.3.2.1.2
+正規母集団 N(μ,σ^2)の母平均μの統計的推測,母分散σ^2は未知
+
+推定量
+\hat{\mu}=\bar{X}\sim N(\mu,\frac{\sigma^2}{n})
+
+統計量
+T=\frac{\hat{\mu}-\mu}{\sqrt{\frac{\hat{\sigma}^2}{n}}}
+=\frac{\bar{X}-\mu}{\sqrt{\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{n(n-1)}}}
+\sim t(n-1)
+
+信頼区間
+\bar{x}-t_{n-1}\left(\frac{\varepsilon}{2}\right)\cdot\sqrt{\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{n(n-1)}}
+\leq \mu \leq
+\bar{x}+t_{n-1}\left(\frac{\varepsilon}{2}\right)\cdot\sqrt{\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{n(n-1)}}
+
+棄却域(帰無仮説、統計量、対立仮説3パターンに対する棄却域）
+H_0: \mu=\mu_0
+T_0=\frac{\bar{X}-\mu_0}{\sqrt{\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{n(n-1)}}}
+
+
+H_1: \mu \neq \mu_0 \Rightarrow |T_0|>t_{n-1}\left(\frac{\varepsilon}{2}\right)
+H_1: \mu > \mu_0 \Rightarrow |T_0|>t_{n-1}\left(\varepsilon\right)
+H_1: \mu < \mu_0 \Rightarrow |T_0|<-t_{n-1}\left(\varepsilon\right)
+
+
+A.3.2.2.1
+正規母集団 N(μ,σ^2)の母分散σ^2の統計的推測,は母平均μは既知
+
+推定量
+\hat{\sigma^2}=\frac{1}{n}\sum_{i=1}^{n}(X_i-\mu)^2
+\sim \Gamma\left(\frac{n}{2},\frac{n}{2\sigma^2}\right)
+=\frac{\sigma^2}{n}\chi^2(n)
+
+統計量
+T=\frac{n\hat{\sigma}^2}{\sigma^2}
+=\frac{\sum_{i=1}^{n}(X_i-\mu)^2}{\sigma^2}\sim \chi^2(n)
+
+信頼区間
+
+\frac{\sum_{i=1}^{n}(x_i-\mu)^2}{\chi^2_{n}\left(\frac{\varepsilon}{2}\right)}
+\leq \sigma^2 \leq
+\frac{\sum_{i=1}^{n}(x_i-\mu)^2}{\chi^2_{n}\left(1-\frac{\varepsilon}{2}\right)}
+
+
+棄却域(帰無仮説、統計量、対立仮説3パターンに対する棄却域）
+
+H_0: \sigma^2=\sigma^2_0
+T_0=\frac{\sum_{i=1}^{n}(X_i-\mu)^2}{\sigma^2_0}
+H_1: \sigma^2 \neq \sigma^2_0 \Rightarrow T_0>\chi^2_n\left(\frac{\varepsilon}{2}\right)\cup T_0<\chi^2_n\left(1-\frac{\varepsilon}{2}\right)
+H_1: \sigma^2 > \sigma^2_0 \Rightarrow T_0>\chi^2_n(\varepsilon)
+H_1: \sigma^2 < \sigma^2_0 \Rightarrow T_0<\chi^2_n(1-\varepsilon)
+
+
+
+A.3.2.2.2
+正規母集団 N(μ,σ^2)の母分散σ^2の統計的推測,は母平均μは未知
+
+推定量
+\hat{\sigma^2}=\frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar{X})^2
+\sim \Gamma\left(\frac{n-1}{2},\frac{n-1}{2\sigma^2}\right)
+=\frac{\sigma^2}{n-1}\chi^2(n-1)
+
+統計量
+
+T=\frac{(n-1)\hat{\sigma}^2}{\sigma^2}
+=\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{\sigma^2}\sim \chi^2(n-1)
+
+
+信頼区間
+
+\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{\chi^2_{n-1}\left(\frac{\varepsilon}{2}\right)}
+\leq \sigma^2 \leq
+\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{\chi^2_{n-1}\left(1-\frac{\varepsilon}{2}\right)}
+
+
+棄却域(帰無仮説、統計量、対立仮説3パターンに対する棄却域）
+H_0: \sigma^2=\sigma^2_0
+T_0=\frac{\sum_{i=1}^{n}(X_i-\bar{X})^2}{\sigma^2_0}
+
+H_1: \sigma^2 \neq \sigma^2_0 \Rightarrow T_0>\chi^2_{n-1}\left(\frac{\varepsilon}{2}\right)\cup T_0<\chi^2_{n-1}\left(1-\frac{\varepsilon}{2}\right)
+H_1: \sigma^2 > \sigma^2_0 \Rightarrow T_0>\chi^2_{n-1}\left(\varepsilon\right)
+H_1: \sigma^2 < \sigma^2_0 \Rightarrow T_0<\chi^2_{n-1}\left(1-\varepsilon\right)
+
+
+A.3.2.3
+指数母集団Γ(1,1/μ)の母平均μの統計的推測
+
+推定量
+\hat{\mu}=\bar{X}\sim \Gamma(n,\frac{n}{\mu})
+
+
+統計量
+T=\frac{2n\hat{\mu}}{\mu}
+=\frac{2n\bar{X}}{\mu}
+\sim \Gamma\left(n,\frac{1}{2}\right)
+=\chi^2(2n)
+
+
+信頼区間
+\frac{2n\bar{X}}{\chi^2_{2n}\left(\frac{\varepsilon}{2}\right)}
+\leq \mu \leq
+\frac{2n\bar{X}}{\chi^2_{2n}\left(1-\frac{\varepsilon}{2}\right)}
+
+
+棄却域(帰無仮説、統計量、対立仮説3パターンに対する棄却域）
+H_0: \mu=\mu_0
+T_0=\frac{2n\hat{\mu}}{\mu_0}=\frac{2n\bar{X}}{\mu_0}
+H_1: \mu \neq \mu_0 \Rightarrow T_0<\chi^2_{2n}\left(1-\frac{\varepsilon}{2}\right)\cup T_0>\chi^2_{2n}\left(\frac{\varepsilon}{2}\right)
+H_1: \mu > \mu_0 \Rightarrow T_0>\chi^2_{2n}(\varepsilon)
+H_1: \mu < \mu_0 \Rightarrow T_0<\chi^2_{2n}(1-\varepsilon)
+
+
+データがπ個で打ち切られた場合の信頼区間
+
+大きさN個の標本がその大きさの順に並べられたとき,n番目のものまで観測され,残りのN‐n個は観測されない場合
+
+
+\frac{2n\hat{\mu}}{\chi^2_{2n}\left(\frac{\varepsilon}{2}\right)}
+\leq \mu \leq
+\frac{2n\hat{\mu}}{\chi^2_{2n}\left(1-\frac{\varepsilon}{2}\right)}
+\hat{\mu}=\frac{1}{n}\left\{\sum_{i=1}^{n}x_i + (N-n)X\right\}
+
+
+A.3.2.4 適合度検定と独立性の検定
+A.3.2.4.1 適合度
+母集団がk個の排反な階級 A_1,A_2,...,A_kに分類されている。
+仮説H_0:A_1,A_2,...,A_kの現れる確率は p_1,p_2,...,p_k.
+大きさN個の標本を取ったとき実現度数n_i, (理論度数 N * p_i)
+
+
+次の統計量T が自由度k-1のX^2分布に従う
+$
+T=\sum_{i=1}^{k}\frac{(n_i-Np_i)^2}{Np_i}\sim \chi^2(k-1)
+$
+
+T = (実現度数 - 理論度数)^2 / 理論度数の数列和
+N p_i \geq 5, n_i\geq 5 が必要。少数階級は併合する。
+未知母数を推定している場合は未知母数の数だけ自由度を減らす
+棄却域は
+$
+T> \chi^2_{k-r-1}(\varepsilon)
+$
+
+A.3.2.4.1 独立性
+m×n分割表による検定
+H_0: m×n分割表において,属性A,Bは独立である
+
+を検定する統計量Tの実現値 n_ijと 理論値 m_ij は,下表の通りとする。
+
+2×2分割表による検定
+H_0: 2×2分割表において,属性A,Bは独立である
+
+$
+T=\frac{N(ad-bc)^2}{(a+b)(c+d)(a+c)(b+d)}\sim\chi^2(1)
+$
+
+棄却域
+$
+T>\chi^2_1(\varepsilon)
+$

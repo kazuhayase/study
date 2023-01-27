@@ -1,0 +1,212 @@
+A.2 確率分野
+
+A.2.1.1.1 独立 と排反
+
+AとBが独立とは,P(A∩B)=P(A)・P(B)が成り立つこと
+AとBが排反とは,A∩B=Φ(空集合)であること
+AとBが排反のとき,P(A∪B)=P(A)+P(B)が成り立つ
+
+
+A.2.1.1.2 余事象
+事象Aに対して,Aが起こらない事象を余事象といい,A^Cと表す。このとき
+P(A)+P(A^C)=1が成り立つ
+.
+A.2.1.2 条件付確率とベイズの定理
+A.2.1.2.1 条件付確率
+
+事象Aのもとで事象Bが発生する確率をP(B|A)又はP_A(B)と表し、「AのもとでBが起こる条件付き確率」
+(1))AとBが独立の場合, (2) A^C(排反)を使ってP(B)を表す
+
+$
+P(B|A)=\frac{P(B\cap A)}{P(A)}
+$
+
+独立
+$
+P(B|A)=\frac{P(B\cap A)}{P(A)}
+=\frac{P(B)\cdot P(A)}{P(A)}
+=P(B)$
+
+$
+P(B)=P(B\cap A)+P(B\cap A^C)
+=P(B|A)\cdot P(A)+P(B|A^C)\cdot P(A^C)
+$
+
+A.2.1.2.2 ベイズの定理
+
+A,Bひっくり返した条件付き確率(２つ), 全確率の公式,ベイズの定理
+
+$
+P(A|B) =\frac{P(A\cap B)}{P(B)}
+P(B|A) =\frac{P(A|B)P(B)}{P(A)}
+$
+
+全確率
+$
+P(A)=\sum_{i}P(A|B_i)P(B_i)
+$
+
+ベイズの定理
+$
+P(B_k|A)=\frac{P(A|B_k)P(B_k)}{\sum_{i}P(A|B_i)P(B_i)}
+$
+
+A.2.2確率変数
+A.2.2.1.1 期待値
+
+離散型,連続型 Xの期待値
+離散型,連続型 g(X)の期待値
+
+
+離散型
+$
+E(X)=\sum x_i\cdot f(x_i)
+$
+
+連続型
+$
+E(X)=\int x_i\cdot f(x_i) dx
+$
+
+離散型
+$
+E(g(X))=\sum g(x_i)\cdot f(x_i)
+$
+
+連続型
+$
+E(g(X))=\int g(x_i)\cdot f(x_i)
+$
+
+A.2.2.1.2分散
+$
+V(X)=E(X^2)-E(X)^2
+$
+
+A.2.2.1.2 テイル確率
+
+離散型(0以上のみ確率がある, $\sum_{k=0}^{\infty}P(X=k)=1$)
+$
+E(X)=\sum_{k=1}^{\infty}P(X\geq k)=\sum_{k=0}^{\infty}P(X>k)
+E(X(X+1))=2\sum_{k=1}^{\infty}kP(X\geq k)
+$
+
+連続型(0以上のみ確率がある, $P(X\geq 0)=1$)
+$
+E(X)=\int_{0}^{\infty}P(X\geq t)dt
+E(X^2)=2\int_{k=9}^{\infty}t\cdotP(X\geq t)dt
+$
+
+A.2.2.1.4 共分散と相関係数
+
+共分散Cov(X,Y),相関係数ρ(X,Y)
+
+$
+Cov(X,Y)=E[\{X-E(X)\}\{Y-E(Y)\}] = E(XY)-E(X)E(Y)
+\rho(X,Y)=\frac{Cov(X,Y)}{\sqrt{V(X)V(Y)}}=\frac{E(XY)-E(X)E(Y)}{\sqrt{V(X)V(Y)}}
+$
+
+A.2.2.1.5 期待値,分散,共分散,相関係数の性質
+E(X+Y), E(aX+b), V(aX+b), V(X+Y), V(aX+bY), Cov(X,X), Cov(X+Y,Z), Cov(aX+b,Y), Cov(aX,bY)
+ρの値域, ρ(aX+b, cY+d)
+
+X, Yが独立 E(XY), V(X+Y), Cov(X,Y)
+
+$
+E(X+Y)=E(X)+E(Y)
+E(aX+b)=aE(X)+E(Y)
+V(aX+b)=a^2V(X)
+V(X+Y)=V(X)+V(Y)+2Cov(X,Y)
+V(aX+bY)=a^2V(X)+b^2V(Y)+2abCov(X,Y)
+Cov(X,X)=V(X)
+Cov(X+Y,Z)=Cov(X,Z)+Cov(Y,Z)
+Cov(aX+b,Y)=2aCov(X,Y)
+Cov(aX,bY)=2abCov(X,Y)
+-1\leq \rho(X,Y)\leq 1
+\rho(aX+b, cY+d)=\rho(X,Y)
+$
+
+X, Yが独立 
+
+$
+E(XY) = E(X)E(Y)
+V(X+Y)= V(X)+V(Y)
+Cov(X,Y)=0
+$
+
+-----------------
+A.2.2.2 積率母関数,キュムラント母関数
+
+積率母関数(1)定義,(2) n階微分, (3)モーメント(E(X^n))の計算
+キュムラント母関数
+性質 E(X), E(X^2), V(X)の計算,ユニーク性, X,Yが独立のとき
+
+積率母関数(1)定義,(2) n階微分, (3)モーメント(E(X^n))の計算
+$
+M_X(t)=E(e^{tX})
+M_X^{(n)}(t)=E(X^ne^{tX})
+E(X^n)=M_X^{(n)}(0)
+$
+
+キュムラント母関数
+$
+C_X(t)=\log{M_X(t)}
+$
+
+性質 
+
+$
+E(X) =M^{(1)}_X(0)=C^{(1)}_X(0)
+E(X^2)=M^{(2)}_X(0)
+V(X)=C^{(2)}_X(0)=M^{(2)}_X(0)-M^{(1)}_X(0)^2
+M_X(t)=M_Y(t) \Leftrightarrow X\sim Y
+$
+X,Yが独立
+$
+M_{X+Y}(t)=M_X(t)M_Y(t)
+$
+
+A.2.2.4積率(モーメント)
+原点周りn次積率(モーメント), n=1
+平均値周りn次積率,キュムラントを用いてn=2,3,4
+階乗モーメント
+歪度
+尖度
+
+原点周りn次積率(モーメント)
+$
+\mu'_n=E(X^n)
+\mu'_1=\mu
+$
+
+平均値周りn次積率,キュムラントを用いてn=2,3,4
+$
+\mu_n=E[(X-\mu)^n]
+\mu_2=V[X]=C^{(2)}_X(0)=\sigma^2
+\mu_3=C^{(3)}_X(0)
+\mu_4=C^{(4)}_X(0)+3C^{(3)}_X(0)^2
+$
+
+階乗モーメント
+$
+E[X(X-1)\cdots(X-r+1)]=E[X^{(r)}]
+$
+
+歪度
+$
+\frac{E[(X-\mu)^3]}{\sigma^3}
+=\frac{\mu_3}{\sigma^3}
+=\frac{C_X^{(3)}(0)}{\sigma^3}
+$
+
+尖度
+
+損保数理
+$
+\frac{C_X^{(4)}(0)}{\sigma^4}
+$
+
+数学
+$
+\frac{C_X^{(4)}(0)}{\sigma^4}+3
+$

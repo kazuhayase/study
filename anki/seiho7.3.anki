@@ -1,0 +1,238 @@
+7.3 就業不能(または要介護)に対する諸給付
+x歳の就業者数:l_x^{aa}
+χ歳の就業者がx+1歳になるまでに就業可能なまま死亡する人数:d_x^{aa}
+x歳の就業者がx+1歳になるまでに就業不能となる人数:i_x
+x歳の就業不能者数:l_x^{ii}
+x歳の就業不能者がx+1歳になるまでに死亡する人数:d_x^{ii}
+
+x歳生存者数と死亡者数に関して就業可能・不能への分割
+$
+l_x=l_x^{aa}+l_x^{ii}
+d_x=d_x^{aa}+d_x^{ii}
+$
+7.84,85
+
+就業可能者・不能者数のx+1, xの関係(dx*,等を使う)
+
+[figure]
+$
+l_{x+1}^{aa}=l_x^{aa}-d_x^{aa}-i_x
+l_{x+1}^{ii}=l_x^{ii}-d_x^{ii}+i_x
+$
+7.86,87
+
+就業者のまま死亡する確率
+$
+\qx{x}[aa]=\frac{\dx{x}[aa]}{\lx{x}[aa]}
+$
+7.88
+
+就業者が就業不能となる確率
+$
+\qx{x}[(i)]=\frac{i_x}{\lx{x}[aa]}
+$
+7.89
+
+就業者絶対死亡率
+$
+\qx{x}[aa*]=\frac{\dx{x}[aa]}{\lx{x}[aa]-\frac{\dx{x}[aa]}{2}}
+$
+7.90
+
+就業者の絶対就業不能率\qx{x}[(i)*]
+$
+\qx{x}[(i)*]=\frac{i_x}{\lx{x}[aa]-\frac{\dx{x}[aa]}{2}}
+$
+7.91
+
+就業不能者の死亡率 (脱退表からの計算)\qx{x}[ii]
+$
+\qx{x}[ii]=\frac{\dx{x}[ii]}{\lx{x}[ii]}
+$
+7.92
+
+就業不能者の死亡者数を、就業不能者絶対死亡率を用いて表す.
+$
+\dx{x}[ii]=\lx{x}[ii]\cdot\qx{x}[i]+i_x\cdot\frac{\qx{x}[i]}{2}
+$
+就業不能者絶対死亡率を求める.
+$
+\qx{x}[i]=\frac{\dx{x}[ii]}{\lx{x}[ii]+\frac{i_x}{2}}
+$
+7.93
+
+就業不能者生命表情の生命関数として定義できる生存率\px[t]{x}[i]
+$
+\px[t]{x}[i]=\frac{\lx{x+t}[i]}{\lx{x}[i]}
+$
+7.94
+
+(x)の就業者が就業可能なままt年間生存する確率\px[t]{x}[aa]
+$
+\px[t]{x}[aa]=\frac{\lx{x+t}[aa]}{\lx{x}[aa]}
+$
+7.95
+
+(x)の就業者が1年以内に死亡する確率\qx{x}[a]を用いてaa付l,dやiの関係
+$
+\lx{x}[aa]\cdot\qx{x}[a]=\dx{x}[aa]+i_x\cdot\frac{\qx{x}[i]}{2}
+$
+7.96
+
+(x)の就業者がt年以内に就業不能となり, (x+t)まで生存する確率\px[t]{x}[ai]
+$
+\px[t]{x}[ai]=\frac{\lx{x+t}[ii]-\lx{x}[ii]\cdot\px[t]{x}[i]}{\lx{x}[aa]}
+$
+7.97
+
+(x)の就業者がt年間生存する確率\px[t]{x}[a]
+$
+\px[t]{x}[a]=\px[t]{x}[aa]+\px[t]{x}[ai]=\frac{\lx{x+t}-\lx{x}[ii]\cdot\px[t]{x}[i]}{\lx{x}[aa]}
+$
+7.98
+
+(x)の就業者が就業不能となりかつt年間生存してその後1年以内に死亡する確率\qx[t|]{x}[ai]
+$
+\qx[t|]{x}[ai]=\frac{\dx{x+t}[ii]-\lx{x}[ii]\cdot\qx[t|]{x}[i]}{\lx{x}[aa]}
+$
+7.99
+---------
+7.3.2 就業者集団からの脱退力
+(x)の就業者について
+- 総合脱退力[$]\mu_x[/$] 
+- 死亡による脱退力[$]\mu_x^{aa} [/$]
+- 就業不能による脱退力[$]\mu_x^{ai} [/$]
+(x)の就業不能者について死亡による脱退力 [$]\mu_x^{id}[/$]
+
+(x)の就業者 総合脱退力[$]\mu_x[/$] と 死亡による脱退力[$]\mu_x^{aa}[/$] 就業不能による脱退力[$]\mu_x^{ai}[/$]の関係式
+
+
+$
+\mu_x=\mu_x^{aa}+\mu_x^{ai}
+$
+7.100
+
+就業者が就業者のまま死亡する数 \dx{x}[aa]
+$
+\dx{x}[aa]=\int_{0}^{1}\lx{x+t}[aa]\mu_{x+t}[aa]dt
+$
+7.101
+
+就業者が就業不能者になる数i_x
+$
+i_x=\int_{0}^{1}\lx{x+t}[aa]\mu_{x+t}[ai]dt
+$
+7.102
+
+就業者がt年脱退しない(就業のまま生存率)を積分で \px[t]{x}[aa]
+$
+\px[t]{x}[aa]=\exp\left(-\int_{0}^{t}\left(\mu_{x+s}^{aa}+\mu_{x+s}^{ai}\right)ds\right)
+$
+7.103
+
+就業者が1年間就業不能になる確率を積分で \qx{x}[(i)]
+$
+\qx{x}[(i)]=\int_{0}^{1}\px[s]{x}[aa]\mu_{x+s}^{ai}ds
+$
+7.104
+
+就業者がt年までに就業不能になり,そのまま生存する確率を積分で \px[t]{x}[ai]
+$
+\px[t]{x}[ai]=\int_{0}^{t}\px[s]{x}[aa]\mu_{x+s}^{ai}\cdot\px[t-s]{x+s}[i]ds
+$
+7.105
+
+就業者がt年まで生存(就業可能・不能いずれでも良い)しその後1年以内で死亡. 死亡前には就業不能である、という確率を積分で \qx[t|]{x}[ai]
+$
+\qx[t|]{x}[ai]=\int_{t}^{t+1}\px[s]{x}[ai]\mu_{x+s}^{id}
+$
+7.106
+計算基数は省略
+
+----
+
+(x)の就業者に対して就業の期間中に支払われる期始払n年有期年金の現価 \ax**{\endowxn}[aa]
+$
+\ax**{\endowxn}[aa]=\sum_{t=0}^{n-1}v^t\px[t]{x}[aa]=\frac{N_x^{aa}-N_{x+n}^{aa}}{D_x^{aa}}
+$
+7.123
+(x)の就業不能者に対して生存の期間中に支払われる期始払n年有期年金の現価 \ax**{\endowxn}[i]
+$
+\ax**{\endowxn}[i]=\sum_{t=0}^{n-1}v^t\px[t]{x}[i]=\frac{N_x^{i}-N_{x+n}^{i}}{D_x^{i}}
+$
+7.124
+(x)の就業者に対して生存する限り支払われる期始払n年有期年金の現価 \ax**{\endowxn}[a]
+$
+\ax**{\endowxn}[a]=\sum_{t=0}^{n-1}v^t\px[t]{x}[a]
+=\frac{N_x-N_{x+n}}{D_x^{aa}}
+-\frac{D_x^{ii}}{D_x^{aa}}\frac{N_x^{i}-N_{x+n}^{i}}{D_x^{i}}
+$
+分母はD_x^{aa}で、1項目の分子で全体の生存者分を一旦計算し,そこから2項目の分母D_x^{aa}を除いた部分で(x)で就業不能だった人が生存している分を計算して引く
+7.125
+
+(x)の就業者に対して就業不能となった年度末より生存中, かつ契約時点からn年後まで支払われるn年有期年金の現価 \ax{\endowxn}[ai]を(1)数列和(vと生存率),(2)数列和(vと人数と生存率),(3)計算基数
+$
+\ax{\endowxn}[ai]=\sum_{t=1}^{n}v^t\px[t]{x}[ai]
+=\sum_{t=1}^{n}v^t\frac{\lx{x+t}[ii]-\lx{x}[ii]\cdot\px[t]{x}[i]}{\lx{x}[aa]}
+=\frac{N_{x+1}^{ii}-N_{x+n+1}^{ii}-\frac{D_x^{ii}}{D_x^{i}}(N_{x+1}^i-N_{x+n+1}^i)}{D_x^{aa}}
+$
+7.126,7
+
+(x)の就業者に対して就業不能となった年度末より生存中, かつ契約時点からn年後まで支払われるn年有期年金の現価 \ax{\endowxn}[ai]を,他の同期間年金現価で表す. (1)期末払2項の差、(2)期始払2項の差,
+$
+\ax{\endowxn}[ai]=
+\ax{\endowxn}[a]-\ax{\endowxn}[aa] = (1+\ax{\endowxn}[a])-(1+\ax{\endowxn}[aa])
+=\ax**{\endow{x}{n+1}}[a]-\ax**{\endow{x}{n+1}}[aa]
+$
+7.128,9
+
+(x)の就業者に対してm年以内に就業不能となった年度末より生存中, かつ契約時点からn年後まで支払われるn年有期年金の現価 \ax{\endowxn}[a(i:\angl{m})]を,他の同期間期末年金現価で表す.
+$
+\ax{\endowxn}[a(i:\angl{m})]=\ax{\endowxn}[ai]-\frac{D_{x+m}^{aa}}{D_x^{aa}}\ax{\endow{x+m}{n-m}}[ai]
+$
+1項目で就業不能生存年金現価,2項目で m年経過以降に就業不能になる生存年金現価を計算し差し引く
+7.130
+
+7.3.4 就業不能に対する諸給付
+保険期間n年の養老保険(年払営業保険料はP*で略記)に加入する。この主契約に特約を付け,(x)がy歳に達する前に就業不能となれば,それ以降の保険料払込を免除することとした。この特約の年払純保険料とP*の関係式。
+$
+P_x^D\cdot\ax**{\endow{x}{y-x}}[aa]=P^*\cdot\ax{\endow{x}{n-1}}[a(\endow{i}{\angl{y-x}})]
+$
+7.131
+
+7.4 災害及び疾病に関する保険
+7.4.1 災害入金給付
+7.4.2 疾病入金給付
+個別問題によるところ=飛ばす。
+
+7.5 計算基礎の変更
+7.5.1 予定利率の変更
+
+利率を引き上げる i<i' 
+
+$\ax**{\endowxn}$ > $\ax**{\endowxn}[']$ 
+
+$\Ax{\pureendowxn}$ > $\Ax{\pureendowxn}[']$ 
+
+$\Ax{\termxn}$ > $\Ax{\termxn}[']$ 
+
+$\Ax{\endowxn}$ > $\Ax{\endowxn}[']$ 
+
+利率を引き上げる i<i' かつ \qx{x} が年齢xについて単調増加
+
+$\Px{\termxn}$ > $\Px{\termxn}[']$ 
+
+$\Px{\endowxn}$ > $\Px{\endowxn}[']$ 
+
+$\Vx{\endowxn}$ > $\Vx{\endowxn}[']$ 
+
+7.5.2 予定死亡率の変更
+予定死亡率の減少 q_x\geq q_x'
+
+[$$]\ax**{\endowxn} \leq \ax**{\endowxn}['] [/$$]
+[$$]\Ax{\pureendowxn} \leq \Ax{\pureendowxn}['] [/$$]
+[$$]\Ax{\termxn} \geq \Ax{\termxn}['] [/$$]
+[$$]\Ax{\endowxn} \geq \Ax{\endowxn}['] [/$$]
+[$$]\Px{\endowxn} \geq \Px{\endowxn}['] [/$$]
+[$$]\Px{\termxn} \geq \Px{\termxn}['] [/$$]
+[$$]\Px{\pureendowxn} \leq \Px{\pureendowxn}['] [/$$]
