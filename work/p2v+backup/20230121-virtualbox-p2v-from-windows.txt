@@ -4,6 +4,12 @@
 https://www.diskpart.com/jp/articles/unable-to-shrink-c-drive.html
 一旦、ページファイル等を無効化して、サイズを小さくした後、有効化する。
 
+他にSATAディスクが接続されていないと、ページファイルは自動的に作られてしまうので、
+縮小し、パーティションを追加して、そこにページファイルを置くようにして、もう一度再起動してから、縮小する。
+
+
+
+
 SystemPropertiesProtection.exe
 管理者としてCMD起動して、
 powercfg.exe /hibernate off
@@ -15,6 +21,9 @@ sysdm.cpl
 この中でシステムのプロパティを開くには、  sysdm.cpl　を実行する
 https://atmarkit.itmedia.co.jp/ait/articles/1811/01/news019.html
 
+
+https://www.aomei.jp/articles/can-not-shrink-volume.html
+システムの保護⇒復元ポイントの削除
 
 
 
