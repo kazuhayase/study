@@ -4,6 +4,14 @@
 https://www.diskpart.com/jp/articles/unable-to-shrink-c-drive.html
 一旦、ページファイル等を無効化して、サイズを小さくした後、有効化する。
 
+SystemPropertiesProtection.exe
+管理者としてCMD起動して、
+powercfg.exe /hibernate off
+powercfg.exe /a
+
+SystemPropertiesPerformance.exe
+sysdm.cpl
+
 この中でシステムのプロパティを開くには、  sysdm.cpl　を実行する
 https://atmarkit.itmedia.co.jp/ait/articles/1811/01/news019.html
 
