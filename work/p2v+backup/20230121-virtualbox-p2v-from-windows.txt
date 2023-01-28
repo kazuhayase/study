@@ -1,5 +1,55 @@
 20230115 virtual box p2v from windows install
 
+[-1] mod sign がわからないので、Secure bootを外した。
+Virtualbox でVMDK読み込んだらGrubのShellになったので、以下の通りやったら動いた。が、とても時間がかかる。
+
+
+https://stackoverflow.com/questions/51101487/booting-raw-disk-windows-10-vm-in-virtualbox-boots-to-grub-shell
+-----------
+insmod chain
+set root=(hd0,gpt1)
+chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+boot
+-----------
+
+
+
+[0] mod sign
+There were problems setting up VirtualBox.  To re-start the set-up process, run
+  /sbin/vboxconfig
+as root.  If your system is using EFI Secure Boot you may need to sign the
+kernel modules (vboxdrv, vboxnetflt, vboxnetadp, vboxpci) before you can load
+them. Please see your Linux system's documentation for more information.
+
+https://kledgeb.blogspot.com/2020/06/ubuntu-2004-74-ubuntuuefi.html
+
+$ sudo update-secureboot-policy --enroll-key
+No DKMS modules installed.
+
+https://wiki.ubuntu.com/UEFI/SecureBoot/Signing
+
+kmodsign is used exclusively to sign kernel modules. It also requires the signing certificates to be in a different format than sbsigntool; for kmodsign, the certificates need to be in DER format. Conveniently, if you need to use DKMS modules, an appropriate certificate may already exist in /var/lib/shim-signed/mok.
+To sign a custom module, in this example with the generated MOK already available on a system:
+
+$ sudo kmodsign sha512 \
+    /var/lib/shim-signed/mok/MOK.priv \
+    /var/lib/shim-signed/mok/MOK.der \
+    module.ko
+
+$ ls -l /var/lib/shim-signed/mok/
+合計 8
+-rw-r--r-- 1 root root  960  9月 16  2018 MOK.der
+-rw------- 1 root root 1708  9月 16  2018 MOK.priv
+$ sudo file /var/lib/shim-signed/mok/*
+/var/lib/shim-signed/mok/MOK.der:  Certificate, Version=3, Serial=00829433342cab2662, Issuer=1607LM-iHS303S-A-IIYAMA-H110M-S Secure Boot Module Signature key, not-valid-before=2018-09-16 00:26:29 GMT, Subject=1607LM-iHS303S-A-IIYAMA-H110M-S Secure Boot Module Signature key
+/var/lib/shim-signed/mok/MOK.priv: ASCII text
+
+だったので、
+
+
+
+
+
 (1) ntfs ファイルシステムを最小化
 https://www.diskpart.com/jp/articles/unable-to-shrink-c-drive.html
 一旦、ページファイル等を無効化して、サイズを小さくした後、有効化する。
