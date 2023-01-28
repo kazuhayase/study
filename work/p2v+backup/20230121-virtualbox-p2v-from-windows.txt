@@ -7,23 +7,41 @@ https://www.diskpart.com/jp/articles/unable-to-shrink-c-drive.html
 他にSATAディスクが接続されていないと、ページファイルは自動的に作られてしまうので、
 縮小し、パーティションを追加して、そこにページファイルを置くようにして、もう一度再起動してから、縮小する。
 
-
-
-
 SystemPropertiesProtection.exe
+システムの保護無効
+
 管理者としてCMD起動して、
 powercfg.exe /hibernate off
 powercfg.exe /a
 
 SystemPropertiesPerformance.exe
+ページングファイルなし
+
 sysdm.cpl
+詳細情報＞デバッグ情報の書き込み
 
 この中でシステムのプロパティを開くには、  sysdm.cpl　を実行する
 https://atmarkit.itmedia.co.jp/ait/articles/1811/01/news019.html
 
 
+移動できないファイルの削除
+https://www.diskpart.com/jp/articles/shrink-volume-with-unmovable-files.html
+
+
+ステップ 1. Windows 10である場合、ファイルの「フォルダーと検索のオプションの変更」をクリックして、「表示」を開きます。「保護されたオペレーティングシステムファイルを表示しない（推奨）」をチェックしません。
+ステップ 2. 「隠しファイル、隠しフォルダー、および隠しドライブを表示する」をチェックします。この問題を解決するために、できる限り沢山のシステムファイルを無効にする必要があります。
+ステップ 3. システムの保護を無効にして、「ディスク領域の解放」と「ドライブのデフラグと最適化」を実行します。Windowsの検索ボックスから、それらを簡単に見つけられます。
+ステップ 4. コマンドプロンプトから「powercfg /hibernate off」コマンドを実行して、ハイバネーションを無効にします。
+ステップ 5. カーネルメモリダンプを無効にします。詳細設定/起動と回復/設定に移動して、「デバイス情報の書き込み」のドロップダウンメニューを「なし」に変更します。
+ステップ 6. コントロールパネル\システムとセキュリティ/システム/システムの詳細設定/パフォーマンス下の設定/詳細設定/変更のページングファイルを無効にします。またファイルエクスプローラーでc:\pagefile.sysファイルを削除します。
+
+
+
+
 https://www.aomei.jp/articles/can-not-shrink-volume.html
 システムの保護⇒復元ポイントの削除
+
+
 
 
 
