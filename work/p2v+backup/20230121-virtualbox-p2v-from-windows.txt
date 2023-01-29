@@ -1,5 +1,52 @@
 20230115 virtual box p2v from windows install
 
+[] 
+vmdk をSSDにコピーしつけ直したら、同じUUIDだと言われたので前のものを削除
+isoをつけて、Ubuntu-Liveを起動
+update-grub2をする。以下参照
+https://askubuntu.com/questions/254491/failed-to-get-canonical-path-of-cow
+
+mkdir /mnt/chrootdir
+mount /dev/sda1 /mnt/chrootdir
+for dir in proc dev sys etc bin sbin var usr lib lib64 tmp; do
+    mkdir /mnt/chrootdir/$dir && mount --bind /$dir /mnt/chrootdir/$dir
+done
+chroot /mnt/chrootdir
+grub-install /dev/sda # May not be required　＜ーーエラー
+update-grub2
+
+エラー
+Installing for i386-pc platform.
+grub-install: warning: this GPT partition label contains no BIOS Boot Partition; embedding won't be possible.
+grub-install: warning: Embedding is not possible.  GRUB can only be installed in this setup by using blocklists.  However, blocklists are UNRELIABLE and their use is discouraged..
+grub-install: error: will not proceed with blocklists.
+
+
+ー＞これをする前に、BIOS Boot Partitionを作る必要がある。
+https://www.miraclelinux.com/tech-blog/qwi8ni
+https://conveniencedailylife.blog.fc2.com/blog-entry-282.html
+
+ーー＞エラー解消
+
+ーーーーー
+/dev/sda1が消えてしまったようなので、clonezillaでコピーしてもどす。
+
+samba クライアントがNT1をサポートするよう設定し直す
+
+sudo apt install smbclient
+vi /etc/samba/smb.conf
+
+https://ubuntuforums.org/archive/index.php/t-2447575.html
+---
+client min protocol = NT1
+server min protocol = NT1
+client lanman auth = yes
+ntlm auth = yes
+
+
+
+
+
 [-1] mod sign がわからないので、Secure bootを外した。
 Virtualbox でVMDK読み込んだらGrubのShellになったので、以下の通りやったら動いた。が、とても時間がかかる。
 
