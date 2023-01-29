@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ResetConfig.xml for OS Reconstruction-Based Reset on UEFI -->
+<Reset>
+  <SystemDisk>
+    <DiskpartScriptPath>$PBR_Diskpart.txt</DiskpartScriptPath>
+    <MinSize>434968</MinSize>
+    <WindowsREPartition>4</WindowsREPartition>
+    <WindowsREPath>Recovery\WindowsRE</WindowsREPath>
+    <OSPartition>3</OSPartition>
+    <WIMBoot>0</WIMBoot>
+    <SingleInstancePPKG>False</SingleInstancePPKG>
+  </SystemDisk>
+</Reset>

@@ -1,5 +1,25 @@
 20230115 virtual box p2v from windows install
 
+[] 結局、WindowsのisoファイルでOSをインストール。
+
+[] 回復メディアでOS再インストール＋システムイメージのリストア
+https://www.fleaz-mobile.com/win10_recovery/index.html
+に書いてある手順。
+
+　(1) 移行元で回復ドライブの作成
+　(2) 移行元でシステムイメージのバックアップ
+　(3) システムの復元
+
+　　　1. 回復メディアでOS再インストール
+　　　---> extension packを入れて置かないとUSBで起動しない。
+
+https://www.kfactory.net/2020/07/windows10.html
+　「PCを回復できません。システムドライブが小さすぎます」となるので、
+sources 内    $PBR_ResetConfig.xml　を編集。（オリジナルファイルは、このGithubディレクトリにコピーした）
+
+　　　2. システムイメージの復元
+
+
 [] 
 vmdk をSSDにコピーしつけ直したら、同じUUIDだと言われたので前のものを削除
 isoをつけて、Ubuntu-Liveを起動
