@@ -1,6 +1,93 @@
 20230115 virtual box p2v from windows install
 
-[] 結局、WindowsのisoファイルでOSをインストール。
+[*] 結局、Aomei で作成したBootable＋イメージでOSインストール＋回復
+
+https://www.ubackup.com/jp/features/system-restore-from-disc.html
+
+AOMEI（Windows上）
+1. USBメモリ(2GB)でブータブルメモリを作成（数百MB）
+2. イメージバックアップを作成（USB接続HDD,NTFSフォーマット）
+
+VirtualBox（Ubuntu上）
+1. VirtualBoxで、SDD(115GB)の.vdi仮想ディスクを作成
+2. 起動するとGrubになるので、exitしてUEFI画面
+3. 「デバイス」メニューで、USBメモリ(2GB)（=AOMEI Bootable）をチェックしてGuest側に接続
+4. UEFI画面でBoot Manager(だったと思う)で、USBメモリを指定してExitするとBootする
+5. Virtualbox「デバイス」メニューで、USB接続HDDをチェックしてGuest側に接続
+6. AOMEIのBootableで起動するので、「復元」から「イメージファイルを選択」
+7. 「このシステムイメージを復元」で、USB接続HDD（115GBで空のまま）を指定
+8. 復元後、起動するが、Grubのプロンプトになる
+
+https://kernhack.hatenablog.com/entry/2018/05/03/220214
+Grubのプロンプトで、
+grub> pager=1
+grub> ls (hd0,gpt1)
+とかで、efi以下があることを確認
+
+https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q11272114241
+
+Grubのプロンプトで、
+grub> search --set=root --file /EFI/Microsoft/Boot/bootmgfw.efi
+grub> chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+grub> boot
+で、起動できた。
+
+Windowsでは問題が起きたため、PINをセットアップ
+-->無事、Windowsが元の状態で立ち上がる。
+
+[] EFIのUbuntuのgrub.cfgのUUIDを編集
+ubuntuの isoイメージで起動
+sudo mkdir /mnt/efi
+sudo mount /dev/sda1 /mnt/efi
+cd /mnt/efi/EFI/ubuntu
+sudo cp grub.cfg grub.cfg.org.20230203
+UbuntuのDISKsツールで表示された ACAA-FA53 
+fdisk では、44042082-2D99-46C1-8B40-6E3E4AF532E6 に変更してみる
+
+これではだめかと思ったけど、どうも、２回目からは読み込んでいるようなので、このままとする。
+再起動では読み込んでいたが、電源落とすとだめだった。
+
+grub.cfgに以下を追加してみる。
+
+menuentry "Windows" {
+search --set=root --file /EFI/Microsoft/Boot/bootmgfw.efi
+chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+
+
+うまく行くこともあるので、様子見する。(02/03〜)
+
+だめだったら、以下を試してみる。
+
+
+
+[] diskpartでWindows10/8のUEFIを修復
+https://jp.easeus.com/partition-manager/fix-uefi-error-in-windows-10-8-7.html
+
+
+(ここでSnapShotを作成中に致命的エラー)
+
+仮想マシンの実行中に致命的な問題が起き、マシンの実行が停止します。
+http://www.virtualbox.org のコミュニティセクションを確認するか、サポート契約を確認してください。その際は仮想マシンのログディレクトリにあるログファイル VBox.log の中身を提供してください。同時にエラーが起きた時に何をしたのかの情報も提供してください。前述のファイルはVirtualBoxウィンドウの仮想マシン  にある ログを参照 からでもアクセスできます。
+OK ボタンを押して仮想マシンの電源を切ります。
+
+Result Code:
+VBOX_E_INVALID_VM_STATE (0X80BB0002)
+Component:
+ConsoleWrap
+Interface:
+IConsole {6ac83d89-6ee7-4e33-8ae6-b257b2e81be8}
+
+
+
+
+========
+もしかしたら、EFIのGrub.cfgを編集する？
+https://datyotosanpo.blog.fc2.com/blog-entry-90.html
+
+
+---------------------------------------------------------------------------------------------------------
+WindowsのisoファイルでOSをインストール。
 
 [] 回復メディアでOS再インストール＋システムイメージのリストア
 https://www.fleaz-mobile.com/win10_recovery/index.html
@@ -10,6 +97,11 @@ https://www.fleaz-mobile.com/win10_recovery/index.html
 　(2) 移行元でシステムイメージのバックアップ
 　(3) システムの復元
 
+青い画面で、トラブルシューティング＞詳細オプション＞イメージでシステムを回復
+で、エラーが出る。多分、BackupのUSB DISKが見えてない。
+
+
+
 　　　1. 回復メディアでOS再インストール
 　　　---> extension packを入れて置かないとUSBで起動しない。
 
@@ -18,6 +110,7 @@ https://www.kfactory.net/2020/07/windows10.html
 sources 内    $PBR_ResetConfig.xml　を編集。（オリジナルファイルは、このGithubディレクトリにコピーした）
 
 　　　2. システムイメージの復元
+
 
 
 [] 
@@ -79,9 +172,40 @@ chainloader /EFI/Microsoft/Boot/bootmgfw.efi
 boot
 -----------
 
-
-
 [0] mod sign
+https://ubuntu.com/blog/how-to-sign-things-for-secure-boot
+
+$ sudo mokutil --list-enrolled
+...
+        Issuer: C=GB, ST=Isle of Man, L=Douglas, O=Canonical Ltd., CN=Canonical Ltd. Master Certificate Authority
+...
+$ sudo mokutil --test-key /var/lib/shim-signed/mok/MOK.der 
+/var/lib/shim-signed/mok/MOK.der is already enrolled
+??? 怪しい
+
+
+$ sudo mokutil --list-new
+        Issuer: CN=1607LM-iHS303S-A-IIYAMA-H110M-S Secure Boot Module Signature key
+
+--> reboot
+
+sudo mokutil --import /var/lib/shim-signed/mok/MOK.der
+
+sudo mokutil --help
+sudo mokutil --list-enrolled
+sudo mokutil --help
+sudo mokutil --test-key /var/lib/shim-signed/mok/MOK.der 
+sudo mokutil --import /var/lib/shim-signed/mok/MOK.der 
+sudo mokutil --test-key /var/lib/shim-signed/mok/MOK.der 
+sudo mokutil --list-new
+sudo mokutil --list-enrolled
+sudo mokutil --list-new
+sudo mokutil --help
+exit
+sudo /sbin/vboxconfig 
+df .
+
+
 There were problems setting up VirtualBox.  To re-start the set-up process, run
   /sbin/vboxconfig
 as root.  If your system is using EFI Secure Boot you may need to sign the
