@@ -1,5 +1,30 @@
 20230115 virtual box p2v from windows install
 
+
+-----
+最初の方のSnapshotに戻しても何度かリブートすると、BlueScreenループに陥る。
+https://freesoft.tvbok.com/tips/efi_installation/uefi_bootrec.html
+↑　windows boot isoからBCD関連で復旧できるかも？
+
+
+bootrec /fixboot
+アクセスが拒否されました
+https://jp.easeus.com/partition-manager/bootrec-fixboot.html
+には、
+B:
+bcdboot C:\windows /s B: /f UEFI
+せよ、と書いてあるが。
+
+
+
+[] Windowsが重たい
+https://aresei-note.com/8255
+仮想メモリ使わない（ページファイルなし）とか
+
+設定したら再度ブルースクリーン。。。
+
+
+
 [*] 結局、Aomei で作成したBootable＋イメージでOSインストール＋回復
 
 https://www.ubackup.com/jp/features/system-restore-from-disc.html
