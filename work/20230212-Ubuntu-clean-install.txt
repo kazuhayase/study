@@ -1,26 +1,106 @@
 Ubuntu clean install.txt
 
+- Todo
+virtualbox
+smb4k
+anki
+latex
+Music; wmaになっているものをCDから読み込む
+
+
 [OS]
 Remix
 host=h110
 User=kazuyoshi
 
-[application]
-Thunderbird
-Edge
-Slack
-VSCode
+[smb mount]
 
-- todo
-viber
-git
-MEGAsync
-OneDrive
-virtualbox
-smb4k
-ncdu
-anki
-latex
+sudo apt install cifs-utils
+/etc/fstab　に、以下を追加
+//{%smb server}/disk1_pt1	/media/disk1_pt1	cifs	username=kazuyoshi,password=xxxx,vers=1.0
+
+
+
+[application]
+
+- Done
+Thunderbird; software(snap). homeコピー＋cloud同期 
+  # Ubuntuには最初から入っているようで、二重に入っている状態になっている。。。
+Edge; web DL(deb)+software のinstall機能.  cloud同期
+Slack; web DL(deb)+software のinstall機能. cloud同期
+VSCode; web DL(deb)+software のinstall機能. cloud同期
+git; apt install. homeコピー＋cloud同期
+ncdu; apt install.
+VLC; software(snap).
+MEGAsync&nautilus; web DL+software のinstall機能.  cloud同期
+samba; フォルダーの共有をすると自動的に追加インストールとなった。
+
+OneDrive; 非公式 OpenSuSE Build Services package
+------
+https://pc.watch.impress.co.jp/docs/column/ubuntu/1425292.html
+https://zenn.dev/bluesilvercat/articles/83700a96fb7f36
+
+wget -qO - https://download.opensuse.org/repositories/home:/npreining:/debian-ubuntu-onedrive/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /usr/share/keyrings/obs-onedrive.gpg > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/obs-onedrive.gpg] https://download.opensuse.org/repositories/home:/npreining:/debian-ubuntu-onedrive/xUbuntu_22.04/ ./" | sudo tee /etc/apt/sources.list.d/onedrive.list
+sudo apt-get update
+sudo apt install onedrive
+sudo mkdir /var/log/onedrive
+sudo chown root.users /var/log/onedrive
+sudo chmod 0775 /var/log/onedrive
+cat /etc/group | grep users # 確認
+sudo usermod -a -G users <your-user-name> # 追加
+
+onedrive --reauth
+-->　端末のURLをCTRL＋右クリックでブラウザアクセスし、そのままWebでMSアカウントログインしたあと、空白画面になるので、アドレスバーのURLをコピーして端末に貼り付ける。
+
+systemctl --user start onedrive.service
+systemctl --user enable onedrive.service
+------
+
+
+viber; software(snap) "viber-unofficial"はActivationできず。
+       viberから web DL(deb)+software のinstall機能. homeコピー＋cloud同期
+       homeしたに .ViberPC/というフォルダができていて、それがコピーされたため起動できた。
+       そのあとQRコードでログインしなおし、同期開始。なぜか日本語入力もできた。
+------
+(参考)
+前回は, home下か /usr/share/applications の .desktopファイルをいじったような気が
+https://unix.stackexchange.com/questions/319341/how-do-i-debug-a-desktop-file
+Terminal=true
+TerminalOptions=\s--noclose
+------
+
+
+
+(etc.)
+Music; WinMac0001/Musicに上書きコピーした
+
+WinMac0001/MP3-Music
+WinMac0001/202006Music
+Windows/Users/kazuyoshi.hayase/Music/iTunes/iTunes\ Media/Music
+
+https://gihyo.jp/admin/serial/01/ubuntu-recipe/0685
+音楽プレイヤーはデフォルトで入っているRhythmbox、DAAPというApple音楽共有はOwnTone。
+https://www.pc-reuse-shop.com/2020/05/15/ubuntu%E3%81%AE%E9%9F%B3%E6%A5%BD-%E5%8B%95%E7%94%BB%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92iphone-ipad-%E3%81%B8%E9%80%81%E4%BF%A1%E3%81%99%E3%82%8B/
+"EZMP3 player" (iOS)で、ubuntu->iphoneコピーできる?
+
+
+フォルダの構造；アルバム、のみとする。
+
+.local/share/rhythmbox/
+playlists.xml, rhythmdb.xml
+
+
+
+
+重複ファイルを削除
+sudo apt-get install fdupes
+fdupes -r .
+
+
+
+
+
 
 
 [home]
@@ -73,10 +153,12 @@ $ tar cf - Public | (cd 公開; tar xf -)
 $ tar cf - Templates | (cd テンプレート; tar xf -)
 $ tar cf - Videos | (cd ビデオ; tar xf -)
 
-- なぜかミュージック(Music)は無かった。
+- なぜかミュージック(Music)は無かった
 
 $ ls -lR デスクトップ ドキュメント ピクチャ 公開 テンプレート ビデオ
 $ rm -rf Desktop Documents Pictures Public Templates Videos
+
+- 後日EdgeからのDLはDownloadsが再度作成されてそこに配置された。
 
 - デスクトップに変化なし。ログアウトしないと反映されないのかも？
 
