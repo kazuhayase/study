@@ -1,0 +1,100 @@
+Ubuntu clean install.txt
+
+[OS]
+Remix
+host=h110
+User=kazuyoshi
+
+[application]
+Thunderbird
+Edge
+Slack
+VSCode
+
+- todo
+viber
+git
+MEGAsync
+OneDrive
+virtualbox
+smb4k
+ncdu
+anki
+latex
+
+
+[home]
+*方針: cleanでできたものに上書き.
+
+# cd /media/kazuyoshi/LinuxHome/
+# ls
+kazuyoshi  lost+found  partimag  temuser  zcash
+
+  - partimag はempty
+  - temuser は新規に作らせる
+  - zcash は放置
+--> kazuyoshiのみ上書きコピーする
+
+[home/kazuyoshi]
+======================================================
+# tar cf - kazuyoshi | (cd /home; tar xf -)
+
+---
+tarコピーの実行中に
+vscode か edge のlogが実行中に変更されたと出たが無視
+おそらく、同期の影響
+　vscodeはMS/GHubのアカウント同期していてExtensionがインストールされていく
+　edgeも同様
+
+また、何故か並行して、
+「残念ながら、Ubuntu22.04で内部エラーが発生しました。」
+/usr/libexec/tracker-miner-fs-3
+crash
+segv g_closure_invoke()
+ということで、関係ないと思われる。無視。
+---
+
++ここで一旦ログアウトして、再度ログインして様子を見る。
+
+- iconが大きいままだったり、お気に入りアプリのアイコンが固定されていなかったり、期待ハズレ
+　（未インストールがどれだったか思い出しながら入れていく）
+- bashプロンプト設定はコピーされている。Terminalの設定も違うような気がするが、このままにしておく。
+- Slackは自動起動した。これはデフォルト設定なのかもしれないが、ログイン状態はキープされてたので、homeをコピーした効果かもしれない
+- 容量不足で外付けHDDにsymlinkしていたものが軒並み外れてるので、一旦、rm
+
+$ rm local-installs Downloads Dropbox MEGAsync OneDrive
+
+- デフォルトでできるフォルダの英語版がコピーされている。日本語版にコピーして削除するか?
+  後で切り分けるため、英語フォルダ名のままsubdirectoryとしてコピーする
+$ tar cf - Desktop | (cd デスクトップ; tar xf -)
+$ tar cf - Documents | (cd ドキュメント; tar xf -)
+$ tar cf - Pictures | (cd ピクチャ; tar xf -)
+$ tar cf - Public | (cd 公開; tar xf -)
+$ tar cf - Templates | (cd テンプレート; tar xf -)
+$ tar cf - Videos | (cd ビデオ; tar xf -)
+
+- なぜかミュージック(Music)は無かった。
+
+$ ls -lR デスクトップ ドキュメント ピクチャ 公開 テンプレート ビデオ
+$ rm -rf Desktop Documents Pictures Public Templates Videos
+
+- デスクトップに変化なし。ログアウトしないと反映されないのかも？
+
+- プリンタ関係uninstaller削除しておく
+$ rm uninstaller_MFCJ6973CDW  uninstaller_brscan-skey  uninstaller_brscan4
+
+- その他
+$ rm vboxdrv.~signed~ ddrescue_hdd.map
+
+- Thunderbird 起動してみる
+想定通り、アカウントなど、そのまま動いた。
+
+--- gomi memo
+for d in (Desktop Documents Pictures Public Templates) \
+do\
+tar cf - $d | (cd )
+======================================================
+
+
+
+[/etc/passwd,groups]

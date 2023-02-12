@@ -1,6 +1,18 @@
 20230115 virtual box p2v from windows install
 
 
+
+[]
+BlueScreenループから抜け出せないので、このあたりを読んで見る。
+Linux Mint の boot-repairでブートローダを修復する手順
+https://snowsystem.net/other/linux/grub-boot-drive-repair/
+
+GRUB2をUSBメモリにインストール
+https://webzoit.net/hp/it/internet/homepage/env/cs/bootstrap/multiboot/usb_memory_stick/usb_gpt_grub2/howto/grub2-install/
+
+grub で boot するメモ
+https://www.oit.ac.jp/rd/labs/kobayashi-lab/~yagshi/old_web/misc/grubboot.html
+
 -----
 最初の方のSnapshotに戻しても何度かリブートすると、BlueScreenループに陥る。
 https://freesoft.tvbok.com/tips/efi_installation/uefi_bootrec.html
