@@ -2,7 +2,6 @@ Ubuntu clean install.txt
 
 - Todo
 virtualbox
-smb4k
 anki
 latex
 Music; wmaになっているものをCDから読み込む
@@ -34,6 +33,7 @@ ncdu; apt install.
 VLC; software(snap).
 MEGAsync&nautilus; web DL+software のinstall機能.  cloud同期
 samba; フォルダーの共有をすると自動的に追加インストールとなった。
+smb4k; software(snap).
 
 OneDrive; 非公式 OpenSuSE Build Services package
 ------
