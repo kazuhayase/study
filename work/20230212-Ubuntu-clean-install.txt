@@ -1,10 +1,14 @@
 Ubuntu clean install.txt
 
 - Todo
-virtualbox
-anki
-latex
-Music; wmaになっているものをCDから読み込む
+Alfresco(ECM; Enterprise contents management, BPM; Business Process Management)
+Lyx (texのワープロUI)
+
+
+
+
+[/etc/passwd,groups]
+
 
 
 [OS]
@@ -12,12 +16,25 @@ Remix
 host=h110
 User=kazuyoshi
 
-[smb mount]
+snapが更新できない
+https://zenn.dev/nukokoi/articles/b294afbd237900
+$ sudo killall snap-store
+$ sudo snap refresh snap-store
+
+https://qiita.com/j0306043/items/fcc9546056eeca5b025a
+日本語ディレクトリを英語に
+$ LANG=C xdg-user-dirs-gtk-update
+
+VirtualBox 入れた後
+$ sudo usermod -a -G vboxusers kazuyoshi
+
+[smb mount,share]
 
 sudo apt install cifs-utils
 /etc/fstab　に、以下を追加
 //{%smb server}/disk1_pt1	/media/disk1_pt1	cifs	username=kazuyoshi,password=xxxx,vers=1.0
 
+音楽ファイルについては、Ubuntu メディア共有設定で、DLNAサーバーとした。
 
 
 [application]
@@ -34,6 +51,22 @@ VLC; software(snap).
 MEGAsync&nautilus; web DL+software のinstall機能.  cloud同期
 samba; フォルダーの共有をすると自動的に追加インストールとなった。
 smb4k; software(snap).
+Authy; software(snap).
+Bitwarden; software(snap).
+Zoom; web DL(deb)+software のinstall機能. @jcomとGoogleのアカウントあり。@jcomで入っておく。
+Asunder; software(snap)
+http://note.kurodigi.com/asunder-cddb-change/
+DBはfreedb日本語にする（だめならgnudb.org）
+Music; wmaになっているものをCDから読み込む
+virtualbox7.0; web DL(deb)+software のinstall機能. 
+  win10をClean Installすることにする。
+     + iTunes, Felica,  と、なんかあったときの Officeくらいか？
+     + Ubuntuの WinMac0001/SharedMedia と ~/Public/iso を共有フォルダ(自動マウント＋永続化)とし、
+     + iTunesは SharedMedia/Musicを読み込む。
+     　iTunesでCDリッピングしたものをどうするか？　SharedMedia/{Music, English, ...} にコピーする、とか？
+       iTunes@Windows で Ogg Vorbisを読み込むためにはXiphQTを入れる
+        https://soundengine.jp/wordpress/tips/tutorial/458/
+     + $ sudo usermod -a -G vboxusers kazuyoshi
 
 OneDrive; 非公式 OpenSuSE Build Services package
 ------
@@ -60,8 +93,43 @@ systemctl --user enable onedrive.service
 
 viber; software(snap) "viber-unofficial"はActivationできず。
        viberから web DL(deb)+software のinstall機能. homeコピー＋cloud同期
-       homeしたに .ViberPC/というフォルダができていて、それがコピーされたため起動できた。
-       そのあとQRコードでログインしなおし、同期開始。なぜか日本語入力もできた。
+       homeしたに .ViberPC/というフォルダができていて、それがコピーされたため起動できたと思われる。
+       そのあとQRコードでログインしなおし、同期開始。なぜか日本語入力もできていたが、後日（何度か再起動後）はできなくなっていた。
+
+       →IME（フレームワーク）としてRemixではiBusとなるが、環境設定でfcitxになっている模様なので、fcitx5に切り替えてみたら、日本語入力できた。
+       　ただし、切り替えは、「半角・全角」ではできず、CTRL+spaceで。英語キーボードになってるかも？ いじくってたら、日本語キーボードになる。
+
+
+kazuyoshi@h110 13:02:15 :~
+$ env | grep ibus
+kazuyoshi@h110 13:02:53 :~
+$ env | grep fcitx
+GTK_IM_MODULE=fcitx
+XMODIFIERS=@im=fcitx
+CLUTTER_IM_MODULE=fcitx
+QT_IM_MODULE=fcitx
+
+fcitx5のインストール
+https://freebsd.sing.ne.jp/linux/02/13/02/04.html
+
+ibus[IBus Table]削除(後で)
+
+以下３つをSnapでインストール
+	・Fcitx5
+	・Fcitx5 設定（「キーボードレイアウトビューア」と表示されています）
+	・Mozc for Fcitx 5
+
+起動しないので、autostartに追加する
+
+
+
+https://qiita.com/dimanche/items/ebeefc82c90d03ead81f
+https://hirooka.pro/ubuntu-22-04-lts-japanese-input-ibus-fcitx-mozc/
+
+
+
+
+
 ------
 (参考)
 前回は, home下か /usr/share/applications の .desktopファイルをいじったような気が
@@ -70,14 +138,37 @@ Terminal=true
 TerminalOptions=\s--noclose
 ------
 
+Ubuntu Dockについて
+https://gihyo.jp/admin/serial/01/ubuntu-recipe/0538
+
+Desktop Entryについて
+https://endy-tech.hatenablog.jp/entry/desktop_entry
+
+$ echo $XDG_DATA_DIRS 
+/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+
+
+
+
+
 
 
 (etc.)
-Music; WinMac0001/Musicに上書きコピーした
+Music; WinMac0001/Musicに以下を上書きコピーした（おそらく全てが集まった）
 
 WinMac0001/MP3-Music
 WinMac0001/202006Music
 Windows/Users/kazuyoshi.hayase/Music/iTunes/iTunes\ Media/Music
+
+
+
+その後、
+WinMac0001のフォルダ数を減らすため、WinMac0001/Gomi-SharedMediaフォルダを作り、その下に、
+202006Music, Lyrics, MP3-Music, WMA (*.wmaは読めないので) を移した。
+
+WinMac0001/SharedMediaフォルダを作り、その下に、
+Child, Classic, English, Meditation, Music, Reading+Rakugoとした。それぞれをUbuntu設定でShare(DLNA)する。
+
 
 https://gihyo.jp/admin/serial/01/ubuntu-recipe/0685
 音楽プレイヤーはデフォルトで入っているRhythmbox、DAAPというApple音楽共有はOwnTone。
@@ -85,22 +176,213 @@ https://www.pc-reuse-shop.com/2020/05/15/ubuntu%E3%81%AE%E9%9F%B3%E6%A5%BD-%E5%8
 "EZMP3 player" (iOS)で、ubuntu->iphoneコピーできる?
 
 
+
+
 フォルダの構造；アルバム、のみとする。
 
 .local/share/rhythmbox/
 playlists.xml, rhythmdb.xml
 
-
-
-
 重複ファイルを削除
 sudo apt-get install fdupes
 fdupes -r .
 
+==================================================
+
+[latex]
+ https://texwiki.texjp.org/?Linux%2FLinux%20Mint#texlive
+ texlive-full
+   sudo apt install texlive-full
+ xzdec(tlmgrのため)
+   sudo apt install xzdec
+   tlmgr init-usertree
+
+-----> texliveが古い
+$ tlmgr update --self -all
+(running on Debian, switching to user mode!)
+(see /usr/share/doc/texlive-base/README.tlmgr-on-Debian.md)
+
+tlmgr: Local TeX Live (2021) is older than remote repository (2022).
+Cross release updates are only supported with
+  update-tlmgr-latest(.sh/.exe) --update
+See https://tug.org/texlive/upgrade.html for details.
+------>
+
+https://tex.stackexchange.com/questions/540429/tlmgr-in-ubuntu-20-04-local-tex-live-2019-is-older-than-remote-repository-2
+再インストールで最新化するかパッチ当てか？
+
+sudo apt remove texlive-full
+sudo apt autoremove 
+以下のようなTruetype・Opentypeフォントが削除できないWarningが多数。
+dpkg: 警告: fonts-adf-universalis の削除中、ディレクトリ '/usr/share/fonts/truetype/adf' が空でないため削除できませんでした
+dpkg: 警告: fonts-cabin の削除中、ディレクトリ '/usr/share/fonts/opentype/cabin' が空でないため削除できませんでした
+
+
+ <D> set directories:
+   TEXDIR (the main TeX directory):
+     /usr/local/texlive/2022
+   TEXMFLOCAL (directory for site-wide local files):
+     /usr/local/texlive/texmf-local
+   TEXMFSYSVAR (directory for variable and automatically generated data):
+     /usr/local/texlive/2022/texmf-var
+   TEXMFSYSCONFIG (directory for local config):
+     /usr/local/texlive/2022/texmf-config
+   TEXMFVAR (personal directory for variable and automatically generated data):
+     ~/.texlive2022/texmf-var
+   TEXMFCONFIG (personal directory for local config):
+     ~/.texlive2022/texmf-config
+   TEXMFHOME (directory for user-specific files):
+     ~/texmf
+
+sudo mkdir -p /usr/local/texlive/$(date +%Y)
+sudo chown -R "$USER" /usr/local/texlive
+(mkdir は2023を作ったが、その後の作業では2022で行われた模様)
+mkdir /tmp/texlive
+cd /tmp/texlive
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip
+unzip ./install-tl.zip -d install-tl
+cd install-tl/install-tl-$(date +%Y%m%d)
+perl ./install-tl
+
+
+Add /usr/local/texlive/2022/texmf-dist/doc/man to MANPATH.
+Add /usr/local/texlive/2022/texmf-dist/doc/info to INFOPATH.
+Most importantly, add /usr/local/texlive/2022/bin/x86_64-linux
+to your PATH for current and future sessions.
+Logfile: /usr/local/texlive/2022/install-tl.log
 
 
 
+/etc/profile -> /etc/profile.d/apps-bin-path.sh に以下を追加
+export MANPATH="$MANPATH:/usr/local/texlive/2022/texmf-dist/doc/man"
+export INFOPATH="$INFOPATH:/usr/local/texlive/2022/texmf-dist/doc/info"
+export PATH=/usr/local/texlive/2022/bin/x86_64-linux:$PATH
 
+mv ~/texmf ~/texmf.old.20230226
+
+$ tlmgr init-usertree
+$ tlmgr update --self -all
+で、問題なさそうなことを確認。
+
+anki; web DL(deb)+software のinstall機能.  cloud同期
+  Qt6の方にする。
+  sudo apt install libxcb-xinerama0
+  sudo apt install zstd
+
+  ~/local-installsで作業
+  tar xaf ~/Downloads/anki-2.1.60-linux-qt6.tar.zst
+  cd anki-2.1.60-linux-qt6
+  sudo ./install.sh
+
+
+[printer] 
+ 3つのdriverは、web DL(deb)+software のinstall機能.  xsaneは snap
+　printer driver (mfcj6983cdwpdrv; CUPS, driverless)
+  scanner driver (brscan4)
+  scan-skey driver (brscan-skey)
+
+https://dailylife.pman-bros.com/use_scanner/
+$ sudo brsaneconfig4 -a name=BRW106FD9D440AF model=MFC-J6983CDW ip=192.168.11.2
+結果として、以下のファイルに書き込まれる
+/etc/opt/brother/scanner/brscan4/brsanenetdevice4.cfg
+
+ xsane; software(snap).
+  ->ADFが動作しなかったのでscan-skeyを試す
+
+https://wiki.archlinux.org/title/SANE/Scanner-specific_problems
+https://rohhie.net/ubuntu18-04-brother-scan-key-tool/
+sudo brscan-skey -u h110
+結果として、以下のファイルに書き込まれる
+/opt/brother/scanner/brscan-skey/brscan-skey.config
+
+TIFFをPDF変換
+sudo apt install libtiff-tools
+/opt/brothr以下のファイルを編集・追加。
+→とりあえず、両面ADFで動くが、向きなどは固定されている。
+
+
+・brscan-skey は常駐で動く。-tをつければ止まる。が、いちいち面倒なので、
+・サービスとして起動させるようにする。
+
+brscan-key ユーザを作成
+sudo useradd --system --user-group brscan-key
+sudo mkdir /home/brscan-key
+sudo chown brscan-key:brscan-key /home/brscan-key
+sudo -u brscan-key tiff2pdf
+
+サービス定義のファイルを作成
+/lib/systemd/system/brscan_key.service
+
+デーモンで動くようにする
+sudo systemctl daemon-reload
+sudo systemctl enable brscan_key.service
+sudo systemctl start brscan_key.service
+
+[Todo] https://github.com/arjunkc/scanner-scripts
+brotherのscriptを置き換えるpythonスクリプトらしい。
+後で。
+
+[ToDo?] もしくはvirtualbox のwin10をネットワークに接続させる？
+https://tutorialmore.com/questions-351408.htm
+printerだけつなぐことができるらしい
+-> IP指定で見つけることができた。
+　その後、Brotherからフルパッケージインストール。その後、IP指定でやり直し。
+　（コピーという名称付きのPrinterができてしまったが、そのままにしておく。）
+　　
+
+-------OCR = Tessearct ----------------
+Alfresco (ECM,BPM,Governance) に渡すためにOCRをしているようです。
+Tesseractと日本語データを入れて、、、とあったので、やりかけたが、Alfrescoの設定などもやらないといけないので、
+Tesseractと日本語データを入れたところで止めた。
+
+Ubuntu 22.04 LTSへの最新版Tesseractのインストール
+https://self-development.info/ubuntu-22-04-lts%e3%81%b8%e3%81%ae%e6%9c%80%e6%96%b0%e7%89%88tesseract%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab/
+sudo add-apt-repository ppa:alex-p/tesseract-ocr5
+sudo apt-get update
+sudo apt info tesseract-ocr 
+sudo apt install -y tesseract-ocr
+
+Tesseractで日本語をOCR（文字認識）する方法
+https://self-development.info/tesseract%E3%81%A7%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%82%92ocr%EF%BC%88%E6%96%87%E5%AD%97%E8%AA%8D%E8%AD%98%EF%BC%89%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
+sudo apt search tesseract-ocr-jpn 
+sudo apt-get update
+sudo apt install -y tesseract-ocr-jpn
+sudo apt install -y tesseract-ocr-jpn-vert
+
+[Backup]
+https://qastack.jp/ubuntu/7809/how-to-back-up-my-entire-system
+
+---------- packageのsave, restore ----------
+-- save
+dpkg --get-selections | grep -v deinstall > ubuntu-files
+-- restore
+sudo dpkg --set-selections <./ubuntu-files (will set it up and)
+
+apt-get -y update
+apt-get dselect-upgrade
+---------- packageのsave, restore ----------
+
+ - VirtualBoxは管理ツールのExportで。
+  Backup:VirtualBox-Backup/h110
+
+ - Ubuntuの標準バックアップで、homeをバックアップ
+ 　無視するフォルダーを、ゴミ箱, Downloads, MEGAsync, OneDrive, VirtualBox, .cache とする
+  Backup:ubuntu-backup/h110
+
+ - systemはTimeshiftを使ってみる
+https://pc.watch.impress.co.jp/docs/column/ubuntu/1475734.html
+   Timeshift; software(snap). 
+
+--- /media/kazuyoshi/Backup ----------------------------------------------------
+  241.4 GiB [##########] /VBVM                                                  
+  182.0 GiB [#######   ] /CZ-H110M
+   65.0 GiB [##        ] /VirtualBox-Backup
+   25.0 GiB [#         ] /timeshift
+   20.6 GiB [          ] /ubuntu-backup
+    7.6 GiB [          ]  kazuyoshi2.tar.bz2
+    5.0 GiB [          ] /VM-H110M
+   60.0 KiB [          ]  ubuntu-files.20230227
+e  16.0 KiB [          ] /lost+found
 
 
 [home]
@@ -178,5 +460,39 @@ tar cf - $d | (cd )
 ======================================================
 
 
+[WOL]
+sudo apt install ethtool
+sudo ethtool enoXXXX
+sudo ethtool -s enoXXXX wol g
 
-[/etc/passwd,groups]
+WOLの設定を永続化
+https://lab4ict.com/system/archives/1430
+
+Bing の回答
+
+そうですか。サービスでやりたい場合は、systemdを使ってカスタムサービスを作成することができます。以下の手順に従ってください。
+------------------------------
+/etc/systemd/system/wol.serviceというファイルを作成します。以下のように内容を書きます。
+[Unit]
+Description=Enable Wake-on-LAN
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/ethtool -s enp2s0 wol g
+
+[Install]
+WantedBy=multi-user.target
+systemdにサービスを登録します。ターミナルで以下のコマンドを実行します。
+sudo systemctl daemon-reload
+sudo systemctl enable wol.service
+サービスを起動します。ターミナルで以下のコマンドを実行します。
+sudo systemctl start wol.service
+これで、サービスでWOLを有効化することができました。再起動後も自動的にWOLが有効になります。
+------------------------------
+
+
+
+
+
+

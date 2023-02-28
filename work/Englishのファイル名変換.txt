@@ -1,0 +1,8 @@
+Englishのファイル名変換
+
+cp Z会\ -\ NEW\ TREASURE\ STAGE\ 4-[67]/*Lesson\ 1[01]*\ \[*.mp3 PList/
+rm *本文*ポーズ*
+rm *本文*True*
+
+#cp Z会\ -\ NEW\ TREASURE\ STAGE\ 4-[67]/*Lesson\ 1[01]*\ \[*単語.mp3 PList/
+rename  's/^.*Lesson/Lesson/' *mp3
