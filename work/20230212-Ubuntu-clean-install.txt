@@ -1,8 +1,35 @@
 Ubuntu clean install.txt
 
 - Todo
+G Chrome; web DL(deb)+software のinstall機能. 
+
+Waydroid; Android in a linux
+https://waydro.id/
+https://docs.waydro.id/usage/install-on-desktops
+
+sudo apt install curl ca-certificates -y
+curl https://repo.waydro.id | sudo bash
+sudo apt install waydroid -y
+
+RakutenTV のDLデータ
+/home/kazuyoshi/.local/share/waydroid/data/media/0/Android/data/jp.co.rakuten.video.showtimeplayer
+
+
+
+
 Alfresco(ECM; Enterprise contents management, BPM; Business Process Management)
 Lyx (texのワープロUI)
+MS office; web DL(deb)+software のinstall機能. 
+ https://ubunlog.com/ja/instala-microsoft-office-en-ubuntu-y-sin-wine/?_gl=1%2A1mm8ozq%2A_ga%2Ayw1wlu1qeu56dzd2sg1krlhtwtkzeuy2udfmt2g4odnaas1nyw1beddrn3b0ddftmkk2rzf2zkzuukt6qzj6uzlrz0m
+ https://sourceforge.net/projects/microsoftonlineapps/postdownload
+
+MS font
+https://senooken.jp/post/2020/04/13/4010/
+
+$ pwd
+/media/kazuyoshi/Windows/Windows/Fonts
+$ sudo cp msgothic.ttc msmincho.ttc /usr/local/share/fonts/
+
 
 
 
@@ -126,8 +153,19 @@ ibus[IBus Table]削除(後で)
 https://qiita.com/dimanche/items/ebeefc82c90d03ead81f
 https://hirooka.pro/ubuntu-22-04-lts-japanese-input-ibus-fcitx-mozc/
 
+=================-
+何度か再起動・アップデートしたら、また、日本語入力が使えなくなった。
 
+https://gihyo.jp/admin/serial/01/ubuntu-recipe/0717
+この記事の"Waylandとインプットメソッド"に書いてあるImput Method Panelをインストールしてみる。
 
+また、im-config で全て fcitx5に変更する。
+$ im-config -a
+別画面が出てきて、リストされ、そのあと、Yes（設定する）を選んで、fcitx5にした。
+
+ibus[IBus Table]削除(後で)
+$ sudo apt remove ibus-mozc
+$ sudo apt remove ibus
 
 
 ------
@@ -147,6 +185,23 @@ https://endy-tech.hatenablog.jp/entry/desktop_entry
 $ echo $XDG_DATA_DIRS 
 /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 
+=-=-=-=-=-=-=-=-=-=-=-=-
+AppImageという形式もあったので試す。
+
+$ ./viber.AppImage 
+dlopen(): error loading libfuse.so.2
+
+AppImages require FUSE to run. 
+You might still be able to extract the contents of this AppImage 
+if you run it with the --appimage-extract option. 
+See https://github.com/AppImage/AppImageKit/wiki/FUSE 
+for more information
+
+動かず、エラーが出たので、libfuse2を入れる。
+https://docs.appimage.org/user-guide/troubleshooting/fuse.html
+> sudo apt install libfuse2
+
+やはり、日本語入力はできない。
 
 
 
@@ -187,7 +242,14 @@ playlists.xml, rhythmdb.xml
 sudo apt-get install fdupes
 fdupes -r .
 
-==================================================
+[haruka English]
+- AsunderでRip
+- ~/Music から /media/kazuyoshi/WinMac0001/SharedMedia/English ヘコピー(VLCで見えるようになるはず)
+- /mnt/disk1_pt1/English　に、PlayListっぽく置く。
+
+============================
+
+
 
 [latex]
  https://texwiki.texjp.org/?Linux%2FLinux%20Mint#texlive
@@ -274,6 +336,60 @@ anki; web DL(deb)+software のinstall機能.  cloud同期
   cd anki-2.1.60-linux-qt6
   sudo ./install.sh
 
+java; apt install
+
+$ java
+コマンド 'java' が見つかりません。次の方法でインストールできます:
+sudo apt install openjdk-11-jre-headless  # version 11.0.18+10-0ubuntu1~22.04, or
+sudo apt install default-jre              # version 2:1.11-72build2
+sudo apt install openjdk-17-jre-headless  # version 17.0.6+10-0ubuntu1~22.04
+sudo apt install openjdk-18-jre-headless  # version 18.0.2+9-2~22.04
+sudo apt install openjdk-19-jre-headless  # version 19.0.2+7-0ubuntu3~22.04
+sudo apt install openjdk-8-jre-headless   # version 8u362-ga-0ubuntu1~22.04
+
+--> 19.
+$ sudo apt install openjdk-19-jre-headless  # version 19.0.2+7-0ubuntu3~22.04
+$ sudo apt install openjdk-19-jdk-headless
+
+
+marketspeed; DL+wine installer
+ ms2はntlm_check_version ntlm_auth was not foundで起動せず
+$ wine "C:\Program Files (x86)\MarketSpeed\MarketSpeed\MarketSpeed.exe"
+もしくは、デスクトップアイコンの起動を許可し、起動。
+
+
+
+
+wine (NG; winetricks)
+ https://japan.zdnet.com/article/35199371/
+
+I see. To install Wine on Ubuntu 22.04, you need to follow these steps123:
+
+Check installed architectures by running dpkg --print-architecture and dpkg --print-foreign-architectures in the terminal. If you don’t see i386, you need to add it by running sudo dpkg --add-architecture i386.
+Download and add the WineHQ repository key by running wget -nc https://dl.winehq.org/wine-builds/winehq.key && sudo apt-key add winehq.key.
+Download the WineHQ sources file by running sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak && sudo wget -O /etc/apt/sources.list https://dl.winehq.org/wine-builds/ubuntu/dists/impish/main/binary-amd64/Packages.
+Update the package database by running sudo apt update.
+Install Wine by running sudo apt install --install-recommends winehq-stable. You can also choose other versions such as winehq-devel or winehq-staging.
+Verify the installation succeeded by running wine --version. You should see something like wine-6.0.1.
+Configure Wine by running winecfg. If installing mono or gecko is offered, accept the offer. When prompted, set your preferred version of Windows.
+That’s it! You have successfully installed Wine on your Ubuntu device. Now you can run Windows applications on Ubuntu 22.04 with Wine.
+
+https://wiki.winehq.org/Ubuntu
+
+$ dpkg --print-architecture
+amd64
+$ dpkg --print-foreign-architectures
+i386
+$ cd local-installs/
+$ wget -nc https://dl.winehq.org/wine-builds/winehq.key && sudo apt-key add winehq.key
+$ sudo cp winehq.key /etc/apt/keyrings/winehq-archive.key
+$ sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+$ sudo apt update
+$ sudo apt install --install-recommends winehq-stable
+$ winecfg
+wine mono
+windows10
+
 
 [printer] 
  3つのdriverは、web DL(deb)+software のinstall機能.  xsaneは snap
@@ -322,13 +438,17 @@ sudo systemctl start brscan_key.service
 brotherのscriptを置き換えるpythonスクリプトらしい。
 後で。
 
-[ToDo?] もしくはvirtualbox のwin10をネットワークに接続させる？
+[ToDo?] もしくはvirtualbox のwin10をネットワークに接続させる？(bridged network)
 https://tutorialmore.com/questions-351408.htm
 printerだけつなぐことができるらしい
 -> IP指定で見つけることができた。
 　その後、Brotherからフルパッケージインストール。その後、IP指定でやり直し。
 　（コピーという名称付きのPrinterができてしまったが、そのままにしておく。）
-　　
+
+-> 後日、再起動したら、見えなくなったので、ブリッジネットワーク方式とすることにした。
+(1) IP指定等で登録してあったプリンター (2つ) を削除し
+(2) VMをシャットダウンし、VirtualBoxの当該VM(win10-clean)のネットワーク設定でNATからブリッジネットワークに変更。
+(3) printer登録でネットワーク検索したら見えたので、普通に登録。
 
 -------OCR = Tessearct ----------------
 Alfresco (ECM,BPM,Governance) に渡すためにOCRをしているようです。
@@ -458,6 +578,8 @@ for d in (Desktop Documents Pictures Public Templates) \
 do\
 tar cf - $d | (cd )
 ======================================================
+
+
 
 
 [WOL]
