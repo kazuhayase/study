@@ -161,12 +161,15 @@ https://gihyo.jp/admin/serial/01/ubuntu-recipe/0717
 
 また、im-config で全て fcitx5に変更する。
 $ im-config -a
-別画面が出てきて、リストされ、そのあと、Yes（設定する）を選んで、fcitx5にした。
+別画面が出てきて、リストさexiれ、そのあと、Yes（設定する）を選んで、fcitx5にした。
 
 ibus[IBus Table]削除(後で)
 $ sudo apt remove ibus-mozc
 $ sudo apt remove ibus
 
+--> 戻す
+sudo apt install ibus
+sudo apt install ibus-mozc
 
 ------
 (参考)
