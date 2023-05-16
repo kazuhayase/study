@@ -272,7 +272,7 @@ Cross release updates are only supported with
   update-tlmgr-latest(.sh/.exe) --update
 See https://tug.org/texlive/upgrade.html for details.
 ------>
-
+---- kazuNote kokomade ----
 https://tex.stackexchange.com/questions/540429/tlmgr-in-ubuntu-20-04-local-tex-live-2019-is-older-than-remote-repository-2
 再インストールで最新化するかパッチ当てか？
 
