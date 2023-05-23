@@ -1,8 +1,11 @@
 20230508-Ubuntu-Note
 
 ### Todo
+- gnome-tweaks; snap
 
-* hibernate
+### Done
+
+- hibernate
     https://ubuntuhandbook.org/index.php/2021/08/enable-hibernate-ubuntu-21-10/
 
 $ df -h
