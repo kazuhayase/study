@@ -1,6 +1,9 @@
 Ubuntu clean install.txt
 
 - Todo
+emacs; 
+pdftk; sudo apt install pdftk-java
+
 G Chrome; web DL(deb)+software のinstall機能. 
 
 Waydroid; Android in a linux
