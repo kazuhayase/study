@@ -1,0 +1,40 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+
+\input{packages}
+\input{config}
+
+\begin{document}
+\title{標準生命表2018\citep{lifetable2018}}
+
+\section*{生保標準生命表2018(死亡保険用)}
+\subsection*{作成過程概要}
+
+\bf{基礎データ} --- [[若年齢部分の補整]] --- \bf{粗死亡率} 
+--- [[死亡率改善の反映\footnote{2007では行っていない}]] --- \bf{補整前死亡率} --- [[1,2,3次補整]] --- \bf{生保標準生命表}
+
+\subsection*{粗死亡率の決定}
+
+\begin{itemize}
+    \item 基礎データ: 生命保険協会がまとめた生命保険会社29社の実績。①有診査　男女別、②経過年数30年以下
+    \item 標準死亡率に求められる死亡率の安定性・安全性の確保及び経験死亡率の選択効果の実態を勘案し、観察年度・截断年数を以下のように設定
+    \begin{itemize}
+        \item 観察年度; 
+        \begin{itemize}
+            \item 3観察年度. ただし、特定の年齢で死亡率が大きく上振れしている東日本大震災の影響を除くため、2008,2009,2011観察年度とした。
+            \item 若年齢(男子17, 女子27以下)の有診査契約は経過契約件数が十分ではなく、データの安定性・信頼性を考慮し、6観察年度 (2005--2009, 2011)の6観察年度の有無診査合計。3観察年度と6観察年度の接続は、「有診査粗死亡率の95％信頼区間上限」が「有診査死亡率の130％」を上回る年齢。
+            \item 高年齢（81歳以上）
+        \end{itemize}
+        
+        \item 截断年数; 選択効果の排除を目的とする。死亡率の安定性確保のため、截断後の件数が50％以上となるよう、男女別・年齢群団別に1〜10年截断とした。
+        前回(2007)は5年までとしていたが、実績より経過10年までは選択効果が認められるため。
+    \end{itemize}
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

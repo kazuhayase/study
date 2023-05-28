@@ -2,59 +2,10 @@
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[
-]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
-\usepackage{longtable,booktabs}
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\documentclass[]{article}
 
-\author{}
-\date{}
+\input{packages}
+\input{config}
 
 \begin{document}
 
@@ -213,7 +164,8 @@
       保険期間が長期にわたること
     \item
       利源分析等を参考に各基礎率の十分性についても検証し、
-    \item
+    
+      \item
       その他の営業保険料決定の際に考慮すべき点とのバランスにも留意する必要がある。
     \end{itemize}
   \end{itemize}
@@ -225,9 +177,7 @@
   \item
     営業保険料の計算基礎率は、各社が各社の判断により決定すべきものであり、
 
-    \begin{itemize}
-    \tightlist
-    \item
+  \item
       必ずしも標準責任準備金の評価基礎率（以下標準基礎率）にあわせる必要はない。
 
       \begin{itemize}
@@ -242,32 +192,27 @@
         \item
           保険期間の途中では積立負担が発生する。
 
-          \begin{itemize}
-          \tightlist
           \item
             営業保険料およびその内訳である純保険料と対応しない
           \item
             その保険群団でまかなえない場合は、立て替えることになる。
 
-            \begin{itemize}
-            \tightlist
-            \item
+                \item
               他の保険群団の剰余
             \item
               会社勘定（内部留保）
-            \end{itemize}
-          \item
+              \item
             恒常的に立替えが必要な状態は好ましくないと言える。
           \item
             内部留保の水準から容認できる範囲の初期投資
           \item
             結果として保険料の不足を引き起こす恐れ
-          \end{itemize}
+          
         \end{itemize}
       \end{itemize}
     \item
       アクチェアリーとしで慎重に検討する必要がある。
-    \end{itemize}
+    
   \end{itemize}
 \end{itemize}
 
@@ -1477,7 +1422,7 @@ x
 
 \[
 \frac{1.5}{12}
-\frac{\={A}_x+\alpha+\gamma \"{a}_{x:m\urcorner{}}^{(12)}+\gamma' _{m|}\"{a}_x}{(\"{a}^{(12)}_{x:10\urcorner}+1.5\cdot _{10|}\"{a}^{(12)}_{x:m-10\urcorner})(1-\beta)}
+\frac{\Ax*{x}+\alpha+\gamma \ax**{\endow{x}{m}}[(12)]+\gamma' \ax**[m|]{x}}{(\ax**{\endow{x}{10}}[(12)]+1.5\cdot\ax*[10|]{\endow{x}{m-10}}[(12)])(1-\beta)}
 \]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -2118,19 +2063,19 @@ x
 \subsubsection{H11 問1 (6)}\label{h11-ux554f1-6}}
 
 次の①～⑤ or (1) -- (5) を適当な語句、数値または算式で埋めよ。
-\(p\)をある商品の保険料率、\(𝑓(𝑝)\)を保険料率 \(p\)
-に対する新契約高とし、新契約に係る収入保険料が \(𝑝 \times 𝑓(𝑝)\)
-により表されるものとする。このとき、価格弾力性\(𝐸(𝑝)\)は保険料率の変動率に対する新契約高
+\(p\)をある商品の保険料率、\(f(p)\)を保険料率 \(p\)
+に対する新契約高とし、新契約に係る収入保険料が \(p \times f(p)\)
+により表されるものとする。このとき、価格弾力性\(E(p)\)は保険料率の変動率に対する新契約高
 の変動率として、次のように表される。
 
-\[𝐸(𝑝) =  (1) \]
+\[E(p) =  \cir{1} \]
 
 また、保険料率の変動による新契約に係る収入保険料の変動率は、価格弾力性
-\(𝐸(𝑝)\) を用いて、次のように表される。
+\(E(p)\) を用いて、次のように表される。
 
-\[\frac{𝑑\{𝑝 \times 𝑓(𝑝)\} }{𝑑𝑝}= (2)\]
+\[\frac{d\{p \times f(p)\} }{dp}= \cir{2}\]
 
-この式から､ \(𝐸(𝑝) \gt (3)\) となる場合には、(4)
+この式から､ \(E(p) > \cir{3}\) となる場合には、(4)
 の引き下げにより､新契約に係る収入保険料は (5) することが分かる。
 
 ===
@@ -2196,7 +2141,7 @@ x
 =\frac{1+2p}{(p+p^2)^2}\times p(p+p^2)
 = 1 + \frac{p}{1+p}\]
 
-このとき \(E(p)\gt 1\)
+このとき \(E(p) > 1\)
 より、保険料引下げによる収入減の効果より保険料引下げによる新契約増の効果がおおきくなり、保険料を引き下げた方が収入保険料は増加する。
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -2232,8 +2177,8 @@ WBでは(3)となっていた}\label{h22-ux554f1-4-wbux3067ux306f3ux3068ux306aux
   \[\lim_{p\to+0}f(p)=+\infty, \lim_{p\to+0}g(p)=1\] となるため
 \item
   \[E(p)=-\frac{dg(p)}{dp}\cdot\frac{p}{g(p)}=\frac{2p}{1-p^2}\]なので、
-  \[E(p)\lt 1 \Leftrightarrow\frac{2p}{1-p^2}\Leftrightarrow p\lt\sqrt{2}-1\]
-  よって、求めるpの範囲は、\(0\lt p \lt \sqrt{2}-1\)
+  \[E(p) < 1 \Leftrightarrow\frac{2p}{1-p^2}\Leftrightarrow p < \sqrt{2}-1\]
+  よって、求めるpの範囲は、\(0 < p < \sqrt{2}-1\)
 \end{enumerate}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
