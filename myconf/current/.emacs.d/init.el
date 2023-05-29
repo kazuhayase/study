@@ -115,8 +115,8 @@
 		(add-to-list 'TeX-command-list
 			     '("Xdg-open" "xdg-open %s.pdf" TeX-run-discard-or-function t t :help "Run xdg-open"))
 		(add-to-list 'TeX-command-list
-		;	     '("Evince" "TeX-evince-sync-view" TeX-run-discard-or-function t t :help "Forward search with Evince"))
-                             '("Evince" "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"evince -i %%{page+1} %%{output}\"" TeX-run-discard-or-function t t :help "Forward search with Evince"))
+			     '("Evince" "TeX-evince-sync-view" TeX-run-discard-or-function t t :help "Forward search with Evince"))
+                ;             '("Evince" "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"evince -i %%{page+1} %%{output}\"" TeX-run-discard-or-function t t :help "Forward search with Evince"))
 		(add-to-list 'TeX-command-list
 			     '("Fwdevince" "fwdevince %s.pdf %n \"%b\"" TeX-run-discard-or-function t t :help "Forward search with fwdevince"))
 		(add-to-list 'TeX-command-list
