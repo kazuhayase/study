@@ -1,8 +1,17 @@
 Ubuntu clean install.txt
 
 - Todo
-emacs; 
 pdftk; sudo apt install pdftk-java
+
+emacs; snap
+ - leaf
+ - yatex
+ - magit
+ - desktop
+ - reftex
+ - company
+
+emacs-mozc; sudo apt install emacs-mozc
 
 G Chrome; web DL(deb)+software のinstall機能. 
 

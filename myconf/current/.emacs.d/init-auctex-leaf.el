@@ -71,6 +71,7 @@
   :tag "builtin"
   :added "2023-05-29")
 
+
 (require 'tex-jp)
 (require 'tex-wizard)
 
@@ -83,7 +84,8 @@
 	 (TeX-engine quote uptex)
 	 (TeX-PDF-from-DVI . "Dvipdfmx")
 	 (TeX-view-program-selection quote
-				     ((output-pdf "Evince")))
+				     ((output-pdf "Evince")
+                                      (output-dvi "Evince")))
 	 (TeX-source-correlate-method quote synctex)
 	 (TeX-source-correlate-start-server . t)
 	 (TeX-source-correlate-mode . t)
