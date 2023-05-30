@@ -1,0 +1,6 @@
+[user]
+	name = Kazuyoshi Hayase
+	email = kazuyoshi.hayase@jcom.home.ne.jp
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
