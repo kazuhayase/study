@@ -99,8 +99,8 @@
   :tag "builtin"
   :added "2023-05-29")
 
-(require 'yatex)
-(require 'reftex)
+;;(require 'yatex)
+;;(require 'reftex)
 ;;(require 'company)
 
 (leaf leaf-convert
@@ -149,7 +149,7 @@
     (setq YaTeX-latex-message-code 'utf-8)
     (setq YaTeX-use-LaTeX2e t)
     (setq YaTeX-use-AMS-LaTeX t)
-    (setq tex-command "/usr/local/texlive/2022/bin/x86_64-linux/latexmk")
+    (setq tex-command "/usr/local/texlive/current/bin/x86_64-linux/latexmk")
     (setq tex-pdfview-command "evince")
     (auto-fill-mode 0)
     (set
