@@ -1,4 +1,3 @@
-
 ;; this enables this running method
 ;;   emacs -q -l ~/.debug.emacs.d/{{pkg}}/init.el
 (eval-and-compile
@@ -98,6 +97,7 @@
   :doc "save partial status of Emacs when killed"
   :tag "builtin"
   :added "2023-05-29")
+
 
 ;;(require 'yatex)
 ;;(require 'reftex)
