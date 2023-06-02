@@ -48,7 +48,9 @@
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
-  :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+  :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
+  :after
+  (load custome-file))
 
 (leaf autorevert
   :doc "revert buffers when files on disk change"
