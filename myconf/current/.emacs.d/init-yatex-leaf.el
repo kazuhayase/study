@@ -45,10 +45,14 @@
   :bind (("C-c e" . macrostep-expand)))
 
 ;; customizations written in custom.el
-(leaf cus-edit
-  :doc "tools for customizing Emacs and Lisp packages"
-  :tag "builtin" "faces" "help"
-  :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+;; (leaf cus-edit
+;;   :doc "tools for customizing Emacs and Lisp packages"
+;;   :tag "builtin" "faces" "help"
+;;   :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
 
 (leaf autorevert
   :doc "revert buffers when files on disk change"
