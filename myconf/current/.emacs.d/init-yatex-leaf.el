@@ -62,6 +62,27 @@
 
 ;; from older .emacs.d (before leaf)
 
+(leaf migemo
+  :doc "Japanese incremental search through dynamic pattern expansion"
+  :req "cl-lib-0.5"
+  :url "https://github.com/emacs-jp/migemo"
+  :added "2023-06-03"
+  :ensure t)
+
+(leaf leaf-convert
+  :require migemo
+  :setq ((migemo-command . "cmigemo")
+	 (migemo-options quote
+			 ("-q" "--emacs"))
+	 (migemo-dictionary . "/usr/share/cmigemo/utf-8/migemo-dict")
+	 (migemo-user-dictionary)
+	 (migemo-regex-dictionary)
+	 (migemo-coding-system quote utf-8-unix))
+  :config
+  (load-library "migemo")
+  (migemo-init))
+
+
 (leaf mozc
   :doc "minor mode to input Japanese with Mozc"
   :tag "input method" "multilingual" "mule"
