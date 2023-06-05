@@ -11,6 +11,10 @@ emacs; snap
  - reftex
  - company
  - font
+ - migemo 
+   + cmigemo; sudo apt install cmigemo
+
+
  (set-face-attribute 'default nil :family "Noto Sans CJK JP" :weight 'regular)
 上記の方法は、Emacsで"Noto Sans CJK JP" "Regular"フォントを使用するための最も簡単な方法の1つです。他にも、Emacsのカスタマイズ画面を使用して、フォントを変更することができます。EmacsでM-x customize-face RET default RETと入力すると、デフォルトのフェイスのカスタマイズ画面が表示されます。ここで、FamilyとWeightの設定を変更して、“Noto Sans CJK JP” "Regular"フォントを選択することができます。設定が完了したら、StateメニューからSave for Future Sessionsを選択して、設定を保存します。
   + これに付け加えて、Height を 100 とした.
