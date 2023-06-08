@@ -25,7 +25,43 @@ Weight: regular
 
 
 
-emacs-mozc; sudo apt install emacs-mozc
+emacs-mozc-bin; sudo apt install emacs-mozc-bin
+
+--------------------------------------
+sudo apt install emacs-mozc-bin
+パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています... 完了        
+状態情報を読み取っています... 完了        
+以下のパッケージが新たにインストールされます:
+  emacs-mozc-bin
+アップグレード: 0 個、新規インストール: 1 個、削除: 0 個、保留: 5 個。
+160 kB のアーカイブを取得する必要があります。
+この操作後に追加で 569 kB のディスク容量が消費されます。
+取得:1 http://jp.archive.ubuntu.com/ubuntu jammy/universe amd64 emacs-mozc-bin amd64 2.26.4220.100+dfsg-5.2 [160 kB]
+160 kB を 3秒 で取得しました (59.5 kB/s)           
+以前に未選択のパッケージ emacs-mozc-bin を選択しています。
+(データベースを読み込んでいます ... 現在 222377 個のファイルとディレクトリがイン
+ストールされています。)
+--------------------------------------
+
+
+* emacs-mozc; sudo apt install emacs-mozcとやってしまうと snap emacs の他に、普通にemacs他のパッケージが入ってしまう。いろいろと面倒なので、emacs-mozc-binだけにしておけば、mozc-temp で必要とされる mozc-helper が入るらしい
+
+--------------------------------------
+$ sudo apt install emacs-mozc
+パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています... 完了        
+状態情報を読み取っています... 完了        
+以下の追加パッケージがインストールされます:
+  emacs emacs-bin-common emacs-common emacs-el emacs-gtk emacs-mozc-bin
+  libm17n-0 libotf1 m17n-db
+提案パッケージ:
+  mailutils emacs-common-non-dfsg ncurses-term m17n-docs gawk
+以下のパッケージが新たにインストールされます:
+  emacs emacs-bin-common emacs-common emacs-el emacs-gtk emacs-mozc
+  emacs-mozc-bin libm17n-0 libotf1 m17n-db
+--------------------------------------
+
 
 G Chrome; web DL(deb)+software のinstall機能. 
 
