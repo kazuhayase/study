@@ -181,6 +181,29 @@
      (make-local-variable 'company-backends)
      '(company-tabnine))))
 
+(leaf latex-math-preview
+  :doc "preview LaTeX mathematical expressions."
+  :tag "tex" "latex"
+  :url "https://gitlab.com/latex-math-preview/latex-math-preview"
+  :added "2023-06-09"
+  :ensure t)
+
+; https://www.emacswiki.org/emacs/LaTeXMathPreview
+
+;(autoload 'latex-math-preview-expression "latex-math-preview" nil t)
+;(autoload 'latex-math-preview-insert-symbol "latex-math-preview" nil t)
+;(autoload 'latex-math-preview-save-image-file "latex-math-preview" nil t)
+;(autoload 'latex-math-preview-beamer-frame "latex-math-preview" nil t)
+
+(add-hook 'yatex-mode-hook
+         '(lambda ()
+         (YaTeX-define-key "\C-p" 'latex-math-preview-expression)
+;         (YaTeX-define-key "\C-p" 'latex-math-preview-save-image-file)
+         (YaTeX-define-key "\C-j" 'latex-math-preview-insert-symbol)
+         (YaTeX-define-key "\C-j j" 'latex-math-preview-last-symbol-again)
+         (YaTeX-define-key "\C-b" 'latex-math-preview-beamer-frame)))
+(setq latex-math-preview-in-math-mode-p-func 'YaTeX-in-math-mode-p)
+
 (leaf default
   :bind (("C-h" . delete-backward-char)
          ("C-x g" . magit-status)
