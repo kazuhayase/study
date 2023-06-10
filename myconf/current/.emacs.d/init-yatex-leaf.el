@@ -190,19 +190,32 @@
 
 ; https://www.emacswiki.org/emacs/LaTeXMathPreview
 
-;(autoload 'latex-math-preview-expression "latex-math-preview" nil t)
-;(autoload 'latex-math-preview-insert-symbol "latex-math-preview" nil t)
-;(autoload 'latex-math-preview-save-image-file "latex-math-preview" nil t)
-;(autoload 'latex-math-preview-beamer-frame "latex-math-preview" nil t)
-
 (add-hook 'yatex-mode-hook
          '(lambda ()
          (YaTeX-define-key "\C-p" 'latex-math-preview-expression)
 ;         (YaTeX-define-key "\C-p" 'latex-math-preview-save-image-file)
          (YaTeX-define-key "\C-j" 'latex-math-preview-insert-symbol)
-         (YaTeX-define-key "\C-j j" 'latex-math-preview-last-symbol-again)
+;         (YaTeX-define-key "\C-j" 'latex-math-preview-last-symbol-again)
          (YaTeX-define-key "\C-b" 'latex-math-preview-beamer-frame)))
 (setq latex-math-preview-in-math-mode-p-func 'YaTeX-in-math-mode-p)
+
+; https://qiita.com/sinnershiki/items/73eff367bf0803ab585f#fn1
+
+(leaf popwin
+  :doc "Popup Window Manager"
+  :req "emacs-24.3"
+  :tag "convenience" "emacs>=24.3"
+  :url "https://github.com/emacsorphanage/popwin"
+  :added "2023-06-10"
+  :emacs>= 24.3
+  :ensure t)
+
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+(setq popwin:popup-window-position 'bottom)
+;(push '("*quickrun*") popwin:special-display-config)
+;(push '("*Google Translate*") popwin:special-display-config)
+(push '("*latex-math-preview-expression*") popwin:special-display-config)
 
 (leaf default
   :bind (("C-h" . delete-backward-char)

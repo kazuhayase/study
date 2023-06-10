@@ -2,6 +2,7 @@ Ubuntu clean install.txt
 
 - Todo
 pdftk; sudo apt install pdftk-java
+unizon; sync mega and onedrive
 
 emacs; snap
  - leaf
