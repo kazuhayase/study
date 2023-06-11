@@ -82,7 +82,6 @@
   (load-library "migemo")
   (migemo-init))
 
-
 (leaf mozc
   :doc "minor mode to input Japanese with Mozc"
   :tag "input method" "multilingual" "mule"
@@ -211,6 +210,7 @@
   :ensure t)
 
 (require 'popwin)
+(popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
 (setq popwin:popup-window-position 'bottom)
 ;(push '("*quickrun*") popwin:special-display-config)
