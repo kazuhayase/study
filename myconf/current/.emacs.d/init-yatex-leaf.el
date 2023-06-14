@@ -199,23 +199,23 @@
 (setq latex-math-preview-in-math-mode-p-func 'YaTeX-in-math-mode-p)
 
 ; https://qiita.com/sinnershiki/items/73eff367bf0803ab585f#fn1
+;; completion が出て来なくなったので、一旦、comment out
+;; (leaf popwin
+;;   :doc "Popup Window Manager"
+;;   :req "emacs-24.3"
+;;   :tag "convenience" "emacs>=24.3"
+;;   :url "https://github.com/emacsorphanage/popwin"
+;;   :added "2023-06-10"
+;;   :emacs>= 24.3
+;;   :ensure t)
 
-(leaf popwin
-  :doc "Popup Window Manager"
-  :req "emacs-24.3"
-  :tag "convenience" "emacs>=24.3"
-  :url "https://github.com/emacsorphanage/popwin"
-  :added "2023-06-10"
-  :emacs>= 24.3
-  :ensure t)
-
-(require 'popwin)
-(popwin-mode 1)
-(setq display-buffer-function 'popwin:display-buffer)
-(setq popwin:popup-window-position 'bottom)
-;(push '("*quickrun*") popwin:special-display-config)
-;(push '("*Google Translate*") popwin:special-display-config)
-(push '("*latex-math-preview-expression*") popwin:special-display-config)
+;; (require 'popwin)
+;; ;(popwin-mode 1)
+;; (setq display-buffer-function 'popwin:display-buffer)
+;; (setq popwin:popup-window-position 'bottom)
+;; ;(push '("*quickrun*") popwin:special-display-config)
+;; ;(push '("*Google Translate*") popwin:special-display-config)
+;; (push '("*latex-math-preview-expression*") popwin:special-display-config)
 
 (leaf default
   :bind (("C-h" . delete-backward-char)
