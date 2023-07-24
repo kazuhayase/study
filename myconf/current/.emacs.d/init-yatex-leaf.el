@@ -217,6 +217,34 @@
 ;; ;(push '("*Google Translate*") popwin:special-display-config)
 ;; (push '("*latex-math-preview-expression*") popwin:special-display-config)
 
+;; ess for R
+;; -- for ess-mode
+(leaf leaf-convert
+  :commands R-mode
+  :config
+  (setq auto-mode-alist (append
+			 '(("\\.r$" . R-mode)
+			   ("\\.R$" . R-mode))
+			 auto-mode-alist))
+  (add-hook 'ess-mode-hook
+	    '(lambda nil
+	       (define-key ess-mode-map
+		 [f1]
+		 'ess-help)
+	       (define-key ess-mode-map
+		 [f5]
+		 'ess-eval-buffer)
+	       (define-key ess-mode-map
+		 [f7]
+		 'ess-eval-region-or-function-or-paragraph-and-step))))(leaf ess
+                                                                         :doc "Emacs Speaks Statistics"
+                                                                         :req "emacs-25.1"
+                                                                         :tag "emacs>=25.1"
+                                                                         :url "https://ess.r-project.org/"
+                                                                         :added "2023-07-22"
+                                                                         :emacs>= 25.1
+                                                                         :ensure t)
+
 (leaf default
   :bind (("C-h" . delete-backward-char)
          ("C-x g" . magit-status)
