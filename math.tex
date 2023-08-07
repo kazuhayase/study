@@ -103,3 +103,691 @@ a=
 a2 + b2
 ⑨ 円の方程式
 一般形： x 2 + y 2 + lx + my + n = 0
+
+
+(1) 両辺をxで微分すると 
+$
+8x+18yy'=0
+$
+よって
+$
+y'=\frac{dy}{dx}=-\frac{8x}{18y}=-\frac{4x}{9y}
+$
+
+$
+\frac{d^2y}{dx^2}=-\frac{4}{9}\cdot\frac{(x)'y-xy'}{y^2}=-\frac{4}{9}\cdot\frac{y-x(-\frac{4x}{9y})}{y^2}
+$
+分母分子に$ 9y$を掛けて, 
+$
+= -\frac{4}{9}\cdot\frac{9y^2+4x^2)}{9y^3}
+$
+元のx,yが満たす陰関数の式を入れて
+$
+= -\frac{4}{9}\cdot\frac{36}{9y^3}
+= -\frac{16}{9y^3}
+$
+
+(2) 両辺をxで微分する と$ 2x -\{(x)'y+xy'\}+4yy'=0$
+よって $(x-4y)y'=2x-y$ より $\frac{dy}{dx}=\frac{2x-y}{x-4y}$
+
+(3) 両辺をxで微分すると $\cos{x}-(-\sin{y})y'=0$
+$\therefore \frac{dy}{dx}=-\frac{\cos{x}}{\sin{y}}$
+
+x>0なので真数(log の大きい方の数字)が正であることを確認。
+
+両辺正なので，自然対数をとると
+
+$
+\log{y}=\log{x^x} \Leftrightarrow 
+\log{y}=x\log{x} 
+$
+
+両辺xで微分
+
+$
+\frac{1}{y}\cdot y'=\log{x}+x\cdot\frac{1}{x}
+$
+
+両辺yをかける
+$
+y'=(\log{x}+1)y=(\log{x}+1)x^x
+$
+
+両辺正なので，自然対数をとると
+$
+\log{y}=\log{x^{x^x}} \Leftrightarrow \log{y}=x^x\log{x}
+$
+両辺xで微分 
+$
+\frac{1}{y}\cdot y'=(x^x)'\log{x}+x^x\cdot\frac{1}{x}
+$
+両辺に y をかけて整理すると
+$
+y'=\{(\log{x}+1)x^x\cdot\log{x}+x^{x-1}\}y
+$
+\therefore y'=\{(\log{x}+1)x\log{x}+1\}x^{x^x+x-1}
+
+(4)
+
+両辺の絶対値の自然対数をとると
+$
+\log{|y|}=\log{|(x-a_1)(x-a_2)\cdots(x-a_n)|}=\sum^{n}_{k=1}\log{|x-a_k|}
+$
+両辺 x で微分すると
+$
+\frac{1}{y}\cdoty'=\sum^{n}{k=1}\frac{1}{x-a_k}
+$
+両辺に y をかけて整理してすると
+$
+y'=y\sum^{n}{k=1}\frac{1}{x-a_k}
+$
+$
+\therefore y'=(x-a_1)(x-a_2)\cdots(x-a_n)\sum^{n}{k=1}\frac{1}{x-a_k}
+$
+
+$
+\frac{dx}{dy}=\frac{1}{\frac{dy}{dx}}=\frac{1}{f'(x)}
+$
+
+(1)  
+$
+\frac{dx}{dy}=2y+4
+$
+より
+$
+\frac{dy}{dx}=\frac{1}{\frac{dx}{dy}}=\frac{1}{2y+4}
+$
+$
+y^2+4y-1-x=0  
+$
+より
+$
+y=-2\pm\sqrt{x+5}
+$
+$
+\therefore \frac{dy}{dx}=\frac{1}{2y+4}==\frac{1}{2(-2\pm\sqrt{x+5})+4} = \pm\frac{1}{2\sqrt{x+5}}
+$
+
+(-\frac{\pi}{2}<y<\frac{\pi}{2})
+
+(2)
+$
+\frac{dx}{dy}=\cos{y}
+$
+より
+$
+\frac{dy}{dx}=\frac{1}{\frac{dx}{dy}}=\frac{1}{\cos{y}}=\frac{1}{\sqrt{1-\sin^2{y}}}=\frac{1}{\sqrt{1-x^2}} (\therefore \cos{y}>0)
+$
+(3) $
+\frac{dx}{dy}=\frac{1}{\cos^2{y}}
+$ より$
+\frac{dy}{dx}=\frac{1}{\frac{dx}{dy}}=\frac{1}{\frac{1}{\cos^2{y}}}=\cos^2{y}=\frac{1}{\tan^2{y}}=\frac{1}{1+x^2}
+$
+
+$
+x\geq 0$ で定義される関数 $f(x)=xe^x$ とその逆関数 $g(x)$ について、次を求めよ
+
+(1) $f'(1), f''(1))$
+(2) $g'(e), g''(e))$
+--
+(1 )
+$
+f'(x)=(x)'e^x+x(e^x)'=(1+x)e^x
+f''(x)=\{(1+x)e^x\}' = (1+x)'e^x + (1+x)(e^x)' = (2+x)e^x
+$
+$
+\therefore f'(1)=2e, f''(1)=3e
+$
+
+(2)
+$
+y=xe^x
+$
+の逆関数は
+$
+x=ye^y
+$
+$
+\frac{dx}{dy}=(1+y)e^y
+$
+より
+$
+g'(x)=\frac{dy}{dx}=\frac{1}{(1+y)e^y}
+$
+$
+g''(x)=\frac{d}{dx}\{\frac{1}{(1+y)e^y}\}=-\frac{\{(1+y)e^y\}'}{\{(1+y)e^y\}^2}\cdot\frac{dy}{dx}=-\frac{(2+y)e^y}{\{(1+y)e^y\}^3}
+$
+$x=ye^y$において, $x=e$ のとき$y=1$ である.
+$
+\therefore g'(e)=\frac{1}{(1+1)e^1}=\frac{1}{2e}, g''(e)=-\frac{(2+1)e^1}{\{(1+1)e^1\}^3}=-\frac{3}{8e^2}
+$
+
+$
+\frac{dy}{dx}, 
+\frac{d^2y}{dx^2}
+$
+
+(1)
+$
+\begin{cases}
+ x=t-\sin{t}\\
+ y=1-\cos{t}
+\end{cases}
+$
+(2)
+$
+\begin{cases}
+ x=\cos^3{t}\\
+ y=\sin^3{t}
+\end{cases}
+$
+
+(3)
+$
+\begin{cases}
+ x=\frac{t^2-1}{t^2+1}\\
+ y=\frac{2t}{t^2+1}
+\end{cases}
+$
+
+(4)
+$
+\begin{cases}
+ x=2\cos{t}+\cos{2t}\\
+ y=2\sin{t}-\sin{2t}
+\end{cases}
+$
+
+---
+(1) 
+$
+\frac{dx}{dt}=1-\cos{t}, \frac{dy}{dt}=\sin{t}
+$ より $
+\frac{dy}{dx}=\frac{\frac{dy}{dt}}{\frac{dx}{dt}} = \frac{\sin t}{1-\cos t}
+\frac{d^2y}{dx^2}= \frac{d}{dt}(\frac{dy}{dx})\cdot\frac{dt}{dx}=\frac{d}{dt}(\frac{\sin t}{1-\cos t})\cdot\frac{dt}{dx}
+=\frac{(\sin t)'(1-\cos t)-\sin t(1-\cos t)'}{(1-\cos t)^2} \cdot \frac{1}{1-\cos t}
+=\frac{\cos t(1-\cos t)-\sin^2 t}{(1-\cos t)^3}
+=\frac{\cos t-(\cos^2 t + \sin^2 t)}{(1-\cos t)^3}
+= \frac{\cos t -1}{(1-\cos t)^3}=-\frac{1-\cos t}{(1-\cos t)^3}
+=-\frac{1}{(1-\cos t)^2}
+$
+( 本問の関数は、大学入試2大頻出有名曲線の1つのサイクロイド)
+(2)
+$
+\frac{dx}{dt}=3\cos^2 t(\cos t)'=-3\cos^2 t \sin t, 
+\frac{dy}{dt}=3\sin^2 t(\sin t)'=-3\sin^2 t \cos t
+$
+$
+\frac{dy}{dx}=\frac{\frac{dy}{dt}}{\frac{dx}{dt}}=\frac{3\sin^2 t \cos t}{-3\cos^2 t \sin t}=-\frac{\sin t}{\cos t}=-\tan t
+$
+$
+\frac{d^2y}{dx^2}=\frac{d}{dt}(\frac{dy}{dx})\cdot\frac{dt}{dx}=\frac{d}{dt}(-\tan t)\cdot\frac{dt}{dx}
+= -\frac{1}{\cos^2 t}\cdot\frac{1}{-3\cos^2 t\sin t}=\frac{1}{3\cos^4 t\sin t}
+$
+( 本問の関数は、大学入試2大頻出有名曲線のもう1つのアステロイド. アステロイドは陰関数表示できるので別解がある)
+$
+\cos t = x^{\frac{1}{3}}, \sin t = y^{\frac{1}{3}}
+$
+とし、tを消去すると $
+x^{\frac{2}{3}}+y^{\frac{2}{3}}=1
+$
+両辺をxで微分して$
+\frac{2}{3}x^{-\frac{1}{3}}+\frac{2}{3}y^{-\frac{1}{3}}\frac{dy}{dx}=0
+$ よって $
+\frac{dy}{dx}=-(\frac{x}{y}^{-\frac{1}{3}})=-(\frac{y}{x}^{\frac{1}{3}})=-\sqrt[3]{\frac{y}{x}}
+\frac{d^2y}{dx^2}=-\frac{1}{3}(\frac{y}{x})^{-\frac{2}{3}}(\frac{y}{x})'=-\frac{1}{3}(\frac{y}{x})^{-\frac{2}{3}}\frac{y'x-y(x)'}{x^2}
+=-\frac{1}{3}(\frac{y}{x})^{-\frac{2}{3}}\frac{-(\frac{y}{x})^{-\frac{1}{3}}x-y}{x^2}
+=-\frac{1}{3}(\frac{y}{x})^{-\frac{2}{3}}\frac{-x^{\frac{2}{3}}y^{\frac{1}{3}}-y}{x^2}
+=-\frac{y^{-\frac{2}{3}}\cdot y^{\frac{1}{3}}(x^{\frac{2}{3}}+y^{\frac{2}{3}})}{3\cdot x^{-\frac{2}{3}}\cdot x^2}
+=-\frac{y^{-\frac{2}{3}}\cdot y^{\frac{1}{3}}(x^{\frac{2}{3}}+y^{\frac{2}{3}})}{3\cdot x^{-\frac{2}{3}}\cdot x^2}
+=-\frac{y^{-\frac{1}{3}}(x^{\frac{2}{3}}+y^{\frac{2}{3}})}{3 x^{\frac{4}{3}}}
+=-\frac{x^{\frac{2}{3}}+y^{\frac{2}{3}}}{3 x^{\frac{4}{3}}y^{\frac{1}{3}}}=\frac{1}{3x\sqrt[3]{xy}}
+$
+(3)
+$
+\frac{dx}{dt}
+=\frac{(t^2-1)'(t^2+1)-(t^2-1)(t^2+1)'}{(t^2+1)^2}
+=\frac{2t(t^2+1)-2t(t^2-1)}{(t^2+1)^2}
+=\frac{4t}{(t^2+1)^2}
+\frac{dy}{dt}
+=\frac{(2t)'(t^2+1)-2t(t^2+1)'}{(t^2+1)^2}
+=\frac{2(t^2+1)-2t\cdot 2t}{(t^2+1)^2}
+=\frac{2(1-t^2)}{(t^2+1)^2}
+\frac{dy}{dx} = \frac{\frac{dy}{dt}}{\frac{dx}{dt}}
+=\frac{\frac{2(1-t^2)}{(t^2+1)^2}}{\frac{4t}{(t^2+1)^2}}
+=\frac{1-t^2}{2t}
+\frac{d^2y}{dx^2} = \frac{d}{dt}(\frac{dy}{dx})\cdot\frac{dt}{dx}
+= \frac{d}{dt}(\frac{1-t^2}{2t})\cdot\frac{dt}{dx}
+= \frac{(1-t^2)'2t-(1-t^2)(2t)')}{4t^2}\cdot\frac{(t^2+1)^2}{4t}=-\frac{(t^2+1)^3}{8t^3}
+$
+本文は円の媒介変数表示の1つで、$
+x^2+y^2
+$を計算すると$
+x^2+y^2=1
+$となってtが消去でき、陰関数の微分法で求められる
+
+(4)
+$
+\frac{dx}{dt}
+=-2\sin t-\sin{2t}(2t)'
+=-2\sin t-2\sin{2t}
+=-2(\sin t+\sin{2t})
+=-4\sin{\frac{3}{2}t}\cos{\frac{t}{2}}
+\frac{dy}{dt}
+=2\cos t-\cos{2t}(2t)'
+=2\cos t-2\cos{2t}
+=-2(\cos{2t}-\cos t)
+=4\sin{\frac{3}{2}t}\sin{\frac{t}{2}}
+\frac{dy}{dx} = \frac{\frac{dy}{dt}}{\frac{dx}{dt}}
+=\frac{4\sin{\frac{3}{2}t}\sin{\frac{t}{2}}}{-4\sin{\frac{3}{2}t}\cos{\frac{t}{2}}}
+=-\frac{\sin{\frac{t}{2}}}{\cos{\frac{t}{2}}} = -\tan{\frac{t}{2}}
+\frac{d^2y}{dx^2} = \frac{d}{dt}(\frac{dy}{dx})\cdot\frac{dt}{dx}
+=\frac{d}{dt}(-\tan{\frac{t}{2}})\cdot\frac{dt}{dx}
+=-\frac{(\frac{t}{2})'}{\cos^2{\frac{t}{2}}}\cdot\frac{1}{-4\sin{\frac{3}{2}t}\cos{\frac{t}{2}}}
+=\frac{1}{8\cos^3{\frac{t}{2}}\sin{\frac{3}{2}t}}
+$
+
+$
+f''(x)=\frac{d}{dx}f'(x)
+f'''(x)=\frac{d}{dx}f''(x)
+\frac{d^n}{dx^n} f(x)=f^(n)(x)
+$
+(n 階微分)
+
+$
+y=xe^x
+$ の第 n 次導関数を求めなさい。
+
+＜基本的な関数の微分＞
+$
+y=c \Rightarrow y'=0    (c は定数)
+y=x^n \Rightarrow y'=nx^{n-1}   (n は実数(整数でなくても良い))
+y=\sin x \Rightarrow y' = \cos x
+y=\cos x \Rightarrow y' = -\sin x
+y=\tan x \Rightarrow y' = \frac{1}{\cos^2 x}
+y=\log{|x|} \Rightarrow y' = \frac{1}{x}
+y=\log[a]{|x|} \Rightarrow y' = \frac{1}{x\log{a}}
+y=e^x \Rightarrow y' = e^x
+y=a^x \Rightarrow y' = a^x\log{a}   (a>0, a\neq 1)
+$
+
+①関数f(x)が区間[a,b]でf'(x)を持てば、$
+\frac{f(b)-f(a)}{b-a}=f'(c)
+$となるcが、区間(a,b)に少なくとも1つ存在する
+②表現の仕方を変えると以下の式を満たす $\theta$ が存在する。
+$
+f(a+h)=f(a)+hf'(a+\theta h)  (0<\theta<1)
+$
+
+極限値を求める問題にも応用される
+
+次の不等式が成り立つことを示せ.
+(1) $
+e^a(b-a) <  e^b-e^a < e^b(b-a)   (a-b)
+$
+
+(2) $
+0<\sin b - \sin a < b-a  (0<a<b<\frac{\pi}{2})
+$
+
+(3)$
+a<\frac{ab}{b-a}\log{\frac{b}{a}}<b (0<a<b)
+$
+
+(4) $
+\log{(\log{q})}- \log{(\log{p})} < \frac{q-p}{e} (e\leq p<q)
+$ [ 名古屋大]
+
+
+いずれも、「連続で微分可能な関数」 f(x)を見つけて,平均値の定理を利用する。
+(1) $ f(x)=e^x $
+(2) $ f(x)=\sin x $
+(3) $ f(x)=\log x $
+(4) $ f(x)=\log(\log x) $
+
+(1) $ f(x)=e^x $とすると, f(x) は連続で微分可能な関数である.  $f'(x)=e^x$
+(注)ここまでの「f(x)... 連続で微分可能な関数である.  」は常套文句なので(2)以降は省略
+
+平均値の定理より $\frac{e^b-e^a}{b-a}=e^c$  (a<c<b)を満たす実数cが存在する
+a<c<b より $e^a<e^c<e^b$
+よって $e^a<\frac{e^b-e^a}{b-a}<e^b$.   b-a>0より $e^a(b-a)<\frac{e^b-e^a}{b-a}<e^b(b-a)$.   
+
+(2) 平均値の定理より $\frac{\sin b-\sin a}{b-a}=\cos c$  (a<c<b)を満たす実数cが存在する
+$ (0<a<b<\frac{\pi}{2}) $ より $0<\cos c<1$ よって $0<\frac{\sin b-\sin a}{b-a}<1$
+$b-a>0  $より $0<\sin b - \sin a < b-a$
+
+(3) 平均値の定理より $\frac{\log b-\log a}{b-a}=\frac{1}{c} $  (a<c<b)を満たす実数cが存在する
+a<c<b より $\frac{1}{b}<\frac{1}{c}<\frac{1}{a}$ よって $\frac{1}{b}<\frac{\log b - \log a}{b-a}<\frac{1}{a}$
+各辺にab(>0) をかける
+a<\frac{ab}{b-a}\log{\frac{b}{a}}<b (0<a<b)
+
+(4) 平均値の定理より $\frac{\log(\log q) -\log(\log p)}{q-p}=\frac{1}{c\log c} $  (p<c<q)を満たす実数cが存在する
+$e\leq p<c<q$より $c<c\log c$よって $e<c\log c$ 両辺の逆数をとって $\frac{1}{c\log c}<\frac{1}{e}$
+よって$\frac{\log(\log q) -\log(\log p)}{q-p} < \frac{1}{e}$
+$\therefore \log(\log q)-\log(\log p)<\frac{q-p}{e}$
+
+$
+f(a+h) \cong f(a)+f'(a)h
+x=a+h
+f(x) \cong f(a)+f'(a)(x-a)
+f(x) \cong f(0)+f'(0)x
+(1+x)\p \cong 1+px
+$
+
+$
+\int x^n dx = \frac{x^{n+1}}{n+1} +C
+\int \frac{1}{x} dx = \log |x| +C
+\int \sin x dx  = -\cos x +C
+\int \cos x dx  = \sin x +C
+\int e^x dx  = e^x +C
+\int a^x dx  = \frac{a^x}{\log a}+C
+$
+
+
+$
+x=g(t)
+$と置く.両辺それぞれで微分$
+dx = g'(t)dt
+$ より$
+\inx f(x) dx = \inx f(g(t))g'(t)dt = \int f(g(t)) \frac{dx}{dt}dt
+$
+「非積分関数を新しい変数tで置き換える」
+「dx/dtを掛ける」
+
+(1) $
+\int x(2-x)^4 dx
+$
+
+t=2-x と置換。\frac{dt}{dx} = -1 より$
+\int x(2-x)^4dx = \int (2-t)t^4\cdot(-1) dt = \int (t^5-2t^4)  dt 
+= \frac{1}{6} t^6 + \frac{2}{5} t^5 +C = \frac{1}{6} (2-x)^6 + \frac{2}{5} (2-x)^5 +C 
+$
+
+(2) $
+\int \sqrt{x+1}(x+2)dx
+$
+
+$\sqrt{x+1}=t$と置換。$x=t^2-1$で両辺微分し、$\frac{dx}{dt}=2t$ よって$
+\int \sqrt{x+1}(x+2) dx = \int (t^3+t)2t dt = \int 2t^4+2t^2 dt 
+= \frac{2}{5}t^5+\frac{2}{3}t^3+C = \frac{2}{5}(x+1)^{\frac{5}{2}}+\frac{2}{3}(x+1)^{\frac{3}{2}}+C
+
+と単調に変化するとき、xはa→bと単調に変化するものとします。
+
+(1)$
+\int_{0}^{1}\frac{x}{(1-x^2)^{1/3}}dx
+$
+
+$1-x^2=t$ と置換. $-2x dx = dt \leftrightarrow -2x \frac{dx}{dt}=1$かつ$x: 0\rightarrow 1$ のとき、$t: 1\rightarrow 0$となるから$
+\int_{0}^{1}\frac{x}{(1-x^2)^{1/3}}dx 
+= - \int_{1}^{0}\frac{1}{2}t^{-1/3}dt  
+= [\frac{3}{4}t^{2/3}]^1_0
+$
+
+(2)$
+\int_{0}^{1} \frac{dx}{1+x^2}
+$
+置換がポイント.  $x=\tan t (-\pi/2 < t < \pi/2)$
+$\frac{dx}{dt}=\frac{1}{\cos^2 t}$,  $x: 0\rightarrow 1$,  $t: 0\rightarrow \pi/4$だから
+$
+\int_{0}^{1}\frac{dx}{1+x^2}=\int_{0}^{\pi/4}\frac{1}{1+\tan^2 t}\frac{dt}{cos^2 t}
+=\int_{0}^{\pi/4} \cos^2 t \frac{dt}{cos^2 t}
+=\int_{0}^{\pi/4} dt = \frac{\pi}{4}
+$
+
+\begin{eqnarray*}
+ \int_{0}^{1}\frac{dx}{1+x^2} &=&\int_{0}^{\pi/4}\frac{1}{1+\tan^2 t}\frac{dt}{cos^2 t}\\
+&=&\int_{0}^{\pi/4} \cos^2 t \frac{dt}{cos^2 t}\\
+&=&\int_{0}^{\pi/4} dt = \frac{\pi}{4}
+\end{eqnarray*}
+
+
+$a>0$ のとき$\int_{0}^{a} \frac{1}{x^2+z^2}dx$を計算.  
+$x=a\tan t$と置換. 被積分関数は $\frac{1}{x^2+a^2}=\frac{1}{a^2(1+\tan^2 t)}=\frac{\cos^2 t}{a^2}$. 
+$\frac{dx}{dt}=\frac{a}{\cos^2 t}$, $x:0\rightarrow a$, $t:0\rightarrow \pi/4$
+
+\begin{eqnarray*}
+\int_{0}^{a}\frac{1}{x^2+a^2}dx&=&\int_{0}^{\pi/4} \frac{\cos^2 t}{a^2}\frac{a}{\cos^2 t}dt \\
+&=& \int_{0}^{\pi/4}\frac{1}{a}dt\\
+&=&\frac{\pi}{4a}
+\end{eqnarray*}
+
+$a>0$ のとき$\int_{0}^{a} \sqrt{a^2-x^2}dx$を計算.  
+$x=a\sin t$と置換. 被積分関数は $\sqrt{a^2-x^2}=\sqrt{a^2}(1-sin^2 t)=\sqrt{a^2}\cos^2 t=a|\cos t|$
+$\frac{dx}{dt}=a\cos t$, 
+$x:0\rightarrow a$, $t:0\rightarrow \pi/2$
+
+\begin{eqnarray*}
+\int_{0}^{a} \sqrt{a^2-x^2}dx &=& \int_{0}^{\pi/2} a\cos t\cdot a\cos t dt \\
+&=& a^2\int_{0}^{\pi/2} \cos^2 t dt\\
+&=& a^2\int_{0}^{\pi/2} \frac{1+\cos 2t}{2}dt\\
+&=&\frac{a^2\pi}{4}
+\end{eqnarray*}
+
+(1) $\int x \sin x dx =?$
+
+xを微分, sin x を積分. 
+
+\begin{eqnarray*}
+\int x \sin x dx &=& x\cdot(-\cos x)-\int 1\cdot(-\cos x)dx\\
+&=& -x\cos x+\int \cos x dx\\
+&=& -x\cos x+\sin x +C
+\end{eqnarray*}
+
+(2) $\int x e^x dx =?$
+
+xを微分, e を積分. 
+
+\begin{eqnarray*}
+\int x e^x dx &=& x\cdot e^x - \int 1\cdot e^x dx\\
+&=& x e^x - \int e^x dx\\
+ &= & x e^x - e^x +C
+\end{eqnarray*}
+
+(3) $\int x\cos 2x dx=?$
+
+xを微分, cos x を積分. 
+\begin{eqnarray*}
+\int x\cos 2x dx &=& x\cdot\frac{\sin 2x}{2}-\int 1\cdot\frac{\sin 2x}{2}dx\\ 
+ &= & \frac{1}{2}x\sin 2x - \frac{1}{2}\int\sin 2x dx\\
+&=& \frac{1}{2}x \sin 2x + \frac{1}{4}\cos 2x +C
+\end{eqnarray*}
+
+(4) $\int \log_e x dx=?$
+(hint; $\log_e x = 1\times\log_e x$)
+暗記でも良いが,部分積分もできるように
+
+logを微分, 1 を積分. 
+\begin{eqnarray*}
+ \int log_e x dx = \int(\log_e x)(x)' dx &=& x\log_e x - \int\frac{1}{x}\cdot x dx\\
+&=& x\log_e x - \int 1 dx
+&=& x\log_e x - x +C
+\end{eqnarray*}
+
+\begin{eqnarray*}
+ \int x^2\cos 2x dx &=& \frac{1}{2}x^2\sin 2x - \frac{1}{2}\cdot 2\int x \sin 2x dx\\
+&=& \frac{1}{2}x^2\sin 2x - \{x(-\frac{\cos 2x}{2})-\int 1(-\frac{\cos 2x}{2}) dx\}\\
+&=& \frac{1}{2}x^2\sin 2x + \frac{1}{2}x \cos 2x-\frac{1}{4}\sin 2x +C\\
+&=& \frac{2x^2-1}{4}\sin 2x+\frac{1}{2}x\cos 2x +C
+\end{eqnarray*}
+
+$\int e^x\sin x dx=?$
+\begin{eqnarray*}
+ I=\int e^x\sin x dx &=& e^x \sin x - \int e^x \cos x dx\\
+&=& e^x \sin x - \{e^x\cos x - \int e^x(-\sin x)dx\}\\
+&=& e^x \sin x - e^x\cos x - \int e^x(\sin x)dx \\
+\Leftrightarrow 2I &=& e^x\sin x - e^x\cos x\\
+I=\int e^x \sin x dx &=& \frac{1}{2}(e^x\sin x - e^x\cos x)+C
+\end{eqnarray*}
+
+$
+\int \frac{f'(x)}{f(x)}dx = \log|f(x)|
+$
+
+$
+\int_{a}^{b}f(x)dx = \left[ F(x)\right]^b_a=S
+\int_{-a}^{a}\sqrt{a^2-x^2}dx = \frac{\pi a^2}{2}
+\int_{a}^{b}cf(x)dx = c\int_{a}^{b}f(x)dx 
+\int_{a}^{a}f(x)dx = 0
+\int_{a}^{b}f(x)dx = -\int_{b}^{a}f(x)dx 
+\int_{a}^{b}f(x)dx + \int_{b}^{c}f(x)dx = \int_{a}^{c}f(x)dx 
+\int_{a}^{b}f(x)dx \pm \int_{a}^{b}g(x)dx  = \int_{a}^{b} \{f(x)\pm g(x)\}dx 
+\int_{-a}^{a}f(x)dx = 
+\begin{cases}
+2 \int_{0}^{a}f(x)dx & f(x): \text{偶関数}\\
+0 & f(x): \text{奇関数}
+\end{cases}
+f(x)\geq g(x) \Rightarrow \int_{a}^{b}f(x)dx \geq \int_{a}^{b} g(x)dx
+\left\{\int_{a}^{b}f(x)g(x)dx\right\}^2 \leq \left( \int_{a}^{b}\{f(x)\}^2dx\right)\left( \int_{a}^{b}\{g(x)\}^2dx\right)
+$
+
+$
+\int_{a}^{b}f(x)dx = \int_{a}^{b}f(a+b-x)dx
+\int_{a}^{b}(x-a)(x-b)dx = -\frac{(b-a)^3}{6}
+\frac{d}{dx}\int_{a}^{x}f(t)dt=f(x)
+$
+
+$
+\lim\limits_{n\to\infty}\left(\frac{1}{n+1}+\frac{1}{n+2}+\cdots+\frac{1}{n+an}\right)
+\lim\limits_{n\to\infty}\frac{1}{n^2}\left(\sqrt{n^2-1}+\sqrt{n^2-4}+\cdots+\sqrt{n^2-(n-1)^2}\right)
+\lim\limits_{n\to\infty}\left(\frac{(1+2+\cdots+n)(1^4+2^4+\cdots+n^4)}{(1^2+2^2+\cdot+n^2)(1^3+2^3+\cdot+n^3)}\right)
+$
+
+\begin{eqnarray*}
+&&\lim\limits_{n\to\infty}\left(\frac{1}{n+1}+\frac{1}{n+2}+\cdots+\frac{1}{n+an}\right)\\
+&=&\lim\limits_{n\to\infty}\sum\limits_{k=1}^{an}\frac{1}{n}\cdot\frac{1}{1+\frac{k}{n}}\\
+&=&\int_{0}^{a}\frac{1}{1+x} dx\\
+&=&\left[\log(1+x)\right]^a_0\\
+&=&\log(1+a)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+&&\lim\limits_{n\to\infty}\frac{1}{n^2}\left(\sqrt{n^2-1}+\sqrt{n^2-4}+\cdots+\sqrt{n^2-(n-1)^2}\right)\\
+&=&\lim\limits_{n\to\infty}\sum\limits_{k=1}^{n-1}\frac{1}{n}\sqrt{1-\left(\frac{k}{n}\right)^2}\\
+&= & \int_{0}^{1}\sqrt{1-x^2}dx\\
+&=&\frac{\pi}{4}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+&&\lim\limits_{n\to\infty}\frac{1}{n^2}\left(\frac{(1+2+\cdots+n)(1^4+2^4+\cdots+n^4)}{(1^2+2^2+\cdot+n^2)(1^3+2^3+\cdot+n^3)}\right)\\
+ &= & \lim\limits_{n\to\infty}\left(\frac{(1/n+2/n+\cdots+n/n)((1/n)^4+(2/n)^4+\cdots+(n/n)^4)}{((1/n)^2+(2/n)^2+\cdot+(n/n)^2)((1/n)^3+(2/n)^3+\cdot+(n/n)^3)}\right)\\ 
+ &= & \lim\limits_{n\to\infty}\frac{\frac{1}{n}\sum\limits^n_{k=1}\left(\frac{k}{n}\right)\cdot\frac{1}{n}\sum\limits^n_{k=1}\left(\frac{k}{n}\right)^4}{\frac{1}{n}\sum\limits^n_{k=1}\left(\frac{k}{n}\right)^2+\frac{1}{n}\sum\limits^n_{k=1}\left(\frac{k}{n}\right)^3}\\
+&=&\frac{\int_{0}^{1}x dx\cdot\int_{0}^{1}x^4 dx}{\int_{0}^{1}x^2 dx\cdot\int_{0}^{1}x^3 dx}\\
+&=& \frac{\frac{1}{2}\cdot\frac{1}{5}}{\frac{1}{3}\cdot\frac{1}{4}}\\
+&=&\frac{6}{5}
+\end{eqnarray*}
+
+$
+S=\int_{a}^{b}|f(x)|dx
+S=\int_{a}^{b}|f(x)-g(x)|dx
+V=\int_{a}^{b}S(x)dx
+V=\pi\int_{a}^{b}\{f(x)\}^2dx
+s=\int_{a}^{b}\sqrt{1+\{f'(x)\}^2}dx
+s=\int_{a}^{b}\sqrt{\{f'(t)\}^2+\{g'(t)\}^2}dx
+$
+
+$
+x_1 x+y_1 y=r^2
+\frac{x^2}{a^2}+\frac{y^2}{b^2}=1
+\frac{x_1 x}{a^2}+\frac{y_1 y}{b^2}=1
+\frac{x^2}{a^2}-\frac{y^2}{b^2}=1
+y^2=4px
+$
+
+複素数平面
+共役複素数
+
+共役複素数
+
+z, w を複素数とすると、以下が成り立つ。
+
+共役複素数の和と差
+z+z¯¯¯ は実数
+z−z¯¯¯ は純虚数または 0
+実数、純虚数の共役
+z が実数 ⟺ z=z¯¯¯
+z が純虚数 ⟺ z=−z¯¯¯ かつ z≠0
+和・差・積・商の共
+$
+\overline{z+w}=\overline{z}+\overline{w}
+\overline{z-w}=\overline{z}-\overline{w}
+\overline{zw}=\overline{z}\cdot\overline{w}
+\overline{\left(\frac{z}{w}\right)}=\frac{\overline{z}}{\overline{w}}  \quad (w\neq 0)
+\overline{\overline{z}}=z
+$
+
+
+z+w¯¯¯¯¯¯¯¯¯¯¯¯=z¯¯¯+w¯¯¯¯
+z−w¯¯¯¯¯¯¯¯¯¯¯¯=z¯¯¯−w¯¯¯¯
+zw¯¯¯¯¯¯=z¯¯¯⋅w¯¯¯¯
+(zw)¯¯¯¯¯¯¯¯¯¯¯=z¯¯¯w¯¯¯¯ (w≠0)
+共役の共役
+z¯¯¯¯¯¯=z
+
+複素数の絶対値
+$
+|z| = |x+yi| = \sqrt{x^2+y^2}
+$
+複素数平面における二点間の距離
+$z=a+bi, w=c+di$
+に対応する点 (a,b), (c,d) の距離は
+$
+|w-z| = \sqrt{(c-a)^2+(d-b)^2}
+$
+複素数の絶対値の性質
+$
+|z|=0 \Leftrightarrow z=0
+|z|=|-z|=|\overline{z}|
+z\overline{z}=|z|^2
+|zw|=|z||w|
+|\frac{z}{w}|=\frac{|z|}{|w|} \quad (w\neq 0)
+$
+
+複素数の極形式
+複素数 zの偏角がθのとき、zを極形式で表すと
+$
+z=|z|(\cos\theta+i\sin\theta)
+$
+
+複素数の加法・減法
+$
+z_1=x_1+y_1i, z_2=x_2+y_2i
+w=z_1+z_2
+w=(x_1+x_2)+(y_1+y_2)i
+w=z_1-z_2
+w=(x_1-x_2)+(y_1-y_2)i
+$
+複素数の乗法
+$
+z_1=|z_1|(\cos\theta_1+i\sin\theta_1), z_2=|z_2|(\cos\theta_2+i\sin\theta_2)
+z_1z_2=|z_1||z_2|(\cos(\theta_1+\theta_2)+i\sin(\theta_1+\theta_2))
+$
+複素数の除法
+$
+z_1=|z_1|(\cos\theta_1+i\sin\theta_1), z_2=|z_2|(\cos\theta_2+i\sin\theta_2)
+\frac{z_1}{z_2}=\frac{|z_1|}{|z_2|}(\cos(\theta_1-\theta_2)+i\sin(\theta_1-\theta_2))
+$
+
+(複素数平面上)原点中心の回転
+$
+z=|z|(\cos\theta_z+i\sin\theta_z)
+z'=z(\cos\theta+i\sin\theta)=|z|\{\cos(\theta_z+\theta)+i\sin(\theta_z+\theta)\}
+z'=(z-\alpha)(\cos\theta+i\sin\theta)+\alpha
+$
+複素数zを複素数平面上で原点を中心に θ 回転させた複素数 z′ は
+
+(複素数平面上)原点中心でない回転
+1.平行移動, 2.回転, 3.平行移動
+
+複素数zを複素数平面上で点αを中心に θ 回転させた複素数 z′ は
+
+ドモアブルの定理
+任意の実数 θ、任意の整数 n に対し
+$
+(\cos\theta+i\sin\theta)^n=\cos n\theta+i\sin n\theta
+$
+が成り立つ
+
+1 の n 乗根
+1 の n 乗根は、次の n 個の複素数 zk (k=0,1,⋯,n−1) である。
+
+$z_k = \cos\frac{2k\pi}{n} + i\sin\frac{2k\pi}{n}$
