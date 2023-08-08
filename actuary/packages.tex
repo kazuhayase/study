@@ -1,5 +1,6 @@
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
+\usepackage{mathtools}
 \usepackage{ifxetex,ifluatex}
 \usepackage{actuarialsymbol}
 \usepackage[]{natbib}
@@ -25,7 +26,7 @@
 \usepackage{booktabs}
 \RequirePackage{plautopatch}
 
-\newcommand{\problem}[1]{\subsubsection{#1}}
+\newcommand{\problem}[1]{\subsubsection{#1}\setcounter{equation}{0}}
 %\newcommand{\answer}[1]{\subsubsection{#1}}
 \newcommand{\answer}[1]{\subsubsection{解答}}
 
