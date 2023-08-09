@@ -26,16 +26,15 @@
 \usepackage{booktabs}
 \RequirePackage{plautopatch}
 
-\newcommand{\problem}[1]{\subsubsection{#1}\setcounter{equation}{0}}
-%\newcommand{\answer}[1]{\subsubsection{#1}}
-\newcommand{\answer}[1]{\subsubsection{解答}}
-
 % maru suji ① etc.
 \usepackage{tikz}
 \newcommand{\cir}[1]{\tikz[baseline]{%
 \node[anchor=base, draw, circle, inner sep=0, minimum width=1.2em]{#1};}}
 
-
+%http://yamamo10.jp/yamamoto/comp/latex/make_doc/box/box.php
+%枠付き文章
+\usepackage{ascmac}
+\usepackage{fancybox}
 
 \usepackage{comment}
 
