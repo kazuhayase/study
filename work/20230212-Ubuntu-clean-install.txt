@@ -4,6 +4,46 @@ Ubuntu clean install.txt
 R; https://cran.rstudio.com/
 ess; (emacs R)
 
+(for aglm)
+zoo, sp, xts; in R, install-packages-
+Fortran; apt install
+sudo apt install gfortran
+
+lapack, blas;
+https://github.com/Reference-LAPACK/lapack
+  1.  LAPACK can be built and installed using vcpkg dependency manager:
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh  # ./bootstrap-vcpkg.bat for Windows
+./vcpkg integrate install
+./vcpkg install lapack
+ 2. make shared lib
+cd installed/x64-linux/lib/
+mkdir tmp
+cd tmp/
+ar x ../liblapack.a 
+gcc -shared -o liblapack.so *.o
+cp liblapack.so ../
+pushd /usr/lib/R/lib
+sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/liblapack.so
+popd
+rm tmp/*
+ar x ../libopenblas.a 
+gcc -shared -o libblas.so *.o
+cp libblas.so ../
+pushd /usr/lib/R/lib
+sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/libblas.so 
+
+
+http://www.netlib.org/lapack/
+https://qiita.com/AnchorBlues/items/69c1744de818b5e045ab
+https://www.kkaneko.jp/tools/ubuntu/lapacklinux.html#:~:text=LAPACK%20%E3%81%AE%20URL%3A%20http%3A%2F%2Fwww.netlib.org%2Flapack%20Ubuntu%20%E3%81%A7%E3%81%AF%EF%BC%8CLAPACK%20%E3%81%AF%20apt,-y%20update%20sudo%20apt%20-y%20install%20libatlas3-base%20libatlas-base-dev
+
+(for tuneRanger)
+libxml-2.0; apt install
+apt install libxml2-dev
+
+
 # update indices
 sudo apt update -qq
 # install two helper packages we need
