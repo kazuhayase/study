@@ -1,0 +1,22 @@
+プリンティングサービス; GCP partner企業=x-trans,(expertize) (GCArmor, TrendMicro, TMEmS spam) ○,
+?  認証 ID/PW のみ. MFAもなし.
+Pマーク.  
+
+
+ワンネットシステム; Public Cloudでない。Pマーク
+PCクライアント証明書は○。ログ管理, 脆弱性対策, ウィルス対策, 外部監査なし, に不安. backup daily, 1M. 障害発生時メールのみ. 負荷対策・監視DR なし, 
+VPN
+
+
+イーストゲート
+クラウドプラットフォーム(AWS)
+脆弱性診断,ペネトレーション,外部監査 等
+委託先はインド
+ISMS, Pマーク
+VPN
+障害連絡はメール・電話なし. twitter, HP等
+Backup 日次, 2ヶ月( ユーザによる任意のデータ復元はできない)
+ID, PW. MFA有り (   一般会員はメール. 管理者は G-auth)
+
+
+
