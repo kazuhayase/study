@@ -1,0 +1,8 @@
+make: *** [/usr/share/R/share/make/shlib.mk:10: RcppEigen.so] Error 1
+ERROR: compilation failed for package ‘RcppEigen’
+* removing ‘/home/kazuyoshi/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen’
+ERROR: dependency ‘RcppEigen’ is not available for package ‘glmnet’
+* removing ‘/home/kazuyoshi/R/x86_64-pc-linux-gnu-library/4.3/glmnet’
+ERROR: dependency ‘glmnet’ is not available for package ‘aglm’
+* removing ‘/home/kazuyoshi/R/x86_64-pc-linux-gnu-library/4.3/aglm’
+
