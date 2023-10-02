@@ -1,62 +1,14 @@
 Ubuntu clean install.txt
 
 - Todo
-R; https://cran.rstudio.com/
-ess; (emacs R)
+rclone; Gdrive, OneDrive?
+https://askubuntu.com/questions/1332050/google-drive-repository-from-the-terminal
+https://qiita.com/showchan33/items/05fe2bcfa25b1905dcdd
 
-(for aglm)
-zoo, sp, xts; in R, install-packages-
-Fortran; apt install
-sudo apt install gfortran
+---
+$ sudo apt install rclone
+$ rclone config
 
-lapack, blas;
-https://github.com/Reference-LAPACK/lapack
-  1.  LAPACK can be built and installed using vcpkg dependency manager:
-git clone https://github.com/Microsoft/vcpkg.git
-cd vcpkg
-./bootstrap-vcpkg.sh  # ./bootstrap-vcpkg.bat for Windows
-./vcpkg integrate install
-./vcpkg install lapack
- 2. make shared lib
-cd installed/x64-linux/lib/
-mkdir tmp
-cd tmp/
-ar x ../liblapack.a 
-gcc -shared -o liblapack.so *.o
-cp liblapack.so ../
-pushd /usr/lib/R/lib
-sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/liblapack.so
-popd
-rm tmp/*
-ar x ../libopenblas.a 
-gcc -shared -o libblas.so *.o
-cp libblas.so ../
-pushd /usr/lib/R/lib
-sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/libblas.so 
-
-
-http://www.netlib.org/lapack/
-https://qiita.com/AnchorBlues/items/69c1744de818b5e045ab
-https://www.kkaneko.jp/tools/ubuntu/lapacklinux.html#:~:text=LAPACK%20%E3%81%AE%20URL%3A%20http%3A%2F%2Fwww.netlib.org%2Flapack%20Ubuntu%20%E3%81%A7%E3%81%AF%EF%BC%8CLAPACK%20%E3%81%AF%20apt,-y%20update%20sudo%20apt%20-y%20install%20libatlas3-base%20libatlas-base-dev
-
-(for tuneRanger)
-libxml-2.0; apt install
-apt install libxml2-dev
-
-
-# update indices
-sudo apt update -qq
-# install two helper packages we need
-sudo apt install --no-install-recommends software-properties-common dirmngr
-# add the signing key (by Michael Rutter) for these repos
-# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
-# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
-wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
-# add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
-sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-sudo apt install --no-install-recommends r-base
-
-sudo apt-get install ess
 
 
 pdftk; sudo apt install pdftk-java
@@ -449,6 +401,64 @@ mv ~/texmf ~/texmf.old.20230226
 $ tlmgr init-usertree
 $ tlmgr update --self -all
 で、問題なさそうなことを確認。
+
+R; https://cran.rstudio.com/
+ess; (emacs R)
+
+(for aglm)
+zoo, sp, xts; in R, install-packages-
+Fortran; apt install
+sudo apt install gfortran
+
+lapack, blas;
+https://github.com/Reference-LAPACK/lapack
+  1.  LAPACK can be built and installed using vcpkg dependency manager:
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh  # ./bootstrap-vcpkg.bat for Windows
+./vcpkg integrate install
+./vcpkg install lapack
+ 2. make shared lib
+cd installed/x64-linux/lib/
+mkdir tmp
+cd tmp/
+ar x ../liblapack.a 
+gcc -shared -o liblapack.so *.o
+cp liblapack.so ../
+pushd /usr/lib/R/lib
+sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/liblapack.so
+popd
+rm tmp/*
+ar x ../libopenblas.a 
+gcc -shared -o libblas.so *.o
+cp libblas.so ../
+pushd /usr/lib/R/lib
+sudo ln -s ~/github/study/vcpkg/installed/x64-linux/lib/libblas.so 
+
+
+http://www.netlib.org/lapack/
+https://qiita.com/AnchorBlues/items/69c1744de818b5e045ab
+https://www.kkaneko.jp/tools/ubuntu/lapacklinux.html#:~:text=LAPACK%20%E3%81%AE%20URL%3A%20http%3A%2F%2Fwww.netlib.org%2Flapack%20Ubuntu%20%E3%81%A7%E3%81%AF%EF%BC%8CLAPACK%20%E3%81%AF%20apt,-y%20update%20sudo%20apt%20-y%20install%20libatlas3-base%20libatlas-base-dev
+
+(for tuneRanger)
+libxml-2.0; apt install
+apt install libxml2-dev
+
+
+# update indices
+sudo apt update -qq
+# install two helper packages we need
+sudo apt install --no-install-recommends software-properties-common dirmngr
+# add the signing key (by Michael Rutter) for these repos
+# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+# add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+sudo apt install --no-install-recommends r-base
+
+sudo apt-get install ess
+
 
 anki; web DL(deb)+software のinstall機能.  cloud同期
   Qt6の方にする。
