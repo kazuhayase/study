@@ -40,10 +40,16 @@ https://www.vrp-p.jp/acpedia/4290/
 2次
 https://www.vrp-p.jp/acpedia/4302/
 
+--> 支払備金/IBNR算出(保険2  1-17,18)
+
 アク研小中問, 未出
 
-
 保険2; 1章など計算書類 / 科目,書類フォーマット,   業務報告書,   附属明細書, 決算状況表(保険2 5章の辺り)なども
+
+虎の巻 p.31 - 37
+https://www.seiho.or.jp/data/publication/tora/pdf/tora_all.pdf
+
+
 金融庁別紙,様式
 https://www.fsa.go.jp/common/shinsei/hoken.html
 
