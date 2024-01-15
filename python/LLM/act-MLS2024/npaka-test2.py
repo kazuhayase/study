@@ -5,7 +5,9 @@
 # !pip install openai
 # 環境変数の準備
 import os
-os.environ["OPENAI_API_KEY"] = "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"
+
+# set in ~/.profile or other files
+#os.environ["OPENAI_API_KEY"] = "XXXXX"
 
 # from langchain.llms import OpenAI
 
@@ -130,3 +132,36 @@ os.environ["OPENAI_API_KEY"] = "sk-eTSnDwogyqJkrZo9qSCUT3BlbkFJ65LlGUI5v6gdAiIcB
 #     chain.invoke({"product": "メタバース"})
 # )
 
+###6. Agent
+# 環境変数の準備
+import os
+#os.environ["SERPAPI_API_KEY"] = "XXXXX"
+
+from langchain.agents import AgentType
+from langchain.agents import initialize_agent
+from langchain.agents import create_react_agent
+from langchain.agents import create_json_agent
+from langchain.agents import create_structured_chat_agent
+from langchain.agents import load_tools
+#from langchain.llms import OpenAI
+from langchain_openai import OpenAI
+
+# LanguageModelの準備
+llm_model = OpenAI(temperature=0)
+
+# Toolの準備
+tools = load_tools(["serpapi", "llm-math"], llm=llm_model)
+
+# Agentの準備
+
+agent_executor = initialize_agent(
+#agent_executor = create_react_agent( 
+#agent_executor = create_json_agent( 
+#agent_executor = create_structured_chat_agent(
+    tools=tools,
+    llm=llm_model,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True
+)
+# Agentの実行
+agent_executor.invoke({"input": "富士山の高さは？それに2を掛けると？"})
