@@ -164,4 +164,6 @@ agent_executor = initialize_agent(
     verbose=True
 )
 # Agentの実行
-agent_executor.invoke({"input": "富士山の高さは？それに2を掛けると？"})
+#agent_executor.invoke({"input": "富士山の高さは？それに2を掛けると？"})
+# Agentの実行
+agent_executor.run({"input": "ぼっち・ざ・ろっく!の作者の名前は？"})
