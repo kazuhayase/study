@@ -5,7 +5,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(adwaita))
  '(kill-whole-line t)
- '(mouse-drag-copy-region t))
+ '(mouse-drag-copy-region t)
+ '(package-selected-packages
+   '(lsp-mode typescript-mode ess latex-math-preview yatex company-tabnine company magit mozc-temp mozc migemo macrostep leaf-tree leaf-convert blackout el-get hydra leaf-keywords)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

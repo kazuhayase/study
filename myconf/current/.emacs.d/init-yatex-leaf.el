@@ -245,6 +245,31 @@
                                                                          :emacs>= 25.1
                                                                          :ensure t)
 
+;;; typescript
+;;; https://kazuhira-r.hatenablog.com/entry/2021/10/30/222106
+
+(require 'typescript-mode)
+(add-hook 'typescript-mode-hook '(lambda () (setq typescript-indent-level 2)))
+(add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (ansi-color-apply-on-region compilation-filter-start (point-max)))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+(require 'typescript-mode)
+(add-hook 'typescript-mode-hook '(lambda () (setq typescript-indent-level 2)))
+(add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (ansi-color-apply-on-region compilation-filter-start (point-max)))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (typescript-mode . lsp-deferred))
+
+
 (leaf default
   :bind (("C-h" . delete-backward-char)
          ("C-x g" . magit-status)
