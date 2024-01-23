@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "sample-server"
+version = "0.1.0"
+description = ""
+authors = ["Kazuyoshi Hayase <kazuyoshi.hayase@jcom.home.ne.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+taskipy = "^1.12.2"
+fastapi = "^0.109.0"
+uvicorn = "^0.26.0"
+gunicorn = "^21.2.0"
+langchain = "^0.1.1"
+openai = "^1.8.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+mypy = "^1.8.0"
+black = "^23.12.1"
+flake8 = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+## https://future-architect.github.io/articles/20210611a/
+[tool.taskipy.tasks]
+test = { cmd = "pytest tests", help = "runs all unit tests" }
+pr_test = "task lint"
+fmt = { cmd = "black tests example_server", help = "format code" }
+lint = { cmd = "task lint_black && task lint_flake8 && task lint_mypy", help = "exec lint" }
+lint_flake8 = "flake8 --max-line-length=88 tests example_server"
+lint_mypy = "mypy tests example_server"
+lint_black = "black --check tests example_server"
