@@ -313,6 +313,40 @@
     '(("C-n" . 'ein:worksheet-goto-next-input-km)
       ("C-p" . 'ein:worksheet-goto-prev-input-km))))
 
+;;;; https://gist.github.com/yancya/4475969
+;; C-k で行全体を削除（改行を含む）
+(setq kill-whole-line t)
+
+;;プレフィクスキー
+;(global-unset-key (kbd "C-l"))
+;(global-set-key (kbd "C-l C-l") 'recenter-top-bottom)
+
+;;起動時のウィンドウサイズ、色など
+(if (boundp 'window-system)
+  (setq default-frame-alist
+    (append (list
+;      '(foreground-color . "white") ;文字色：白
+ ;     '(background-color . "black") ;背景色：黒
+;      '(top . 100) ;ウィンドウの表示位置(Y座標)
+;      '(left . 150) ;ウィンドウの表示位置(X座標）
+      '(width . 130) ;ウィンドウ幅
+      '(height . 45) ;ウィンドウ高
+    )
+    default-frame-alist)
+  )
+)
+(setq initial-frame-alist default-frame-alist)
+
+;;;; https://gist.github.com/yancya/4475969
+;;ウィンドウ位置を画面の中央にして、縦サイズを伸ばす関数
+;;WQHD 画面を使ってるときに、使いたい
+(defun frame-to-center ()
+  (interactive)
+  "frame to center"
+  (set-frame-size (selected-frame) 130 65)
+  (set-frame-position (selected-frame) 800 30))
+;(global-set-key (kbd "C-l c") 'frame-to-center)
+
 
 (leaf default
   :bind (("C-h" . delete-backward-char)
