@@ -2,6 +2,10 @@
 
 import os
 import logging
+# logging var with varname (:str)
+def varlog(name):
+        logging.info(f'{name}={eval(name)}')
+
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 
@@ -20,16 +24,18 @@ logging.basicConfig(
     format="[%(process)d-%(thread)d]-%(asctime)s-[%(filename)s:%(lineno)d]-%(levelname)s-%(message)s",
     force=True)
 
-# logging var with varname
-def varlog(name):
-        logging.info(f'{name}={eval(name)}')
+#source_text = "hoken1-ch1.txt"
+#source_text = "simple.txt"
+source_text = "hoken1.txt"
 
-#file_path = "hoken1-ch1.txt"
-#file_path = "/content/drive/MyDrive/simple.txt"
-#file_path = "/content/drive/MyDrive/Actuary/eBooks/hoken1-ch1.txt"
-###file_path = "/content/drive/MyDrive/Actuary/eBooks/hoken1.txt"
-#file_path = "/home/kazu/Books/Actuary-ebook/hoken1.txt" ## Ubuntu@lavie
-file_path = "/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
+#ebook_dir ="/content/drive/MyDrive/Actuary/eBooks/"
+#ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
+#ebook_dir ="/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
+ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
+
+file_path = ebook_dir + source_text
+varlog('file_path')
+
 
 # 1. PDFを読み込む
 #todo PDF読み込みはPyPDFではエラーになる。javascriptは読み込めた（はず）が、処理がうまくいかなかったので、テキストに変換して処理している。
