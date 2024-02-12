@@ -4,12 +4,16 @@
 # 環境変数の準備
 import os
 import logging
+#from varlog import varlog
+# logging var with varname (:str)
+def varlog(name):
+        logging.info(f'{name}={eval(name)}')
 
 #import sys
 #todo logger設定の高度化
 #https://kewton.blog/archives/1350
 logging.basicConfig(
-    filename="log/app.log",
+    filename="log/RAG_try.log",
     #stream=sys.stdout,
     level=logging.INFO, #ERROR, WARNING, INFO, DEBUG
     format="[%(process)d-%(thread)d]-%(asctime)s-[%(filename)s:%(lineno)d]-%(levelname)s-%(message)s",
@@ -67,12 +71,17 @@ def add_log(log, role, text):
 ## メインの処理
 if __name__ == "__main__":
 
-    #file_path = "hoken1-ch1.txt"
-    #file_path = "/content/drive/MyDrive/simple.txt"
-    #file_path = "/content/drive/MyDrive/Actuary/eBooks/hoken1-ch1.txt"
-    ###file_path = "/content/drive/MyDrive/Actuary/eBooks/hoken1.txt"
-    #file_path = "/home/kazu/Books/Actuary-ebook/hoken1.txt" ## Ubuntu@lavie
-    file_path = "/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
+    #source_text = "hoken1-ch1.txt"
+    #source_text = "simple.txt"
+    source_text = "hoken1.txt"
+
+    #ebook_dir ="/content/drive/MyDrive/Actuary/eBooks/"
+    #ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
+    #ebook_dir ="/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
+    ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
+
+    file_path = ebook_dir + source_text
+    varlog('file_path')
 
     # 1. PDFを読み込む
     #todo PDF読み込みはPyPDFではエラーになる。javascriptは読み込めた（はず）が、処理がうまくいかなかったので、テキストに変換して処理している。
@@ -113,11 +122,17 @@ if __name__ == "__main__":
 
     # 4. ベクトルストアにドキュメントを格納
     # todo ChromaDB 永続化
-    db_path = "db/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
-    client = chromadb.PersistentClient(path=db_path)
-    collection = client.get_or_create_collection(name=os.path.basename(file_path), embedding_function=embeddings)
-    collection.add(docs)
-    retriever = Chroma.from_documents(docs, embeddings).as_retriever()
+
+    db_dir='./db/'
+    db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
+
+    # load from disk
+    varlog('db_path')
+    db = Chroma(
+        embedding_function=embeddings,
+        persist_directory=db_path
+    )
+    retriever = db.as_retriever()
 
     while "[exit]" not in (keyword := _input("\n保険1教科書第1章から、箇所を特定するキーワードを入力してください（例；営業保険料）。終了は[exit]。\n> ")):
       retrieval_query = keyword + "に関わる箇所を抽出してください。"

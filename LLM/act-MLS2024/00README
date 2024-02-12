@@ -1,0 +1,23 @@
+生保1教科書を参照し100字程度で要約するアプリ
+
+RAG/LLM; python FastAPI
+Web; javascript (React)
+
+1. FastAPI 
+
+source ~/venv/bin/activate
+cd ~/github/study/LLM/act-MLS2024/python/fapi
+uvicorn main:app --reload
+
+2. React
+cd ~/github/study/LLM/act-MLS2024/javascript/act-mls2024
+npm start
+
+------
+npm run build
+npm install serve   ;;  -gはできない
+npm audit fix --force;;; 何回かやったが無限Loopっぽい
+./node_modules/.bin/serve -s build
+
+3. Browser
+http://localhost:3000
