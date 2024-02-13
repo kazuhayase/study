@@ -76,9 +76,9 @@ if __name__ == "__main__":
     source_text = "hoken1.txt"
 
     #ebook_dir ="/content/drive/MyDrive/Actuary/eBooks/"
-    #ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
+    ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
     #ebook_dir ="/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
-    ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
+    #ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
 
     file_path = ebook_dir + source_text
     varlog('file_path')
@@ -158,21 +158,21 @@ if __name__ == "__main__":
       logging.info(f"prompt_qa = {prompt_qa}")
       logging.info(f"chain_type_kwargs = {chain_type_kwargs}")
 
-      # 5. ドキュメントを抽出
-      context_docs = retriever.get_relevant_documents(retrieval_query)
-      logging.info(f"#context_docs = {len(context_docs)}") # 抽出したドキュメントの数
-      encoding = tiktoken.encoding_for_model(GPT_MODEL)
-      str_docs=''
-      for doc in context_docs:
-        str_docs = ' '.join(doc.page_content)
-      logging.info(f"#tokens_context_docs = {len(encoding.encode(str_docs))}") # 抽出したドキュメントのtoken数
+      # # 5. ドキュメントを抽出
+      # context_docs = retriever.get_relevant_documents(retrieval_query)
+      # logging.info(f"#context_docs = {len(context_docs)}") # 抽出したドキュメントの数
+      # encoding = tiktoken.encoding_for_model(GPT_MODEL)
+      # str_docs=''
+      # for doc in context_docs:
+      #   str_docs = ' '.join(doc.page_content)
+      # logging.info(f"#tokens_context_docs = {len(encoding.encode(str_docs))}") # 抽出したドキュメントのtoken数
 
-      ###pythonだとmetadataはsource(ファイル名)のみで詳細箇所が不明なため、以下のログは意味なし
-      #for i in range(len(context_docs)):
-        #current_doc = context_docs[i] # i[0..len-1] のドキュメント
-        #logging.info(f"i = {i}")
-        #logging.info(f"metadata = {current_doc.metadata}") # ドキュメントのメタデータ
-        #logging.info(current_doc.page_content) # ドキュメントの中身
+      # ###pythonだとmetadataはsource(ファイル名)のみで詳細箇所が不明なため、以下のログは意味なし
+      # #for i in range(len(context_docs)):
+      #   #current_doc = context_docs[i] # i[0..len-1] のドキュメント
+      #   #logging.info(f"i = {i}")
+      #   #logging.info(f"metadata = {current_doc.metadata}") # ドキュメントのメタデータ
+      #  #logging.info(current_doc.page_content) # ドキュメントの中身
 
       # 6. QAチェーンの初期化・エージェント化
       print('\n***エージェントが要約を実行***')

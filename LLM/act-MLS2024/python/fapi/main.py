@@ -58,6 +58,13 @@ def ret_kw(kw):
     keyword = kw
 
     retrieval_query = keyword + "に関わる箇所を抽出してください。"
+
+    # context_docs = retriever.get_relevant_documents(retrieval_query)
+    # logging.info(f'len(context_docs)={len(context_docs)}')  # 抽出したドキュメント数
+    # #logging.info(f'type(context_docs)={type(context_docs)}')  # 抽出したドキュメントの型
+    # #logging.info(f'context_docs={context_docs}')  # 抽出したドキュメント
+    # ## Document(page_content"XXXX", metadata={'source': '/xxxx/'})
+
     question = keyword + "に関わる箇所を1つ選択して100字程度に要約してください。"
 
     prompt_template_qa = """あなたは親切で優しいアシスタントです。丁寧に、日本語でお答えください！
@@ -79,13 +86,6 @@ def ret_kw(kw):
     logging.info(f"question = {question}")
     logging.info(f"prompt_qa = {prompt_qa}")
     logging.info(f"chain_type_kwargs = {chain_type_kwargs}")
-
-    context_docs = retriever.get_relevant_documents(retrieval_query)
-    logging.info(f'len(context_docs)={len(context_docs)}')  # 抽出したドキュメント数
-    #logging.info(f'type(context_docs)={type(context_docs)}')  # 抽出したドキュメントの型
-    #logging.info(f'context_docs={context_docs}')  # 抽出したドキュメント
-
-    ## Document(page_content"XXXX", metadata={'source': '/xxxx/'})
 
     qa =RetrievalQA.from_chain_type(
         llm=ChatOpenAI(model_name=GPT_MODEL),

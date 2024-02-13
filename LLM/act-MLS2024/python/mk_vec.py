@@ -29,9 +29,9 @@ logging.basicConfig(
 source_text = "hoken1.txt"
 
 #ebook_dir ="/content/drive/MyDrive/Actuary/eBooks/"
-#ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
+ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
 #ebook_dir ="/home/kazuyoshi/MEGAsync/ebooks/Actuary-ebook/hoken1.txt" ## Ubuntu@home
-ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
+#ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
 
 file_path = ebook_dir + source_text
 varlog('file_path')
