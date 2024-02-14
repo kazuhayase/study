@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from langchain.schema import ChatMessage, AIMessage, HumanMessage, SystemMessage
+# from langchain.schema import ChatMessage, AIMessage, HumanMessage, SystemMessage
 
 import chromadb
 import os
@@ -9,12 +9,13 @@ import chromadb.utils.embedding_functions as embedding_functions
 from langchain_core.documents.base import Document
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
-from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
-from langchain.agents import initialize_agent
 import tiktoken
 import logging
+
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain.agents import initialize_agent
 
 logging.basicConfig(
     filename="../log/app.log",
@@ -57,7 +58,7 @@ retriever = db.as_retriever()
 def ret_kw(kw):
     keyword = kw
 
-    retrieval_query = keyword + "に関わる箇所を抽出してください。"
+    # retrieval_query = keyword + "に関わる箇所を抽出してください。"
 
     # context_docs = retriever.get_relevant_documents(retrieval_query)
     # logging.info(f'len(context_docs)={len(context_docs)}')  # 抽出したドキュメント数
@@ -65,7 +66,8 @@ def ret_kw(kw):
     # #logging.info(f'context_docs={context_docs}')  # 抽出したドキュメント
     # ## Document(page_content"XXXX", metadata={'source': '/xxxx/'})
 
-    question = keyword + "に関わる箇所を1つ選択して100字程度に要約してください。"
+    # question = keyword + "に関わる箇所を1つ選択して100字程度に要約してください。"
+    question = keyword + "について、100字程度に要約して教えてください。"
 
     prompt_template_qa = """あなたは親切で優しいアシスタントです。丁寧に、日本語でお答えください！
     もし以下の情報が探している情報に関連していない場合は、そのトピックに関する自身の知識を用いて質問
@@ -82,7 +84,7 @@ def ret_kw(kw):
     )
     chain_type_kwargs = {"prompt": prompt_qa}
 
-    logging.info(f"retrieval_query = {retrieval_query}")
+    # logging.info(f"retrieval_query = {retrieval_query}")
     logging.info(f"question = {question}")
     logging.info(f"prompt_qa = {prompt_qa}")
     logging.info(f"chain_type_kwargs = {chain_type_kwargs}")
