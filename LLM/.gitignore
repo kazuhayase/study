@@ -1,6 +1,9 @@
 #act-MLS2024/javascript/helloworld/node_modules/
 node_modules/
-db/
+db*/
+log/
 PDFs/
+__pycache__/
+.ipynb_checkpoints/
 *.pdf
 *.zip
