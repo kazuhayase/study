@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 import os
-import logging
-# logging var with varname (:str)
-def varlog(name):
-        logging.info(f'{name}={eval(name)}')
+from varlog import varlog 
+
+# uncomment if needs more than varlog
+# from logging import getLogger
+# logger = getLogger(__name__)
+# # logger = getLogger('uvicorn');; fast api
 
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
@@ -14,15 +16,6 @@ from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
-
-#todo logger設定の高度化
-#https://kewton.blog/archives/1350
-logging.basicConfig(
-    filename="log/mk_vec.log",
-    #stream=sys.stdout,
-    level=logging.INFO, #ERROR, WARNING, INFO, DEBUG
-    format="[%(process)d-%(thread)d]-%(asctime)s-[%(filename)s:%(lineno)d]-%(levelname)s-%(message)s",
-    force=True)
 
 #source_text = "hoken1-ch1.txt"
 #source_text = "simple.txt"
@@ -36,7 +29,7 @@ ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
 file_path = ebook_dir + source_text
 varlog('file_path')
 
-
+### try llamaindex 
 # 1. PDFを読み込む
 #todo PDF読み込みはPyPDFではエラーになる。javascriptは読み込めた（はず）が、処理がうまくいかなかったので、テキストに変換して処理している。
 #pages = PyPDFLoader(file_path).load()
@@ -45,7 +38,6 @@ pages = TextLoader(file_path).load()
 # 2. ドキュメントをチャンクに分割
 #docs = CharacterTextSplitter(chunk_size=5000, chunk_overlap=0).split_documents(pages)
 docs = CharacterTextSplitter().split_documents(pages)
-#logging.info(f"#docs = {len(docs)}") # 抽出したドキュメントの数
 varlog('len(docs)')
 
 # 3. 埋め込みモデルの初期化

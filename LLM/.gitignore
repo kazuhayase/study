@@ -2,8 +2,8 @@
 node_modules/
 db*/
 log/
+__pycache*/
 PDFs/
-__pycache__/
 .ipynb_checkpoints/
 *.pdf
 *.zip
