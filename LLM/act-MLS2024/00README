@@ -1,7 +1,38 @@
-生保1教科書を参照し100字程度で要約するアプリ
+生保1等の教科書を参照し100字程度で要約するアプリ
 
+vector DB (chroma) index; python llamaindex
 RAG/LLM; python FastAPI
 Web; javascript (React)
+
+pip install fire beautifulsoup4 
+pip install llama_index
+#pip install llama_index.core
+#pip install llama_index.embeddings
+pip install llama_index.vector_stores.chroma
+
+0. llama index
+
+python download_files.py  https://www.actuaries.jp/examin/textbook/ ./Downloads/actuaries-examin-textbook/
+
+cd ./Downloads/actuaries-examin-textbook/
+
+mkdir 'hoken1_seiho' 'hoken2_seiho' 'sonpo' 'nenkin' 1ji
+mv hoken1-seiho_??.pdf hoken1_seiho/
+mv hoken2-seiho_0*.pdf hoken2_seiho-*pdf hoken2_seiho/
+mv sonpo_*pdf sonpo/
+mv nenkin_0?.pdf nenkin/
+mv *pdf 1ji/
+
+cd ../..
+
+python llama_mkvec_act.py
+
+---
+
+python download_files.py  https://www.digital.go.jp/resources/standard_guidelines/ ./Downloads/actuaries-examin-textbook/
+
+
+
 
 1. FastAPI 
 
