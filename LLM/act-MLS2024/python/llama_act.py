@@ -28,7 +28,7 @@ e = 'text-embedding-3-small'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in e.split('-'))}"
 db2=chromadb.PersistentClient(path=db_path)
 
-chroma_collection = db2.get_or_create_collection("digital_agency_standard_guidelines")
+chroma_collection = db2.get_or_create_collection("hoken1_seiho")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 embed_model = OpenAIEmbedding(model=e,tiktoken_model_name="cl100k_base")
 index = VectorStoreIndex.from_vector_store(
@@ -37,9 +37,9 @@ index = VectorStoreIndex.from_vector_store(
 )
 
 # Query Data from the persisted index
-query_engine = index.as_query_engine(verbose=True)
+query_engine = index.as_query_engine()
 #response = query_engine.query("What did the author do growing up?")
-response = query_engine.query("PJMOは何ですか?")
+response = query_engine.query("営業保険料とは何ですか?")
 print(response)
 
 # Deprecated v0.10

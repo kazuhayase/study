@@ -27,11 +27,16 @@ from llama_index.core.extractors import TitleExtractor
 from llama_index.core.ingestion import IngestionPipeline
 
 required_exts = [".pdf"]
-documents = SimpleDirectoryReader(
-    "./Downloads/digital_agency_standard_guidelines/",
-    recursive=True,
-    required_exts=required_exts,
-).load_data(num_workers=1)
+kamoku=['hoken1_seiho', 'hoken2_seiho']
+#kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
+documents=dict()
+for k in kamoku:
+    varlog(k)
+    documents[k] = SimpleDirectoryReader(
+        "./Downloads/actuaries-examin-textbook/"+k,
+        recursive=True,
+        required_exts=required_exts,
+    ).load_data(num_workers=1)
 
 db_dir='./db_llama/'
 
@@ -42,20 +47,25 @@ for e in e_models:
     varlog('db_path')
 
     db = chromadb.PersistentClient(path=db_path)
-    chroma_collection = db.get_or_create_collection('digital_agency_standard_guidelines')
-    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-    storage_context = StorageContext.from_defaults(vector_store=vector_store)
-    embed_model = OpenAIEmbedding(model=e,tiktoken_model_name="cl100k_base")
-    service_context = ServiceContext.from_defaults(chunk_size=1000, embed_model=embed_model)
-    index = VectorStoreIndex.from_documents(
-        documents, storage_context=storage_context, service_context=service_context
-    )
-    
-    #     embed_model = embed_model,
-    #     chunk_size=1000,
-    #     vector_store = vector_store
-    # )
-    
+    for k in kamoku:
+        chroma_collection = db.get_or_create_collection(k)
+        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+        storage_context = StorageContext.from_defaults(vector_store=vector_store)
+        embed_model = OpenAIEmbedding(model=e,tiktoken_model_name="cl100k_base")
+        service_context = ServiceContext.from_defaults(chunk_size=1000, embed_model=embed_model)
+        index = VectorStoreIndex.from_documents(
+            documents[k], storage_context=storage_context, service_context=service_context
+        )
+
+        ### try to delete deprecated contexts, but failed.
+        # index = VectorStoreIndex.from_documents(
+        #     documents[k],
+        #     embed_model = embed_model,
+        #     chunk_size=1000,
+        #     vector_store = vector_store
+        # )
+
+
         # pipeline = IngestionPipeline(
         #     transformations=[
         #         SimpleFileNodeParser(),

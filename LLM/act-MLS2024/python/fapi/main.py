@@ -10,19 +10,33 @@ from langchain_core.documents.base import Document
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
+
+# from llama_index.core import (
+#         VectorStoreIndex,
+#         load_index_from_storage,
+# )
+# from llama_index.vector_stores.chroma import ChromaVectorStore
+# from llama_index.embeddings.openai import OpenAIEmbedding
+# from llama_index.core import Settings
+
 import tiktoken
-import logging
+
+#https://docs.llamaindex.ai/en/latest/community/integrations/using_with_langchain.html#
+# from llama_index.core.langchain_helpers.agents import (
+#     IndexToolConfig,
+#     LlamaIndexTool,
+# )
+
+#from '../varlog' import varlog 
+
+# uncomment if needs more than varlog
+from logging import getLogger
+#logger = getLogger(__name__)
+logger = getLogger('uvicorn') ## fast api
 
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.agents import initialize_agent
-
-logging.basicConfig(
-    filename="../log/app.log",
-    #stream=sys.stdout,
-    level=logging.INFO, #ERROR, WARNING, INFO, DEBUG
-    format="[%(process)d-%(thread)d]-%(asctime)s-[%(filename)s:%(lineno)d]-%(levelname)s-%(message)s",
-    force=True)
 
 from langchain_core.tools import Tool
 from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
@@ -41,19 +55,31 @@ EMBEDDING_MODEL = 'text-embedding-3-small'
 #EMBEDDING_MODEL = 'text-embedding-3-large'
 #EMBEDDING_MODEL = 'text-embedding-ada-002'
 
-
 embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL,tiktoken_model_name="cl100k_base")
 
-db_dir='../db/'
-db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
-
 # load from disk
-logging.info(f'db_path={db_path}')
+db_dir='../db_llama/'
+db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
+persistent_client=chromadb.PersistentClient(path=db_path)
+collection = persistent_client.get_or_create_collection("hoken1_seiho")
 db = Chroma(
+    client = persistent_client,
+    collection_name="hoken1_seiho",
     embedding_function=embeddings,
-    persist_directory=db_path
+    #persist_directory=db_path
 )
 retriever = db.as_retriever()
+
+
+# chroma_collection = db2.get_or_create_collection("hoken1_seiho")
+# vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+# embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL, tiktoken_model_name="cl100k_base")
+# index = VectorStoreIndex.from_vector_store(
+#         vector_store,
+#         embed_model = embed_model,
+# )
+
+# retriever = index.as_retriever(verbose=True)
 
 def ret_kw(kw):
     keyword = kw
@@ -84,10 +110,10 @@ def ret_kw(kw):
     )
     chain_type_kwargs = {"prompt": prompt_qa}
 
-    # logging.info(f"retrieval_query = {retrieval_query}")
-    logging.info(f"question = {question}")
-    logging.info(f"prompt_qa = {prompt_qa}")
-    logging.info(f"chain_type_kwargs = {chain_type_kwargs}")
+    # logger.info(f"retrieval_query = {retrieval_query}")
+    logger.info(f"question = {question}")
+    logger.info(f"prompt_qa = {prompt_qa}")
+    logger.info(f"chain_type_kwargs = {chain_type_kwargs}")
 
     qa =RetrievalQA.from_chain_type(
         llm=ChatOpenAI(model_name=GPT_MODEL),
@@ -110,8 +136,8 @@ def ret_kw(kw):
         system_message="あなたは親切なアシスタントです。日本語で回答してください!",
     )
     result = chat_agent.run(question)
-    logging.info(f'result={result}')
-    logging.info(f'type(result)={type(result)}')
+    logger.info(f'result={result}')
+    logger.info(f'type(result)={type(result)}')
 #    return ActQA(q=kw, a=result)
     return result
     
@@ -139,7 +165,7 @@ async def QandA(kw: str) -> ActQA:
     '''
 	retrieve from vector store with keyword
     '''
-    #    logging.info(f'before call ret_kw')
+    #    logger.info(f'before call ret_kw')
     #return ActQA(q=kw, a=ret_kw(kw))
     return JSONResponse(content=jsonable_encoder(ActQA(q=kw, a=ret_kw(kw))))
 
