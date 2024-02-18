@@ -38,5 +38,9 @@
             ],
             "propagate": false
         }
+    },
+    "root": {
+	"level": "DEBUG",
+	"handlers": ["console", "app_file"]
     }
 }
