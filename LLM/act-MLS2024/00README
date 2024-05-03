@@ -11,7 +11,7 @@ pip install llama_index
 pip install llama_index.vector_stores.chroma
 
 0. llama index
-
+cd ./python
 python download_files.py  https://www.actuaries.jp/examin/textbook/ ./Downloads/actuaries-examin-textbook/
 
 cd ./Downloads/actuaries-examin-textbook/
