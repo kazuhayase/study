@@ -51,6 +51,7 @@ class ActQA(BaseModel):
 #GPT_MODEL = "gpt-3.5-turbo"
 #GPT_MODEL = "gpt-4-1106-preview"
 GPT_MODEL = "gpt-4-turbo-preview"
+GPT_MODEL = "gpt-4o"
 EMBEDDING_MODEL = 'text-embedding-3-small'
 #EMBEDDING_MODEL = 'text-embedding-3-large'
 #EMBEDDING_MODEL = 'text-embedding-ada-002'
@@ -132,6 +133,7 @@ def ret_kw(kw):
         tools,
         llm=ChatOpenAI(model_name=GPT_MODEL),
         agent = "zero-shot-react-description",
+        handle_parsing_errors=True,
         verbose=True,
         system_message="あなたは親切なアシスタントです。日本語で回答してください!",
     )
