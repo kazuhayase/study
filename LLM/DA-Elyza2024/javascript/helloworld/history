@@ -1,0 +1,810 @@
+LANG=C xdg-user-dirs-gtk-update
+ls
+ls ダウンロード/
+sudo apt install git
+git config --list
+git config --global user.name "kazuhayase"
+git config --global user.email "kazuyoshi.hayase@jcom.home.ne.jp"
+mkdir git
+cd git
+git init
+git status
+cd
+ssh-keygen -t ed25519 -C "kazuyoshi.hayase@jcom.home.ne.jp"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+cat .ssh/id_ed25519.pub 
+ssh -T kazuhayase@github.com
+ssh -vT kazuhayase@github.com
+ssh -vT kazu@github.com
+ssh -vT kazuhayase@github.com
+git remote -v
+ssh -vT git@github.com
+pwd
+cd git
+gh auth login 
+type -p curl >/dev/null || sudo apt install curl -y
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && sudo apt update && sudo apt install gh -y
+gh auth login
+gh repo clone study
+ls study/
+cd study/work/
+ls
+less 20230212-Ubuntu-clean-install.txt 
+exit
+ls .ssh/
+more .ssh/known_hosts 
+ls .ssh/
+more .ssh/id_ed25519.pub 
+exit
+xinput list
+df -h
+ls /media/kazu/disk/
+cat /etc/issue
+exit
+env | grep GTK
+env | grep XMODI
+env | grep CLUTT
+env | grep QT_IM
+ls .config/
+ls .local/
+ls .local/share/applications/
+sudo find . -name "slack.conf"
+sudo find / -name "slack.conf"
+sudo find . -name "*slack*"
+ls /var/snap/slack/current/
+ls /var/snap/slack/
+ls -a /var/snap/slack/
+ls -l
+ls -la /var/snap/slack/
+ls -la /var/snap/slack/current/
+ls -la /var/snap/slack/current/etc/
+ls -la /var/snap/slack/current/etc/pop-os/
+ls -la /var/snap/slack/current/etc/pop-os/lsb-release 
+ls -la /var/snap/slack/current/etc/debian_version 
+file /var/snap/slack/current/etc/debian_version 
+grep --help
+grep --help | less
+grep --help | grep -v png
+sudo find . -name "slack.conf" | grep -v png
+sudo find . -name "slack.conf" | less
+sudo find . -name "*slack*" | grep -v png
+cd
+mkdir local-installs
+cd local-installs/
+wget -nc https://dl.winehq.org/wine-builds/winehq.key && sudo apt-key add winehq.key
+sudo cp winehq.key /etc/apt/keyrings/winehq-archive.key
+sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+sudo apt update
+sudoapt install --install-recommends winehq-stable
+sudo apt install --install-recommends winehq-stable
+winecfg
+ls
+pwd
+cd
+ls
+ls
+cd Documents/
+ls
+cd ../Downloads/
+ls
+cd /
+ls
+cd
+ls
+vi .bash_aliases 
+vi .bashrc 
+ls
+du -sk
+find --help
+find . -atime 0
+find . -mtime 0
+find . -mtime -1
+find . -mtime +1
+find . -mtime -1
+find . -mtime -1 | grep -i viber
+pwd
+ls Downloads/
+cd Downloads/
+ls
+cat Slack-conf.tbz.0? > Slack-conf.tbz
+tar tjf Slack-conf.tbz 
+tar xjf Slack-conf.tbz 
+cd .config/Slack/
+ls
+cd
+cd Downloads/
+ls
+cd ../.config/Slack/
+ls -ltr
+pwd
+cd ..
+mv Slack/ Slack.bak
+mv ~/Downloads/.config/Slack ./
+sudo mv ~/Downloads/.config/Slack ./
+ls Slack
+ls ~/Downloads/.config/Slack/
+ls -al ~/Downloads/.config/Slack/
+ls Slack
+sudo mv ~/Downloads/.config/Slack ./
+ls
+mv Slack Slack.bad
+cd
+cd Downloads/
+ls
+rm -rf .config/
+cat Slack-conf.tbz.0? > Slack-conf.tbz
+tar xjf Slack-conf.tbz 
+ps -ef | grep Slack
+ls
+pwd
+cd
+ls
+cd .config/
+mv Slack Slack.1032
+ls -l
+ls -l Slack*
+mv ~/Downloads/.config/Slack ./
+ls Slack
+sudo apt update
+sudo apt upgrade
+ps -ef | grep wine
+kill 13562
+ps -ef | grep wine
+kill 13556
+kill 13553
+ps -ef | grep wine
+kill 13551
+ps -ef | grep wine
+kill 9603
+kill 9595
+kill 9570
+ps -ef | grep wine
+kill 9603
+ps -ef | grep wine
+kill 9603
+ps -ef | grep wine
+kill -KILL 9603
+ps -ef | grep wine
+kill 13752
+kill 13777
+kill 13789
+ps -ef | grep wine
+kill 13789
+ps -ef | grep wine
+kill -KILL 13789
+ps -ef | grep wine
+dpkg --print-architecture
+dpkg --print-foreign-architectures
+ls /etc/apt/keyrings/winehq-archive.key 
+ls /etc/apt/sources.list.d/
+ls /etc/apt/sources.list.d/winehq-jammy.sources 
+more /etc/apt/sources.list.d/winehq-jammy.sources 
+winecfg
+pkill wine
+ps -ef|grep wine
+kill -KILL 14777
+ps -ef|grep wine
+ps -ef | grep 1457
+exit
+sudo apt install libxcb-xinerama0 libxcb-cursor0
+sudo apt autoremove
+sudo apt update
+pwd
+cd local-installs/
+ls
+ls ~/Downloads/
+tar xaf ~/Downloads/anki-2.1.62-linux-qt6.tar.zst 
+cd anki-2.1.62-linux-qt6/
+sudo ./install.sh 
+anki
+git --version
+sudo apt install texlive-full
+sudo apt install xzdec
+tlmgr init-usertree
+tlmgr update --self -all
+exit
+swapon --show
+df
+ls -l /swapfile 
+ls -lh /swapfile 
+grep swap /etc/fstab 
+blkid
+sudo filefrag -v /swapfile 
+exit
+systemctl hibernate
+df -h
+swapon --show
+blkid
+sudo filefrag -v /swapfile
+sudo vi /etc/default/grub
+cd /etc/default/
+ls -l
+cp grub grub.20230509
+sudo cp grub grub.20230509
+vi grub
+sudo cp ~/tmp grub
+more grub
+rm ~/tmp 
+sudo update-grub
+exit
+systemctl hibernate
+cat /proc/swaps 
+grep UUID /etc/default/grub
+cd /etc/initramfs-tools/
+cd conf.d/
+ls
+vi ./resume
+cp ~/tmp ./resume
+sudo cp ~/tmp ./resume
+more resume 
+pwd
+sudo update-initramfs -c -k all
+more resume 
+exit
+systemctl hibernate
+sudo systemctl hibernate
+sudo mokutil -sb-state
+sudo mokutil --sb-state
+sudo mokutil --disable-validation 
+shutdown -r
+date
+systemctl hibernate
+ls /etc/polkit-1/localauthority/
+ls /etc/polkit-1/localauthority
+sudo ls /etc/polkit-1/localauthority
+sudo ls /etc/polkit-1/localauthority/50-local.d
+sudo ls /etc/polkit-1/localauthority/*
+sudo ls /etc/polkit-1/localauthority/
+sudo ls '/etc/polkit-1/localauthority/*'
+sudo su
+sudo apt-get install chrome-gnome-shell
+ps -ef | grep code
+ps -ef | less
+ps -ef | grep 1954
+sudo snap refresh code
+sudo snap refresh snap-store
+kill 1954
+sudo snap refresh snap-store
+sudo apt remove texlive-full
+sudo apt autoremove
+sudo mkdir -p /usr/local/texlive/$(date +%Y)
+sudo chown -R "$USER" /usr/local/texlive
+mkdir /tmp/texlive
+cd /tmp/texlive
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip
+unzip ./install-tl.zip -d install-tl
+cd install-tl/install-tl-$(date +%Y%m%d)
+cd install-tl/install-tl-20230508/
+perl ./install-tl
+cd /etc/profile.d/
+ls apps-bin-path.sh 
+more apps-bin-path.sh 
+ls
+ls -ld .
+cp apps-bin-path.sh apps-bin-path.sh.bak
+sudo cp apps-bin-path.sh apps-bin-path.sh.bak
+sudo vi apps-bin-path.sh
+cd
+ls ~/texmf/
+mv ~/texmf ~/texmf.old.20230509
+tlmgr init-usertree
+tlmgr update --self -all
+history 
+less /usr/local/texlive/2023/install-tl.log 
+tlmgr update --self -all
+cd /tmp/texlive/install-tl/
+ls
+cd install-tl-20230508/
+ls
+ls /usr/local/texlive/
+ls /usr/local/texlive/texmf-local/
+ls /usr/local/texlive/2023/
+tail /etc/profile.d/apps-bin-path.sh
+cd /etc/profile.d/
+sudo vi apps-bin-path.sh
+pwd
+cd
+mv texmf texmf.old2.20230509
+tlmgr init-usertree
+tlmgr update --self -all
+exit
+which authy
+ps -ef | grep note
+ps -ef | less
+pwd
+cd .local/share/
+ls
+cd
+cd snap/
+ls
+pwd
+ls -l
+ls firefox/
+cd
+which authy
+ls /snap/bin/
+ps -ef | gnome
+ps -ef | grep gnome
+gnome-tweaks
+ls .config/
+ls .config/gnome-session/
+ls .config/gnome-session/saved-session/
+exit
+cd git/study/actuary/
+ls
+less 20230504-保険1第1章営業保険料.
+less 20230504-保険1第1章営業保険料.md 
+dc
+man dc
+man bc
+bc
+ls
+ls -ltr
+less 20230509-保険2第1章-生命保険会計.md 
+ls
+less 20230509-保険2第1章-生命保険会計.md 
+less 20230504-保険1第1章営業保険料.md
+pwd
+git --help
+git status
+git branc
+git branch
+ls .git-*
+ls .git*
+cd
+more .gitconfig 
+git config --global credential.helper 
+df
+top
+exit
+cd Books/
+ls
+cd 過去問/
+ls
+cp -pr 保険1 hoken1-test
+cd hoken1-test/
+ls
+cd ..
+pdftk
+sudo apt-get install pdftk
+pdftk ./hoken1-test/*.pdf cat output merged.pdf 'name original-file-name'
+man pdftk
+pdftk ./hoken1-test/*.pdf cat output merged.pdf
+evince merged.pdf 
+sudo apt update
+sudo apt install devilspie2
+devilspie2 --help
+pwd
+ls .config/de*
+ls .config/
+devilspie2 
+ls .config/devilspie2/
+cd .config/devilspie2/
+cat > get_name_and_xywh.lua
+cd
+devilspie2 --debug
+dpkg -l | grep xwayland
+sudo apt install sway
+exit
+devilspie2 --debug
+sudo apt install fzf
+more /etc/sway/config
+$ mkdir -p ~/.local/sway
+$ cp /etc/sway/config ~/.local/sway/
+cp /etc/sway/config ~/.local/sway/
+mkdir -p ~/.local/sway
+cp /etc/sway/config ~/.local/sway/
+vi .local/sway/
+vi .local/sway/config 
+sway
+exit
+cd git
+ls
+git pull
+cd study/cdpasdf
+cd study/
+ls
+git pull
+cd
+pwd
+cd .emacs.d/
+ls
+cd ..
+mv .emacs.d .emacs.d.before-leaf-20230531
+mkdir .emacs.d
+cd .emacs.d
+ln -s ../git/study/myconf/current/.emacs.d/init-yatex-leaf.el ./init.el
+ln -s ../git/study/myconf/current/.emacs.d/custom.el
+ln -s ../git/study/myconf/current/.emacs.d/byte-comple.sh 
+bash byte-comple.sh 
+more init.el 
+vi init.el 
+bash byte-comple.sh 
+cd ..
+emacs git/study/
+bg
+pwd
+ls git/study/myconf/
+ls git/study/myconf/current/
+ls -a git/study/myconf/current/
+pwd
+mv .bashrc .bashrc.20230531
+ln -s git/study/myconf/current/.bashrc 
+ln -s git/study/myconf/current/.dircolors 
+more .gitconfig 
+diff .gitconfig git/study/myconf/current/.gitconfig 
+mv .gitconfig .gitconfig.20230531
+ln -s git/study/myconf/current/.gitconfig .
+ls git/study/myconf/current/.*
+ln -s git/study/myconf/current/.latexmkrc 
+emacs git/study/actuary/
+bg
+which latexmk
+more .latexmkrc 
+pwd
+ls /usr/local/texlive/
+ls /usr/local/texlive/texmf-local/
+cd /usr/local/texlive/
+ls -l
+ln -s 2023 current
+ls
+cd
+pwd
+emacs git/study/actuary/
+pwd
+cd .emacs.d
+bash byte-comple.sh 
+cd ..
+bash byte-comple.sh 
+emacs git/study/actuary/
+bg
+ifconfig
+sudo apt install net-tools
+ifconfig
+cd git/study/
+git config pull.rebase false
+git pull
+exit
+ls
+cd .emacs.d
+ls
+ls 
+cd
+ls git/study/myconf/current/
+ls -l
+ls -l git/study/myconf/current/
+ls -l git/study/myconf/current/.*
+ls -l git/study/myconf/current/.emacs.d/*
+cd
+cd .emacs.d
+bash byte-comple.sh 
+cd
+emacs&
+fc-list 
+fc-list  | grep -i noto
+pwd
+cd .emacs.d
+bash byte-comple.sh 
+emacs
+exit
+which emacs
+emacs --version
+pwd
+cd .emacs.d
+more byte-comple.sh 
+bash byte-comple.sh 
+pwd
+cd
+cd git/study/actuary/
+ls
+emacs --version
+cd .emacs.d
+bash byte-comple.sh 
+sudo apt install cmigemo
+exit
+cd /etc/default/grub.d/
+ls
+more init-select.cfg 
+cd ..
+ls
+more grub
+xinput
+pwd
+cd
+cd .emacs.d/
+bash byte-comple.sh 
+ls -l init.elc
+あああ
+cd
+find . -name "tmp.txt"
+pwd
+less .emacs.d/init.el
+cd .emacs.d
+ls
+rm init.elc
+emacs --version
+emacs&
+more custom.el 
+ls
+ls -l
+bash byte-comple.sh 
+more byte-comple.sh 
+snap run emacs --version
+ls -l init.el*
+sudo apt update
+sudo apt upgrade
+sudo apt install emacs-mozc-bin
+cd
+cd .emacs.d
+bash byte-comple.sh 
+emacs&
+exit
+cd git/study/work/
+python pdf2latex.py 
+python3 pdf2latex.py 
+pip install pdfplumber
+sudo apt install python3-pip
+pip install pdfplumber
+pip install pandoc
+python pdf2latex.py 
+python3 pdf2latex.py 
+pip install aspose
+pip install aspose.pdf
+python3 pdf2latex.py ~/Books/2023-生保2次/過去問/hoken1-all.pdf 
+file ~/Books/2023-生保2次/過去問/hoken1-all.pdf 
+en1-all.pdf 
+python3 --help
+python3 pdf2latex.py ~/Books/2023-生保2次/過去問/hoken1-all.pdf 
+file ~/Books/2023-生保2次/*WB*
+python3 pdf2latex.py
+python3 -V pdf2latex.py
+python3 -v pdf2latex.py
+exit
+git status
+cd git/
+git status
+cd study/
+git status
+cat .gitignore
+cat ../.gitignore
+pwd
+cat .gitignore
+cat actuary/.gitignore 
+more actuary/.gitignore 
+more .gitignore
+more ~/.gitconfig
+find . -name ".gitignore"
+more .gitignore
+ls .gitignore*
+cat .gitignore_global >> .gitignore
+git status
+ls tex/
+cd actuary/
+ls -l texput.*
+less texput.tex 
+rm texput.*
+less output.pdf 
+less ../work/output.tex 
+more ../work/output.tex 
+rm ../work/output.tex 
+ls -l tmp.pdf 
+rm tmp.pdf 
+exit
+cd git/study/openai-quickstart-python/
+python -m venv venv
+python3 -m venv venv
+apt install python3.10-venv
+sudo apt install python3.10-venv
+python3 -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt 
+cp .env.example .env
+more .env
+vi .env
+flask run
+exit
+cd Downloads/
+ls
+ls -ltr
+tar tjf github-images.tbz 
+tar xjf github-images.tbz 
+cd images/
+ls
+cd ..
+mv images ~/git/
+exit
+pwd
+cd git/study/
+git status
+git pull
+exit
+sudo apt update
+exit
+cd Desktop/
+pdftotext memorandum.pdf 
+ls -ltr
+more memorandum.txt 
+exit
+his
+history 
+history |grep tar
+exit
+sudo apt install gdebi
+sudo apt update
+sudo apt upgrade
+exit
+cd git/study/
+git update
+git --help
+git status
+git fetch 
+ls actuary/memo.txt 
+more  actuary/memo.txt 
+ps -ef | grep clock
+which gnome-clocks 
+cd git/study/python/LLM/act-MLS2024/
+pwd
+python npaka-test.py 
+python3 npaka-test.py 
+pip install langchain
+pip install openai
+python3 npaka-test.py 
+pip install -U langchain-openai
+python3 npaka-test.py 
+pip install -U langchain-openai
+python3 npaka-test.py 
+pip install -U langchain-community
+python3 npaka-test.py 
+pip install google-search-results
+env
+more /etc/bash.bashrc 
+grep -i env /etc/*rc
+env | grep -i api
+source ~/.profile
+env | grep -i api
+env | less
+source ~/.profile
+env | grep -i api
+ls -l
+python3 npaka-test2.py 
+pip install numexpr
+python3 npaka-test2.py 
+pwd
+ls
+git rm npaka-test.py 
+exit
+cd git/study/python/LLM/act-MLS2024/
+sudo apt install python-is-pyton3
+sudo apt install python-is-python3
+python npaka-test2.py 
+exit
+man pip
+cd Books/Actuary-ebook/
+ls
+pwd
+pdftk '保険1（生命保険） 日本アクチュアリー会.pdf' cat 11-78 output hoken1-ch1.pdf
+wd
+pwd
+cd
+cd git/study/python/LLM/act-MLS2024/
+python pypdf-check.py 
+pip install pypdf
+python pypdf-check.py 
+cd /home/kazu/Books/Actuary-ebook/
+pdftk hoken1-ch1.pdf output hoken1-ch1-uncomp.pdf uncompress
+less hoken1-ch1-uncomp.pdf 
+more hoken1-ch1-uncomp.pdf 
+less hoken1-ch1-uncomp.pdf 
+mv hoken1-ch1-uncomp.pdf  hoken1-ch1-uncomp.txt
+pushd ~/git/study/python/LLM/act-MLS2024/
+python pypdf-check.py 
+python pypdf-check.py  | less
+pwd
+popd
+more hoken1-ch1-uncomp.txt 
+less hoken1-ch1-uncomp.txt 
+more hoken1-ch1-uncomp.txt 
+less hoken1-ch1-uncomp.txt 
+ls hoken1-ch1*
+man pdktk
+man pdftk
+vi hoken1-ch1-uncomp.txt 
+pdftotext hoken1-ch1.pdf hoken1-ch1.txt
+more hoken1-ch1.txt 
+vi hoken1-ch1.txt 
+exit
+env
+env | grep -i key
+npm
+yarn
+sudo apt install cmdtest
+yarn --version
+yarn --help
+yarn --help | less
+npm
+sudo apt install npm
+yarn
+npm
+yarn
+sudo npm install yarn
+yarn
+yarn --version
+sudo apt install node.js
+sudo apt install nod
+sudo apt install node
+sudo apt show nodejs
+sudo apt update
+sudo apt upgrade
+sudo apt-get install -y ca-certificates curl gnupg
+ls /etc/apt/keyrings/
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+NODE_MAJOR=20
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+sudo apt-get update
+sudo apt show nodejs
+sudo apt install nodejs
+sudo apt list nodejs
+sudo apt purge nodejs
+sudo apt install nodejs
+sudo apt purge libnode-dev
+sudo apt install nodejs
+node --version
+npm --version
+yarn --version
+yarn add langchain
+pwd
+cd git/study/
+ls
+ls python/LLM
+git mv python/LLM/ ./
+ls 
+ls LLM/
+pwd
+cd LLM/
+ls
+cd act-MLS2024/
+ls
+mkdir python
+git mv *py python/
+mkdir javascript
+cd javascript/
+ls
+mkdir helloworld
+cd helloworld/
+mkdir src
+yarn init -y
+yarn init
+pwd
+ls
+yarn init
+man yarn
+which yarn
+yarn --version
+yarn --help
+man yarn
+sudo apt purge yarn
+sudo apt purge cmdtest
+history
+cd
+npm install -g yarn
+sudo npm install -g yarn
+pwd
+cd git/study/LLM/act-MLS2024/javascript/
+ls
+cd helloworld/
+ls
+yarn init -y
+ls
+more package.json 
+yarn add -D typescript ts-node @types/node
+ls
+ls node_modules/
+history
+history --help
+more ~/.bash_history 
+tail ~/.bash_history 
+less ~/.bash_history 
+ls -l ~/.bash_history 
+history --help
+history -w history
