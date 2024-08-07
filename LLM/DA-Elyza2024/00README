@@ -1,0 +1,54 @@
+生保1等の教科書を参照し100字程度で要約するアプリ
+
+vector DB (chroma) index; python llamaindex
+RAG/LLM; python FastAPI
+Web; javascript (React)
+
+pip install fire beautifulsoup4 
+pip install llama_index
+#pip install llama_index.core
+#pip install llama_index.embeddings
+pip install llama_index.vector_stores.chroma
+
+0. llama index
+cd ./python
+python download_files.py  https://www.actuaries.jp/examin/textbook/ ./Downloads/actuaries-examin-textbook/
+
+cd ./Downloads/actuaries-examin-textbook/
+
+mkdir 'hoken1_seiho' 'hoken2_seiho' 'sonpo' 'nenkin' 1ji
+mv hoken1-seiho_??.pdf hoken1_seiho/
+mv hoken2-seiho_0*.pdf hoken2_seiho-*pdf hoken2_seiho/
+mv sonpo_*pdf sonpo/
+mv nenkin_0?.pdf nenkin/
+mv *pdf 1ji/
+
+cd ../..
+
+python llama_mkvec_act.py
+
+---
+
+python download_files.py  https://www.digital.go.jp/resources/standard_guidelines/ ./Downloads/actuaries-examin-textbook/
+
+
+
+
+1. FastAPI 
+
+source ~/venv/bin/activate
+cd ~/github/study/LLM/act-MLS2024/python/fapi
+uvicorn main:app --reload
+
+2. React
+cd ~/github/study/LLM/act-MLS2024/javascript/act-mls2024
+npm start
+
+------
+npm run build
+npm install serve   ;;  -gはできない
+npm audit fix --force;;; 何回かやったが無限Loopっぽい
+./node_modules/.bin/serve -s build
+
+3. Browser
+http://localhost:3000
