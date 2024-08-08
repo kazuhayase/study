@@ -15,11 +15,7 @@
   },
   "devDependencies": {
     "react-scripts": "^5.0.1"
-<<<<<<< HEAD
   },
-=======
-  },	
->>>>>>> 193f33c041ce014385d92b0b5eb9f8f7aed2990e
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
