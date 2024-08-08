@@ -4,6 +4,11 @@ vector DB (chroma) index; python llamaindex
 RAG/LLM; python FastAPI
 Web; javascript (React)
 
+----------
+(debian/WLSでは以下を実行して仮想環境にする)
+ source ~/venv/bin/activate
+----------
+
 pip install fire beautifulsoup4 
 pip install llama_index
 #pip install llama_index.core
