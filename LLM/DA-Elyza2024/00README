@@ -4,11 +4,6 @@ vector DB (chroma) index; python llamaindex
 RAG/LLM; python FastAPI
 Web; javascript (React)
 
-----------
-(debian/WLSでは以下を実行して仮想環境にする)
- source ~/venv/bin/activate
-----------
-
 pip install fire beautifulsoup4 
 pip install llama_index
 #pip install llama_index.core
@@ -41,12 +36,11 @@ python download_files.py  https://www.digital.go.jp/resources/standard_guideline
 
 1. FastAPI 
 
-
+source ~/venv/bin/activate
 cd ~/github/study/LLM/act-MLS2024/python/fapi
 uvicorn main:app --reload
 
 2. React
-source ~/venv/bin/activate
 cd ~/github/study/LLM/act-MLS2024/javascript/act-mls2024
 npm start
 

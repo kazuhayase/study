@@ -1,25 +1,22 @@
 {
-  "name": "act-mls2024",
+  "name": "streaming-chat-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@langchain/community": "^0.0.19",
+    "@langchain/openai": "^0.0.12",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.6.7",
+    "hnswlib-node": "^2.1.0",
+    "langchain": "^0.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-select": "^5.8.0",
-    "serve": "^14.2.1",
+    "react-scripts": "5.0.1",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
-  "devDependencies": {
-    "react-scripts": "^5.0.1"
-<<<<<<< HEAD
-  },
-=======
-  },	
->>>>>>> 193f33c041ce014385d92b0b5eb9f8f7aed2990e
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -43,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "@langchain/core": "0.1.16"
   }
 }

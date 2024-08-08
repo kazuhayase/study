@@ -62,21 +62,15 @@ embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL,tiktoken_model_name="cl100k_
 db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
 persistent_client=chromadb.PersistentClient(path=db_path)
+collection = persistent_client.get_or_create_collection("hoken1_seiho")
+db = Chroma(
+    client = persistent_client,
+    collection_name="hoken1_seiho",
+    embedding_function=embeddings,
+    #persist_directory=db_path
+)
+retriever = db.as_retriever()
 
-kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
-collection = dict()
-db=dict()
-retriever=dict()
-for k in kamoku:
-    logger.info(f"k={k}")
-    collection[k] = persistent_client.get_or_create_collection(k)
-    db[k] = Chroma(
-        client = persistent_client,
-        collection_name=k,
-        embedding_function=embeddings,
-        #persist_directory=db_path
-    )
-    retriever[k] = db[k].as_retriever()
 
 # chroma_collection = db2.get_or_create_collection("hoken1_seiho")
 # vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
@@ -88,10 +82,8 @@ for k in kamoku:
 
 # retriever = index.as_retriever(verbose=True)
 
-def ret_kw(kw,txt='hoken1_seiho'):
+def ret_kw(kw):
     keyword = kw
-    textbook = txt
-    logger.info(f'keyword={keyword}, textbook={textbook}')
 
     # retrieval_query = keyword + "に関わる箇所を抽出してください。"
 
@@ -127,7 +119,7 @@ def ret_kw(kw,txt='hoken1_seiho'):
     qa =RetrievalQA.from_chain_type(
         llm=ChatOpenAI(model_name=GPT_MODEL),
         chain_type="stuff",
-        retriever=retriever[txt], ##todo:  txtが期待したものでなければException??
+        retriever=retriever,
         chain_type_kwargs=chain_type_kwargs
     )
     tools = [
@@ -169,16 +161,14 @@ app.add_middleware(
 #@app.get("/kw/{kw}", response_model=ChatMessage)
 #@app.get("/kw/{kw}", response_model=ActQA)
 #@app.get("/kw/{kw}")
+@app.get("/kw/{kw}", response_model=list)
 #@app.get("/kw/{kw}", response_model=dict)
-@app.get("/kw/", response_model=list)
-async def QandA(kw: str, txt: str = 'hoken1_seiho') -> ActQA: 
+async def QandA(kw: str) -> ActQA: 
     '''
 	retrieve from vector store with keyword
     '''
     #    logger.info(f'before call ret_kw')
     #return ActQA(q=kw, a=ret_kw(kw))
-    if txt not in kamoku:
-        txt = 'hoken1_seiho'
-    return JSONResponse(content=jsonable_encoder(ActQA(q=kw, a=ret_kw(kw,txt))))
+    return JSONResponse(content=jsonable_encoder(ActQA(q=kw, a=ret_kw(kw))))
 
     

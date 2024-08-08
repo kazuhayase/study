@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "llm-server"
+version = "0.1.0"
+description = ""
+authors = ["Kazuyoshi Hayase <kazuyoshi.hayase@jcom.home.ne.jp>"]
+readme = "README.md"
+packages = [{include = "llm_server", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.26.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
