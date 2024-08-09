@@ -10,7 +10,6 @@ from langchain_core.documents.base import Document
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
-from ../da_elyza import Elyza
 
 # from llama_index.core import (
 #         VectorStoreIndex,
@@ -51,9 +50,8 @@ class ActQA(BaseModel):
 
 #GPT_MODEL = "gpt-3.5-turbo"
 #GPT_MODEL = "gpt-4-1106-preview"
-#GPT_MODEL = "gpt-4-turbo-preview"
-#GPT_MODEL = "gpt-4o"
-GPT_MODEL = "gpt-4o-mini"
+GPT_MODEL = "gpt-4-turbo-preview"
+GPT_MODEL = "gpt-4o"
 EMBEDDING_MODEL = 'text-embedding-3-small'
 #EMBEDDING_MODEL = 'text-embedding-3-large'
 #EMBEDDING_MODEL = 'text-embedding-ada-002'
@@ -64,15 +62,21 @@ embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL,tiktoken_model_name="cl100k_
 db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
 persistent_client=chromadb.PersistentClient(path=db_path)
-collection = persistent_client.get_or_create_collection("hoken1_seiho")
-db = Chroma(
-    client = persistent_client,
-    collection_name="hoken1_seiho",
-    embedding_function=embeddings,
-    #persist_directory=db_path
-)
-retriever = db.as_retriever()
 
+kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
+collection = dict()
+db=dict()
+retriever=dict()
+for k in kamoku:
+    logger.info(f"k={k}")
+    collection[k] = persistent_client.get_or_create_collection(k)
+    db[k] = Chroma(
+        client = persistent_client,
+        collection_name=k,
+        embedding_function=embeddings,
+        #persist_directory=db_path
+    )
+    retriever[k] = db[k].as_retriever()
 
 # chroma_collection = db2.get_or_create_collection("hoken1_seiho")
 # vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
@@ -84,8 +88,10 @@ retriever = db.as_retriever()
 
 # retriever = index.as_retriever(verbose=True)
 
-def ret_kw(kw):
+def ret_kw(kw,txt='hoken1_seiho'):
     keyword = kw
+    textbook = txt
+    logger.info(f'keyword={keyword}, textbook={textbook}')
 
     # retrieval_query = keyword + "に関わる箇所を抽出してください。"
 
@@ -121,7 +127,7 @@ def ret_kw(kw):
     qa =RetrievalQA.from_chain_type(
         llm=ChatOpenAI(model_name=GPT_MODEL),
         chain_type="stuff",
-        retriever=retriever,
+        retriever=retriever[txt], ##todo:  txtが期待したものでなければException??
         chain_type_kwargs=chain_type_kwargs
     )
     tools = [
@@ -133,8 +139,7 @@ def ret_kw(kw):
     ]
     chat_agent = initialize_agent(
         tools,
-        #llm=ChatOpenAI(model_name=GPT_MODEL),
-        llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
+        llm=ChatOpenAI(model_name=GPT_MODEL),
         agent = "zero-shot-react-description",
         handle_parsing_errors=True,
         verbose=True,
@@ -164,14 +169,16 @@ app.add_middleware(
 #@app.get("/kw/{kw}", response_model=ChatMessage)
 #@app.get("/kw/{kw}", response_model=ActQA)
 #@app.get("/kw/{kw}")
-@app.get("/kw/{kw}", response_model=list)
 #@app.get("/kw/{kw}", response_model=dict)
-async def QandA(kw: str) -> ActQA: 
+@app.get("/kw/", response_model=list)
+async def QandA(kw: str, txt: str = 'hoken1_seiho') -> ActQA: 
     '''
 	retrieve from vector store with keyword
     '''
     #    logger.info(f'before call ret_kw')
     #return ActQA(q=kw, a=ret_kw(kw))
-    return JSONResponse(content=jsonable_encoder(ActQA(q=kw, a=ret_kw(kw))))
+    if txt not in kamoku:
+        txt = 'hoken1_seiho'
+    return JSONResponse(content=jsonable_encoder(ActQA(q=kw, a=ret_kw(kw,txt))))
 
     

@@ -27,8 +27,8 @@ from llama_index.core.extractors import TitleExtractor
 from llama_index.core.ingestion import IngestionPipeline
 
 required_exts = [".pdf"]
-kamoku=['hoken1_seiho', 'hoken2_seiho']
-#kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
+#kamoku=['hoken1_seiho', 'hoken2_seiho']
+kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
 documents=dict()
 for k in kamoku:
     varlog(k)
