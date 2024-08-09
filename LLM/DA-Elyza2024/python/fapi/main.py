@@ -30,9 +30,24 @@ import tiktoken
 #from '../varlog' import varlog 
 
 # uncomment if needs more than varlog
-from logging import getLogger
+#from logging import getLogger #, StreamHandler, DEBUG, Formatter
+import logging
+
 #logger = getLogger(__name__)
-logger = getLogger('uvicorn') ## fast api
+logger = logging.getLogger('uvicorn') ## fast api
+lc_logger = logging.getLogger('langchain') 
+h11_logger = logging.getLogger('h11') 
+
+# ログ出力先を設定（標準出力）
+stream_handler = logging.StreamHandler()
+logger.addHandler(stream_handler)
+lc_logger.addHandler(stream_handler)
+h11_logger.addHandler(stream_handler)
+
+# ログ出力のフォーマットを設定
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+stream_handler.setFormatter(formatter)
+
 
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
