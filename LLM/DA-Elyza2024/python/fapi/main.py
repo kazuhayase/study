@@ -43,6 +43,11 @@ from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
+from da_elyza import Elyza
+
+from langchain.globals import set_debug
+set_debug(True)
+
 class ActQA(BaseModel):
     q: str = Field(default='営業保険料')
     a: str = Field(default='(No Answer)')
@@ -137,9 +142,16 @@ def ret_kw(kw,txt='hoken1_seiho'):
             description="vector search result with" + db_path
         ),
     ]
+    e_key=os.environ.get('ELYZA_API_KEY')
+    logger.info(f"ELYZA_API_KEY = {e_key}")
+
     chat_agent = initialize_agent(
         tools,
-        llm=ChatOpenAI(model_name=GPT_MODEL),
+        #llm=ChatOpenAI(model_name=GPT_MODEL),
+        #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
+
+        llm=Elyza(#base_url=e_url,
+                       api_key=e_key),
         agent = "zero-shot-react-description",
         handle_parsing_errors=True,
         verbose=True,
