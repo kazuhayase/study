@@ -36,18 +36,22 @@ import logging
 #logger = getLogger(__name__)
 logger = logging.getLogger('uvicorn') ## fast api
 lc_logger = logging.getLogger('langchain') 
-h11_logger = logging.getLogger('h11') 
+httpx_logger = logging.getLogger('httpx') 
 
 # ログ出力先を設定（標準出力）
 stream_handler = logging.StreamHandler()
 logger.addHandler(stream_handler)
 lc_logger.addHandler(stream_handler)
-h11_logger.addHandler(stream_handler)
+httpx_logger.addHandler(stream_handler)
 
 # ログ出力のフォーマットを設定
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 stream_handler.setFormatter(formatter)
 
+logging.basicConfig(level=logging.DEBUG)
+logger.setLevel(logging.DEBUG)
+lc_logger.setLevel(logging.DEBUG)
+httpx_logger.setLevel(logging.DEBUG)
 
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -159,14 +163,18 @@ def ret_kw(kw,txt='hoken1_seiho'):
     ]
     e_key=os.environ.get('ELYZA_API_KEY')
     logger.info(f"ELYZA_API_KEY = {e_key}")
+    e_url=os.environ.get('ELYZA_BASE_URL')
+    logger.info(f"ELYZA_BASE_URL = {e_url}")
+    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
+    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
+    logger.info(f"e_endpoint = {e_endpoint}")
 
     chat_agent = initialize_agent(
         tools,
         #llm=ChatOpenAI(model_name=GPT_MODEL),
         #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
 
-        llm=Elyza(#base_url=e_url,
-                       api_key=e_key),
+        llm=Elyza(api_key=e_key, base_url=e_endpoint),
         agent = "zero-shot-react-description",
         handle_parsing_errors=True,
         verbose=True,
