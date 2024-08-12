@@ -1,45 +1,176 @@
-from langchain_openai import OpenAI
-#from langchain.llms import OpenAI
+#https://python.langchain.com/v0.2/docs/how_to/custom_llm/
+#minimum required; _call and _llm_type
+#consulting chatglm3, ai21, beam etc.
+import json
+import logging
+from typing import Any, List, Optional, Union
+
+from langchain_core.callbacks import CallbackManagerForLLMRun
+from langchain_core.language_models.llms import LLM
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    FunctionMessage,
+    HumanMessage,
+    SystemMessage,
+)
+from langchain_core.pydantic_v1 import Field
+
+from langchain_community.llms.utils import enforce_stop_tokens
+
+logger = logging.getLogger(__name__)
+HEADERS = {
+    "Content-Type": "application/json",
+    "accept": "application/json"
+}
+DEFAULT_TIMEOUT = 30
+
+def _convert_message_to_dict(message: BaseMessage) -> dict:
+    if isinstance(message, HumanMessage):
+        message_dict = {"role": "user", "content": message.content}
+    elif isinstance(message, AIMessage):
+        message_dict = {"role": "assistant", "content": message.content}
+    elif isinstance(message, SystemMessage):
+        message_dict = {"role": "system", "content": message.content}
+    elif isinstance(message, FunctionMessage):
+        message_dict = {"role": "function", "content": message.content}
+    else:
+        raise ValueError(f"Got unknown type {message}")
+    return message_dict
+
 import httpx
 
-class Elyza(OpenAI):
-    def __init__(self, api_key, base_url, **kwargs):
-        super().__init__(api_key=api_key, base_url=base_url, **kwargs)
-        #self.endpoint_url = endpoint_url
-        #self._endpoint = endpoint_url
+class Elyza(LLM):
+#    def __init__(self, api_key, base_url, **kwargs):
+#        super().__init__(api_key=api_key, base_url=base_url, **kwargs)
 
-"""
-    def _call(self, prompt, stop=None):
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-        data = {
-            "prompt": prompt,
-            "max_tokens": self.max_tokens,
-            "temperature": self.temperature,
-            "stop": stop
-        }
-        response = httpx.post(self.endpoint_url, headers=headers, json=data)
-        response.raise_for_status()
-        return response.json()["choices"][0]["text"]
-    
-    def _send_request(self, url, headers, data):
-        # リクエスト情報をログに出力
-        logger.info(f"LLM Request: url={url}, headers={headers}, data={data}")
-        response = requests.post(url, headers=headers, data=data)
-        return response
-    def _post(self, url, data, headers):
-        # リクエスト情報をログに出力
-        logger.info(f"LLM Request: url={url}, headers={headers}, data={data}")
-        return super(). _post(url, data, headers)
+    #model_name: str = Field(default="llama-3-elyza-japanese-70b", alias="model")
+    model_name: str = "llama-3-elyza-japanese-70b"
+    api_key: str = "NotSet=Unavailable"
+    base_url: str = "https://api.platform.elyza.ai/v2"
+    """Base URL to use."""
+    endpoint_url = f"{base_url}/models/{model_name}/records"
+    """Endpoint URL to use."""
+    model_kwargs: Optional[dict] = None
+    """Keyword arguments to pass to the model."""
+    max_tokens: int = 20000
+    """Max token allowed to pass to the model."""
+    temperature: float = 0.1
+    """LLM model temperature from 0 to 10."""
+    top_p: float = 0.7
+    """Top P for nucleus sampling from 0 to 1"""
+    prefix_messages: List[BaseMessage] = Field(default_factory=list)
+    """Series of messages for Chat input."""
+    streaming: bool = False
+    """Whether to stream the results or not."""
+    http_client: Union[Any, None] = None
+    timeout: int = DEFAULT_TIMEOUT
 
-    def _request(self, url, method, data, headers):
-        # リクエスト情報をログに出力
-        logger.info(f"LLM Request: url={url}, method={method}, headers={headers}, data={data}")
-        return super()._request(url, method, data, headers)    
     @property
-    def _endpoint(self) -> str:
-        #return f"{OPENAI_BASE_URL}/models/llama-3-elyza-japanese-70b/records"
-        return f"{ELYZA_BASE_URL}/models/llama-3-elyza-japanese-70b/records"
-"""
+    def _llm_type(self) -> str:
+        """Return type of llm."""
+        return "da_elyza"
+
+    @property
+    def _invocation_params(self) -> dict:
+        """Get the parameters used to invoke the model."""
+        params = {
+            #"model": self.model_name,
+            "system_prompt": "あなたは優秀で誠実な日本人のアシスタントです。",
+            "top_p": self.top_p,
+            "temperature": self.temperature,
+            #"max_tokens": self.max_tokens,
+            #"stream": self.streaming,
+        }
+        return {**params, **(self.model_kwargs or {})}
+
+    @property
+    def client(self) -> Any:
+        #import httpx
+
+        return self.http_client or httpx.Client(timeout=self.timeout)
+
+    def _get_payload(self, prompt: str) -> dict:
+        params = self._invocation_params
+        model_parameters ={
+            "model_parameters": params
+            }
+        #messages = self.prefix_messages + [HumanMessage(content=prompt)]
+        messages = self.prefix_messages + [AIMessage(content=prompt)]
+        input = {
+            "input": {
+                "messages": [_convert_message_to_dict(m) for m in messages],
+                "limit_exceeded": True,
+                "has_following_content": True
+            }
+        }
+        input.update(model_parameters)
+        input.update({"async": True})
+        return input
+
+    def _call(
+            self,
+            prompt: str,
+            stop: Optional[List[str]] = None,
+            run_manager: Optional[CallbackManagerForLLMRun] = None,
+            **kwargs: Any,
+    ) -> str:
+        """Call out to Digital Agency Elyza PF endpoint.
+
+        Args:
+            prompt: The prompt to pass into the model.
+            stop: Optional list of stop words to use when generating.
+
+        Returns:
+            The string generated by the model.
+
+        Example:
+            .. code-block:: python
+
+                response = da_elyza("Tell me a joke.")
+        """
+
+        #self.endpoint_url = f"{self.base_url}/models/{self.model_name}/records"
+
+        payload = self._get_payload(prompt)
+        logger.debug(f"DA_ELYZA payload: {payload}")
+        elyza_headers={"Authorization": f"Bearer {self.api_key}"}
+        HEADERS.update(elyza_headers)
+        logger.debug(f"DA_ELYZA headers: {HEADERS}")
+
+        try:
+            response = self.client.post(
+                self.endpoint_url, headers=HEADERS, json=payload
+            )
+        except httpx.NetworkError as e:
+            raise ValueError(f"Error raised by inference endpoint: {e}")
+
+        logger.debug(f"DA_ELYZA response: {response}")
+
+        if response.status_code != 200:
+            raise ValueError(f"Failed with response: {response}")
+
+        try:
+            parsed_response = response.json()
+
+            if isinstance(parsed_response, dict):
+                content_keys = "choices"
+                if content_keys in parsed_response:
+                    choices = parsed_response[content_keys]
+                    if len(choices):
+                        text = choices[0]["message"]["content"]
+                else:
+                    raise ValueError(f"No content in response : {parsed_response}")
+            else:
+                raise ValueError(f"Unexpected response type: {parsed_response}")
+
+        except json.JSONDecodeError as e:
+            raise ValueError(
+                f"Error raised during decoding response from inference endpoint: {e}."
+                f"\nResponse: {response.text}"
+            )
+
+        if stop is not None:
+            text = enforce_stop_tokens(text, stop)
+
+        return text
