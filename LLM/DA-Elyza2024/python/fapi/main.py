@@ -165,8 +165,8 @@ def ret_kw(kw,txt='hoken1_seiho'):
     logger.info(f"ELYZA_API_KEY = {e_key}")
     e_url=os.environ.get('ELYZA_BASE_URL')
     logger.info(f"ELYZA_BASE_URL = {e_url}")
-    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
-    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
+    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
+    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
     logger.info(f"e_endpoint = {e_endpoint}")
 
     chat_agent = initialize_agent(
@@ -174,7 +174,7 @@ def ret_kw(kw,txt='hoken1_seiho'):
         #llm=ChatOpenAI(model_name=GPT_MODEL),
         #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
 
-        llm=Elyza(api_key=e_key, base_url=e_endpoint),
+        llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
         agent = "zero-shot-react-description",
         handle_parsing_errors=True,
         verbose=True,

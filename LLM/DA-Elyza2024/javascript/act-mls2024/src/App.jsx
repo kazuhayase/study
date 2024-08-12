@@ -13,7 +13,8 @@ function App() {
 	{value: 'sonpo', label: '損保'},
 	{value: 'nenkin', label: '年金'},
     ]
-    const url = "http://localhost:8000/kw/" ;
+    //const url = "http://localhost:8000/kw/" ; #batting with HTTP Toolkit
+    const url = "http://localhost:9000/kw/" ;
     
     const changeKw = (e) => {
 	setKw(e.target.value);
