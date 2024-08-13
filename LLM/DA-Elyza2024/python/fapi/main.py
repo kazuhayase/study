@@ -33,14 +33,15 @@ import tiktoken
 #from logging import getLogger #, StreamHandler, DEBUG, Formatter
 import logging
 
-#logger = getLogger(__name__)
-logger = logging.getLogger('uvicorn') ## fast api
+logger = logging.getLogger(__name__)
+uv_logger = logging.getLogger('uvicorn') ## fast api
 lc_logger = logging.getLogger('langchain') 
 httpx_logger = logging.getLogger('httpx') 
 
 # ログ出力先を設定（標準出力）
 stream_handler = logging.StreamHandler()
 logger.addHandler(stream_handler)
+uv_logger.addHandler(stream_handler)
 lc_logger.addHandler(stream_handler)
 httpx_logger.addHandler(stream_handler)
 
@@ -48,10 +49,11 @@ httpx_logger.addHandler(stream_handler)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 stream_handler.setFormatter(formatter)
 
-logging.basicConfig(level=logging.DEBUG)
-logger.setLevel(logging.DEBUG)
-lc_logger.setLevel(logging.DEBUG)
-httpx_logger.setLevel(logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
+logger.setLevel(logging.INFO)
+uv_logger.setLevel(logging.INFO)
+lc_logger.setLevel(logging.INFO)
+httpx_logger.setLevel(logging.INFO)
 
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate

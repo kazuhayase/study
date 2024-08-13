@@ -25,11 +25,16 @@ HEADERS = {
 }
 DEFAULT_TIMEOUT = 30
 
+import re
+elyza_regex = re.compile(r'with\.\.\/db_llama\/')
+
 def _convert_message_to_dict(message: BaseMessage) -> dict:
     if isinstance(message, HumanMessage):
         message_dict = {"role": "user", "content": message.content}
     elif isinstance(message, AIMessage):
-        message_dict = {"role": "assistant", "content": message.content}
+        message_dict = {"role": "assistant", "content": elyza_regex.sub('with./db_llama/', message.content)}
+        #message_dict = {"role": "assistant", "content": message.content}
+        #message_dict = {"role": "assistant", "content": "string"}
     elif isinstance(message, SystemMessage):
         message_dict = {"role": "system", "content": message.content}
     elif isinstance(message, FunctionMessage):
@@ -154,15 +159,43 @@ class Elyza(LLM):
             parsed_response = response.json()
 
             if isinstance(parsed_response, dict):
-                content_keys = "choices"
-                if content_keys in parsed_response:
-                    choices = parsed_response[content_keys]
-                    if len(choices):
-                        text = choices[0]["message"]["content"]
-                else:
-                    raise ValueError(f"No content in response : {parsed_response}")
-            else:
-                raise ValueError(f"Unexpected response type: {parsed_response}")
+                record_id = parsed_response.get('record_id')
+                if record_id > 0:
+                    
+                    try:
+                        get_record_url = f"{self.base_url}/records/{record_id}?async=false"
+                        #get_record_url = f"{self.base_url}/records/{record_id}"
+                        get_response = self.client.get(
+                            get_record_url, headers=HEADERS
+                        )
+                    except httpx.NetworkError as e:
+                        raise ValueError(f"Error raised by inference endpoint: {e}")
+                    
+                    logger.debug(f"DA_ELYZA get_response: {get_response}")
+                    if get_response.status_code != 200:
+                        raise ValueError(f"Failed with get_response: {get_response}")
+
+                    try:
+                        parsed_get_response = get_response.json()
+
+                        if isinstance(parsed_get_response, dict):
+                            content_keys = "output"
+                            if content_keys in parsed_get_response:
+                                output = parsed_get_response[content_keys]
+                                logger.debug(f"DA_ELYZA output: {output}")
+                                logger.debug(f"DA_ELYZA key of output: {output.keys()}")
+                                if len(output):
+                                    text = output['messages'][0]['content']
+                            else:
+                                raise ValueError(f"No output in get_response : {parsed_get_response}")
+                        else:
+                            raise ValueError(f"Unexpected get_response type: {parsed_get_response}")
+                                
+                    except json.JSONDecodeError as e:
+                        raise ValueError(
+                            f"Error raised during decoding get_response from inference endpoint: {e}."
+                            f"\nResponse: {get_response.text}"
+                        )
 
         except json.JSONDecodeError as e:
             raise ValueError(
