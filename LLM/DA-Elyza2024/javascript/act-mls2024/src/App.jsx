@@ -5,9 +5,12 @@ import axios from "axios";
 function App() {
     const [data, setData] = React.useState('');
     const [query, setQuery] = React.useState(false);
-    const [kw, setKw] = React.useState('営業保険料');
-    const [txt, setTxt] = React.useState('hoken1_seiho');
+    //const [kw, setKw] = React.useState('営業保険料');
+    //onst [txt, setTxt] = React.useState('hoken1_seiho');
+    const [kw, setKw] = React.useState('PMO');
+    const [txt, setTxt] = React.useState('digital_agency_standard_guidelines');
     const kamoku=[
+	{value: 'digital_agency_standard_guidelines', label: 'デジタル社会推進標準ガイドライン'},
 	{value: 'hoken1_seiho', label: '保険1(生命保険)'},
 	{value: 'hoken2_seiho', label: '保険2(生命保険)'},
 	{value: 'sonpo', label: '損保'},
@@ -41,19 +44,19 @@ function App() {
     return (
       <div>
 	  <div>
-	      <h1>[Actuary] Moon Light Seminar 2024 LLM </h1> 
-	      <h2> Actuary会の教科書PDFを参照し100字程度で要約する </h2>
+	      <h1>Digital Agency Elyza Platform RAG test page </h1> 
+	      <h2> デジタル社会推進標準ガイドライン等の教科書PDFを参照し100字程度で要約する </h2>
 	  </div>
 	  <label>
-	      参照する教科書を選択し、要約したい言葉（例; 営業保険料) {query ? '' : 'を入力しボタンを押して下さい。'}<br />
+	      参照する教科書を選択し、要約したい言葉（例; PMO) {query ? '' : 'を入力しボタンを押して下さい。'}<br />
 
 	      教科書
-	      <Select placeholder="保険1(生命保険)"
+	      <Select placeholder="デジタル社会推進標準ガイドライン"
 		      onChange={changeTxt} options={kamoku} 
 	      />
 	      
 	      <form onSubmit={(e) => {e.preventDefault(); GetData()}}>
-		  <input type="text" placeholder="営業保険料" value={kw}
+		  <input type="text" placeholder="PMO" value={kw}
 			 onChange={changeKw}
 		  />
 	      </form>

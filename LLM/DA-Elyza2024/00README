@@ -34,7 +34,9 @@ python llama_mkvec_act.py
 
 ---
 
-python download_files.py  https://www.digital.go.jp/resources/standard_guidelines/ ./Downloads/actuaries-examin-textbook/
+python download_files.py  https://www.digital.go.jp/resources/standard_guidelines/ ./Downloads/digital_agency_standard_guidelines/
+python llama_mkvec.py
+
 
 
 
