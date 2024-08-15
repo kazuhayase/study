@@ -55,6 +55,7 @@ uv_logger.setLevel(logging.INFO)
 lc_logger.setLevel(logging.INFO)
 httpx_logger.setLevel(logging.INFO)
 
+#https://api.python.langchain.com/en/latest/chains/langchain.chains.retrieval_qa.base.RetrievalQA.html#langchain.chains.retrieval_qa.base.RetrievalQA
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.agents import initialize_agent
@@ -155,8 +156,18 @@ def ret_kw(kw,txt='hoken1_seiho'):
     logger.info(f"prompt_qa = {prompt_qa}")
     logger.info(f"chain_type_kwargs = {chain_type_kwargs}")
 
+    e_key=os.environ.get('ELYZA_API_KEY')
+    logger.info(f"ELYZA_API_KEY = {e_key}")
+    e_url=os.environ.get('ELYZA_BASE_URL')
+    logger.info(f"ELYZA_BASE_URL = {e_url}")
+    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
+    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
+    logger.info(f"e_endpoint = {e_endpoint}")
+
+
     qa =RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model_name=GPT_MODEL),
+        llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
+        #llm=ChatOpenAI(model_name=GPT_MODEL),
         chain_type="stuff",
         retriever=retriever[txt], ##todo:  txtが期待したものでなければException??
         chain_type_kwargs=chain_type_kwargs
@@ -174,14 +185,6 @@ def ret_kw(kw,txt='hoken1_seiho'):
             description="wikipedia"
         ),
     ]
-    e_key=os.environ.get('ELYZA_API_KEY')
-    logger.info(f"ELYZA_API_KEY = {e_key}")
-    e_url=os.environ.get('ELYZA_BASE_URL')
-    logger.info(f"ELYZA_BASE_URL = {e_url}")
-    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
-    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
-    logger.info(f"e_endpoint = {e_endpoint}")
-
     chat_agent = initialize_agent(
         tools,
         #llm=ChatOpenAI(model_name=GPT_MODEL),
@@ -197,7 +200,11 @@ def ret_kw(kw,txt='hoken1_seiho'):
         verbose=True,
         system_message="あなたは親切なアシスタントです。日本語で回答してください!",
     )
-    result = chat_agent.run(question)
+    #result = chat_agent.run(question)
+
+    #siwtch back to old style chain
+    result = qa.run(question)
+    
     logger.info(f'result={result}')
     logger.info(f'type(result)={type(result)}')
 #    return ActQA(q=kw, a=result)
