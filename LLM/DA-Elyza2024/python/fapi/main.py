@@ -64,6 +64,11 @@ from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
+
+wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+
 from da_elyza import Elyza
 
 from langchain.globals import set_debug
@@ -160,7 +165,13 @@ def ret_kw(kw,txt='hoken1_seiho'):
         Tool(
             name="vec_search",
             func=qa.run,
-            description="vector search result with" + db_path
+            #description="vector search result with" + db_path
+            description="vector search" 
+        ),
+        Tool(
+            name="wikipedia",
+            func=wikipedia.run,
+            description="wikipedia"
         ),
     ]
     e_key=os.environ.get('ELYZA_API_KEY')
@@ -177,7 +188,11 @@ def ret_kw(kw,txt='hoken1_seiho'):
         #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
 
         llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
+
+        #https://github.com/langchain-ai/langchain/issues/1559
         agent = "zero-shot-react-description",
+        #agent = "chat-zero-shot-react-description",
+
         handle_parsing_errors=True,
         verbose=True,
         system_message="あなたは親切なアシスタントです。日本語で回答してください!",
