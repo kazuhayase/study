@@ -33,22 +33,29 @@ import tiktoken
 #from logging import getLogger #, StreamHandler, DEBUG, Formatter
 import logging
 
-#logger = getLogger(__name__)
-logger = logging.getLogger('uvicorn') ## fast api
+logger = logging.getLogger(__name__)
+uv_logger = logging.getLogger('uvicorn') ## fast api
 lc_logger = logging.getLogger('langchain') 
-h11_logger = logging.getLogger('h11') 
+httpx_logger = logging.getLogger('httpx') 
 
 # ログ出力先を設定（標準出力）
 stream_handler = logging.StreamHandler()
 logger.addHandler(stream_handler)
+uv_logger.addHandler(stream_handler)
 lc_logger.addHandler(stream_handler)
-h11_logger.addHandler(stream_handler)
+httpx_logger.addHandler(stream_handler)
 
 # ログ出力のフォーマットを設定
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 stream_handler.setFormatter(formatter)
 
+logging.basicConfig(level=logging.INFO)
+logger.setLevel(logging.INFO)
+uv_logger.setLevel(logging.INFO)
+lc_logger.setLevel(logging.INFO)
+httpx_logger.setLevel(logging.INFO)
 
+#https://api.python.langchain.com/en/latest/chains/langchain.chains.retrieval_qa.base.RetrievalQA.html#langchain.chains.retrieval_qa.base.RetrievalQA
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.agents import initialize_agent
@@ -57,6 +64,11 @@ from langchain_core.tools import Tool
 from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
+
+wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
 
 from da_elyza import Elyza
 
@@ -144,8 +156,18 @@ def ret_kw(kw,txt='hoken1_seiho'):
     logger.info(f"prompt_qa = {prompt_qa}")
     logger.info(f"chain_type_kwargs = {chain_type_kwargs}")
 
+    e_key=os.environ.get('ELYZA_API_KEY')
+    logger.info(f"ELYZA_API_KEY = {e_key}")
+    e_url=os.environ.get('ELYZA_BASE_URL')
+    logger.info(f"ELYZA_BASE_URL = {e_url}")
+    e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
+    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
+    logger.info(f"e_endpoint = {e_endpoint}")
+
+
     qa =RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model_name=GPT_MODEL),
+        llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
+        #llm=ChatOpenAI(model_name=GPT_MODEL),
         chain_type="stuff",
         retriever=retriever[txt], ##todo:  txtが期待したものでなければException??
         chain_type_kwargs=chain_type_kwargs
@@ -154,25 +176,35 @@ def ret_kw(kw,txt='hoken1_seiho'):
         Tool(
             name="vec_search",
             func=qa.run,
-            description="vector search result with" + db_path
+            #description="vector search result with" + db_path
+            description="vector search" 
+        ),
+        Tool(
+            name="wikipedia",
+            func=wikipedia.run,
+            description="wikipedia"
         ),
     ]
-    e_key=os.environ.get('ELYZA_API_KEY')
-    logger.info(f"ELYZA_API_KEY = {e_key}")
-
     chat_agent = initialize_agent(
         tools,
         #llm=ChatOpenAI(model_name=GPT_MODEL),
         #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
 
-        llm=Elyza(#base_url=e_url,
-                       api_key=e_key),
+        llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
+
+        #https://github.com/langchain-ai/langchain/issues/1559
         agent = "zero-shot-react-description",
+        #agent = "chat-zero-shot-react-description",
+
         handle_parsing_errors=True,
         verbose=True,
         system_message="あなたは親切なアシスタントです。日本語で回答してください!",
     )
-    result = chat_agent.run(question)
+    #result = chat_agent.run(question)
+
+    #siwtch back to old style chain
+    result = qa.run(question)
+    
     logger.info(f'result={result}')
     logger.info(f'type(result)={type(result)}')
 #    return ActQA(q=kw, a=result)
