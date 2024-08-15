@@ -95,7 +95,7 @@ db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
 persistent_client=chromadb.PersistentClient(path=db_path)
 
-kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
+kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin', 'digital_agency_standard_guidelines']
 collection = dict()
 db=dict()
 retriever=dict()
@@ -119,6 +119,8 @@ for k in kamoku:
 # )
 
 # retriever = index.as_retriever(verbose=True)
+
+import re
 
 def ret_kw(kw,txt='hoken1_seiho'):
     keyword = kw
@@ -202,9 +204,11 @@ def ret_kw(kw,txt='hoken1_seiho'):
     )
     #result = chat_agent.run(question)
 
+
     #siwtch back to old style chain
-    result = qa.run(question)
-    
+    elyza_regex = re.compile(r'回答（日本語）:(.*)$')
+    result = elyza_regex.search(qa.run(question)).group(1)
+
     logger.info(f'result={result}')
     logger.info(f'type(result)={type(result)}')
 #    return ActQA(q=kw, a=result)
