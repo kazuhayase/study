@@ -2,7 +2,7 @@ version: '3'
 services:
   fapi:
     build: python
-    image: fapi-da-elyza
+    image: kazuhayase/study:da_elyza_fapi
     tty: true
 #    environment:
 #      - OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
@@ -16,7 +16,7 @@ services:
 
   react:
     build: javascript
-    image: react-da-elyza
+    image: kazuhayase/study:da_elyza_react
     tty: true
     ports:
       - "3000:3000"
