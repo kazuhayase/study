@@ -1,9 +1,50 @@
-生保1等の教科書を参照し100字程度で要約するアプリ
+デジ庁標準ガイドライン等の教科書を参照し100字程度で要約するアプリ
 
 vector DB (chroma) index; python llamaindex
 RAG/LLM; python FastAPI
 Web; javascript (React)
 
+
+
+[Dockerfile & docker-compose.yml file]
+
+(build image)
+cd ~/github/study/LLM/DA-Elyza2024/
+sudo docker-compose build
+
+(run)
+sudo docker-compose up -d
+
+[api-key]
+
+$HOME/.env 
+------------------------------------------------
+export OPENAI_BASE_URL="https://api.openai.com/v1"
+export OPENAI_API_KEY="xxxx...." (your key)
+export ELYZA_BASE_URL="https://api.platform.elyza.ai/v2"
+export ELYZA_API_KEY="yyyyy...." (your key)
+------------------------------------------------
+
+
+[Browser]
+http://localhost:3000
+
+
+=================================
+
+
+
+--------------------
+(build image)
+cd ~/github/study/LLM/DA-Elyza2024/python
+sudo docker buildx build  --no-cache --tag fapi-da-elyza:latest .
+
+(run)
+sudo docker run --rm --publish 9000:9000 -it -v $HOME:/root/_home:ro --name fapi-da-elyza fapi-da-elyza:latest
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ----------
 (debian/WLSでは以下を実行して仮想環境にする)
  source ~/venv/bin/activate
@@ -44,13 +85,12 @@ python llama_mkvec.py
 1. FastAPI 
 
 
-cd ~/github/study/LLM/act-MLS2024/python/fapi
-#uvicorn main:app --reload  #batting with HTTP toolkit
+cd ~/github/study/LLM/DA-Elyza2024/python/fapi
 uvicorn main:app --reload --port 9000
 
 2. React
 source ~/venv/bin/activate
-cd ~/github/study/LLM/act-MLS2024/javascript/act-mls2024
+cd ~/github/study/LLM/DA-Elyza2024/javascript/da-elyza-rag
 npm start
 
 ------
