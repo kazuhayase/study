@@ -1,0 +1,22 @@
+version: '3'
+services:
+  fapi:
+    build: python
+    image: fapi-da-elyza
+    tty: true
+#    environment:
+#      - OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+#      - OPENAI_API_KEY=${OPENAI_API_KEY:?review .env}
+#      - ELYZA_BASE_URL=${ELYZA_BASE_URL:-https://api.platform.elyza.ai/v2}"
+#      - ELYZA_API_KEY=${ELYZA_API_KEY:?review .env}
+    volumes:
+      - /home/${USER:-kazu}:/root/_home:ro
+    ports:
+      - "9000:9000"
+
+  react:
+    build: javascript
+    image: react-da-elyza
+    tty: true
+    ports:
+      - "3000:3000"
