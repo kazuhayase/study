@@ -28,6 +28,7 @@ actuary/GOMI/
 *.rar
 *.tar
 *.zip
+*.bz2
 
 # Logs and databases #
 ######################
