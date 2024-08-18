@@ -24,7 +24,7 @@ docker-compose up -d
 
 (watch LLM log)
 
-docker exec -it da-elyza2024_fapi_1 "/bin/bash"
+docker exec -it da-elyza2024-fapi-1 "/bin/bash"
 tail -f /tmp/rag.log
 
 

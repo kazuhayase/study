@@ -16,7 +16,7 @@ services:
 #      - ELYZA_BASE_URL=${ELYZA_BASE_URL:-https://api.platform.elyza.ai/v2}"
 #      - ELYZA_API_KEY=${ELYZA_API_KEY:?review .env}
     volumes:
-      - /home/${USER:-kazu}:/root/_home:ro
+      - /home/${USER:?review.env}:/root/_home:ro
     ports:
       - "9000:9000"
 
