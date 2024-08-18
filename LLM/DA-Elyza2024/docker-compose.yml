@@ -1,3 +1,9 @@
+
+#https://qiita.com/tatsurou313/items/ad86da1bb9e8e570b6fa
+# using external cache
+# $ docker buildx build --cache-from type=registry,ref=ryu310/github_action_sandbox .
+# $ docker buildx bake -f docker-compose.yml
+
 version: '3'
 services:
   fapi:

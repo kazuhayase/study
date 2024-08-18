@@ -1,5 +1,5 @@
 # set up the container.
-FROM python:3.12.5-slim-bookworm
+FROM python:3-slim
 
 # copy the python dir.
 WORKDIR /python

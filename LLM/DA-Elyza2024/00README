@@ -8,14 +8,24 @@ Web; javascript (React)
 [Dockerfile & docker-compose.yml file]
 
 (build image)
+
+--- optional (for cache)
+cd ~/github/study/LLM/DA-Elyza2024/python
+docker buildx build --cache-from type=registry,ref=kazuhayase/study .
+cd ~/github/study/LLM/DA-Elyza2024/javascript
+docker buildx build --cache-from type=registry,ref=kazuhayase/study .
+--- optional 
+
 cd ~/github/study/LLM/DA-Elyza2024/
-(sudo) docker-compose build
+docker-compose build
 
 (run)
-(sudo) docker-compose up -d
+docker-compose up -d
 
-$ docker exec -it da-elyza2024-fapi-1 "/bin/bash"
-$ tail -f /tmp/rag.log
+(watch LLM log)
+
+docker exec -it da-elyza2024_fapi_1 "/bin/bash"
+tail -f /tmp/rag.log
 
 
 [api-key]
