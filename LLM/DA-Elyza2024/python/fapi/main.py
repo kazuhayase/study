@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import chromadb
 import os
 import chromadb.utils.embedding_functions as embedding_functions
+from chromadb.config import Settings
 from langchain_core.documents.base import Document
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
@@ -93,7 +94,7 @@ embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL,tiktoken_model_name="cl100k_
 # load from disk
 db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
-persistent_client=chromadb.PersistentClient(path=db_path)
+persistent_client=chromadb.PersistentClient(path=db_path, settings=Settings(anonymized_telemetry=False))
 
 kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin', 'digital_agency_standard_guidelines']
 collection = dict()
