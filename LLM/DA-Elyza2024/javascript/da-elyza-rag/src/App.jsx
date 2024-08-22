@@ -11,10 +11,10 @@ function App() {
     const [txt, setTxt] = React.useState('digital_agency_standard_guidelines');
     const kamoku=[
 	{value: 'digital_agency_standard_guidelines', label: 'デジタル社会推進標準ガイドライン'},
-	{value: 'hoken1_seiho', label: '保険1(生命保険)'},
-	{value: 'hoken2_seiho', label: '保険2(生命保険)'},
-	{value: 'sonpo', label: '損保'},
-	{value: 'nenkin', label: '年金'},
+//	{value: 'hoken1_seiho', label: '保険1(生命保険)'},
+//	{value: 'hoken2_seiho', label: '保険2(生命保険)'},
+//	{value: 'sonpo', label: '損保'},
+//	{value: 'nenkin', label: '年金'},
     ]
     //const url = "http://localhost:8000/kw/" ; #batting with HTTP Toolkit
     const url = "http://localhost:9000/kw/" ;
