@@ -3,34 +3,19 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # from langchain.schema import ChatMessage, AIMessage, HumanMessage, SystemMessage
 
-import chromadb
+from chromadb import PersistentClient 
+from chromadb import HttpClient
+
 import os
 import chromadb.utils.embedding_functions as embedding_functions
-from chromadb.config import Settings
 from langchain_core.documents.base import Document
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 
-# from llama_index.core import (
-#         VectorStoreIndex,
-#         load_index_from_storage,
-# )
-# from llama_index.vector_stores.chroma import ChromaVectorStore
-# from llama_index.embeddings.openai import OpenAIEmbedding
-# from llama_index.core import Settings
-
 import tiktoken
 
-#https://docs.llamaindex.ai/en/latest/community/integrations/using_with_langchain.html#
-# from llama_index.core.langchain_helpers.agents import (
-#     IndexToolConfig,
-#     LlamaIndexTool,
-# )
 
-#from '../varlog' import varlog 
-
-# uncomment if needs more than varlog
 #from logging import getLogger #, StreamHandler, DEBUG, Formatter
 import logging
 
@@ -94,32 +79,30 @@ embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL,tiktoken_model_name="cl100k_
 # load from disk
 db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
-persistent_client=chromadb.PersistentClient(path=db_path, settings=Settings(anonymized_telemetry=False))
 
-kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin', 'digital_agency_standard_guidelines']
-collection = dict()
-db=dict()
-retriever=dict()
-for k in kamoku:
-    logger.info(f"k={k}")
-    collection[k] = persistent_client.get_or_create_collection(k)
-    db[k] = Chroma(
-        client = persistent_client,
-        collection_name=k,
-        embedding_function=embeddings,
-        #persist_directory=db_path
-    )
-    retriever[k] = db[k].as_retriever()
-
-# chroma_collection = db2.get_or_create_collection("hoken1_seiho")
-# vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-# embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL, tiktoken_model_name="cl100k_base")
-# index = VectorStoreIndex.from_vector_store(
-#         vector_store,
-#         embed_model = embed_model,
+client = PersistentClient(path=db_path)
+#client = HttpClient(host='localhost', port=10000)
+# collection = client.get_or_create_collection(
+#     name="digital_agency_standard_guidelines",
+#     embedding_function=ef
 # )
 
-# retriever = index.as_retriever(verbose=True)
+kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin', 'digital_agency_standard_guidelines']
+#collection = dict()
+db=dict()
+retriever=dict()
+ef = embedding_functions.OpenAIEmbeddingFunction( model_name=EMBEDDING_MODEL, api_key=os.getenv('OPENAI_API_KEY') )
+for k in kamoku:
+    logger.info(f"k={k}")
+#    collection[k] = client.get_or_create_collection(name=k, embedding_function=ef)
+#    retriever[k] = collection[k].as_retriever()
+    db[k] = Chroma(
+         client = client,
+         collection_name=k,
+         embedding_function=embeddings,
+         #persist_directory=db_path
+    )
+    retriever[k] = db[k].as_retriever()
 
 import re
 
