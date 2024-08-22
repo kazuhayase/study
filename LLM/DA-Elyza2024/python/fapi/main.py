@@ -143,11 +143,9 @@ def ret_kw(kw,txt='hoken1_seiho'):
     logger.info(f"chain_type_kwargs = {chain_type_kwargs}")
 
     e_key=os.environ.get('ELYZA_API_KEY')
-    logger.info(f"ELYZA_API_KEY = {e_key}")
     e_url=os.environ.get('ELYZA_BASE_URL')
     logger.info(f"ELYZA_BASE_URL = {e_url}")
     e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
-    #e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b"
     logger.info(f"e_endpoint = {e_endpoint}")
 
 

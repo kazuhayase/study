@@ -6,23 +6,39 @@
 
 version: '3'
 services:
+## copy db_llama replace ##   vecdb:
+## copy db_llama replace ##     build:
+## copy db_llama replace ##       context: python
+## copy db_llama replace ##       dockerfile: Dockerfile-vecdb
+## copy db_llama replace ##     image: kazuhayase/study:da_elyza_vecdb
+## copy db_llama replace ##     secrets:
+## copy db_llama replace ##       - .env
+## copy db_llama replace ##     tty: true
+## copy db_llama replace ##     volumes:
+## copy db_llama replace ##       - /home/${USER:?check USER}:/root/_home:ro    
+
   fapi:
-    build: python
+    build:
+      context: python
+#impossible#      secrets: .env
     image: kazuhayase/study:da_elyza_fapi
+    secrets:
+      - .env
     tty: true
-#    environment:
-#      - OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
-#      - OPENAI_API_KEY=${OPENAI_API_KEY:?review .env}
-#      - ELYZA_BASE_URL=${ELYZA_BASE_URL:-https://api.platform.elyza.ai/v2}"
-#      - ELYZA_API_KEY=${ELYZA_API_KEY:?review .env}
     volumes:
-      - /home/${USER:-kazu}:/root/_home:ro
+      - /home/${USER:?check USER}:/root/_home:ro    
     ports:
       - "9000:9000"
 
   react:
     build: javascript
+    depends_on:
+      - fapi
     image: kazuhayase/study:da_elyza_react
     tty: true
     ports:
       - "3000:3000"
+
+secrets:
+  .env:
+   file: /home/${USER:?check USER}/.env
