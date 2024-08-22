@@ -9,14 +9,12 @@ from chromadb import HttpClient
 import os
 import chromadb.utils.embedding_functions as embedding_functions
 from langchain_core.documents.base import Document
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 
 import tiktoken
 
-
-#from logging import getLogger #, StreamHandler, DEBUG, Formatter
 import logging
 
 logger = logging.getLogger(__name__)
@@ -44,17 +42,10 @@ httpx_logger.setLevel(logging.INFO)
 #https://api.python.langchain.com/en/latest/chains/langchain.chains.retrieval_qa.base.RetrievalQA.html#langchain.chains.retrieval_qa.base.RetrievalQA
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain.agents import initialize_agent
 
-from langchain_core.tools import Tool
 from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-
-from langchain_community.tools import WikipediaQueryRun
-from langchain_community.utilities import WikipediaAPIWrapper
-
-wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
 
 from da_elyza import Elyza
 
@@ -64,7 +55,6 @@ set_debug(True)
 class ActQA(BaseModel):
     q: str = Field(default='営業保険料')
     a: str = Field(default='(No Answer)')
-
 
 #GPT_MODEL = "gpt-3.5-turbo"
 #GPT_MODEL = "gpt-4-1106-preview"
@@ -81,11 +71,6 @@ db_dir='../db_llama/'
 db_path = f"{db_dir}/chroma_{''.join(name[0] for name in EMBEDDING_MODEL.split('-'))}"
 
 client = PersistentClient(path=db_path)
-#client = HttpClient(host='localhost', port=10000)
-# collection = client.get_or_create_collection(
-#     name="digital_agency_standard_guidelines",
-#     embedding_function=ef
-# )
 
 kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin', 'digital_agency_standard_guidelines']
 #collection = dict()
@@ -111,15 +96,7 @@ def ret_kw(kw,txt='hoken1_seiho'):
     textbook = txt
     logger.info(f'keyword={keyword}, textbook={textbook}')
 
-    # retrieval_query = keyword + "に関わる箇所を抽出してください。"
-
-    # context_docs = retriever.get_relevant_documents(retrieval_query)
-    # logging.info(f'len(context_docs)={len(context_docs)}')  # 抽出したドキュメント数
-    # #logging.info(f'type(context_docs)={type(context_docs)}')  # 抽出したドキュメントの型
-    # #logging.info(f'context_docs={context_docs}')  # 抽出したドキュメント
-    # ## Document(page_content"XXXX", metadata={'source': '/xxxx/'})
-
-    # question = keyword + "に関わる箇所を1つ選択して100字程度に要約してください。"
+     # question = keyword + "に関わる箇所を1つ選択して100字程度に要約してください。"
     question = keyword + "について、100字程度に要約して教えてください。"
 
     prompt_template_qa = """あなたは親切で優しいアシスタントです。丁寧に、日本語でお答えください！
@@ -148,7 +125,6 @@ def ret_kw(kw,txt='hoken1_seiho'):
     e_endpoint=f"{e_url}/models/llama-3-elyza-japanese-70b/records"
     logger.info(f"e_endpoint = {e_endpoint}")
 
-
     qa =RetrievalQA.from_chain_type(
         llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
         #llm=ChatOpenAI(model_name=GPT_MODEL),
@@ -156,45 +132,24 @@ def ret_kw(kw,txt='hoken1_seiho'):
         retriever=retriever[txt], ##todo:  txtが期待したものでなければException??
         chain_type_kwargs=chain_type_kwargs
     )
-    tools = [
-        Tool(
-            name="vec_search",
-            func=qa.run,
-            #description="vector search result with" + db_path
-            description="vector search" 
-        ),
-        Tool(
-            name="wikipedia",
-            func=wikipedia.run,
-            description="wikipedia"
-        ),
-    ]
-    chat_agent = initialize_agent(
-        tools,
-        #llm=ChatOpenAI(model_name=GPT_MODEL),
-        #llm=Elyza(api_key=os.environ.get('ELYZA_API_KEY')),
 
-        llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5),
-
-        #https://github.com/langchain-ai/langchain/issues/1559
-        agent = "zero-shot-react-description",
-        #agent = "chat-zero-shot-react-description",
-
-        handle_parsing_errors=True,
-        verbose=True,
-        system_message="あなたは親切なアシスタントです。日本語で回答してください!",
-    )
-    #result = chat_agent.run(question)
-
-
-    #siwtch back to old style chain
     elyza_regex = re.compile(r'回答（日本語）:(.*)$')
     result = elyza_regex.search(qa.run(question)).group(1)
-
-    logger.info(f'result={result}')
-    logger.info(f'type(result)={type(result)}')
-#    return ActQA(q=kw, a=result)
     return result
+
+# try to use latest api, but found Elyza doesn't match, result doesn't include 'answer' or 回答
+#    #https://python.langchain.com/v0.2/docs/versions/migrating_chains/retrieval_qa/
+#    from langchain import hub
+#    from langchain.chains import create_retrieval_chain
+#    from langchain.chains.combine_documents import create_stuff_documents_chain
+#
+#    retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
+#    llm=Elyza(api_key=e_key, base_url=e_url, top_p=1, temperature=0.5)
+#    combine_docs_chain = create_stuff_documents_chain(llm, retrieval_qa_chat_prompt)
+#    rag_chain = create_retrieval_chain(retriever[txt], combine_docs_chain)
+#    result = rag_chain.invoke({"input": question})
+ #   return str(result)
+    
     
 app = FastAPI()
 
