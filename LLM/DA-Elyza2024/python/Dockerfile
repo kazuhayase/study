@@ -1,5 +1,5 @@
 # set up the container.
-FROM python:3-slim AS base
+FROM python:3.10-slim AS base
 
 # install libraries.
 RUN apt-get update --fix-missing && apt-get install -y --fix-missing build-essential \
