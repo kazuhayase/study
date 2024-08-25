@@ -2,15 +2,19 @@
 FROM python:3-slim AS base
 
 # install libraries.
-RUN apt-get update --fix-missing && apt-get install -y --fix-missing build-essential
+RUN apt-get update --fix-missing && apt-get install -y --fix-missing build-essential \
+&& apt-get clean 
+#&& rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /tmp/
+#RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
 # copy the python dir.
 WORKDIR /python
 RUN mkdir log
-COPY requirements.txt requirements.txt
 COPY db_llama db_llama
 COPY fapi fapi
-RUN pip install --no-cache-dir -r requirements.txt
 
 ## copy db_llama replace ## COPY Downloads Downloads
 ## copy db_llama replace ## COPY llama_mkvec.py llama_mkvec.py
