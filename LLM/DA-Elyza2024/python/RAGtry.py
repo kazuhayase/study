@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print(first_doc.page_content) # 1つ目のドキュメントの中身
 
     # 6. QAチェーンの初期化と実行
-    qa_chain =RetrievalQA.from_chain_type(llm=ChatOpenAI(model_name="gpt-4-1106-preview", chain_type="stuff", retriever=retriever)
+    qa_chain =RetrievalQA.from_chain_type(llm=ChatOpenAI(model_name="gpt-4-1106-preview", chain_type="stuff", retriever=retriever))
     result = qa_chain.run(qa_query)
     print(result)
 

@@ -25,8 +25,8 @@ services:
     secrets:
       - .env
     tty: true
-    volumes:
-      - /home/${USER:?check USER}:/root/_home:ro    
+#    volumes:
+#      - /home/${USER:?check USER}:/root/_home:ro    
     ports:
       - "9000:9000"
 
@@ -36,6 +36,7 @@ services:
       - fapi
     image: kazuhayase/study:da_elyza_react
     tty: true
+    stdin_open: true
     ports:
       - "3000:3000"
 
