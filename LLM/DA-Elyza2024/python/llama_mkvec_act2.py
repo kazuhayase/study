@@ -52,13 +52,18 @@ from tqdm import tqdm
 
 
 required_exts = [".pdf"]
-reader = SimpleDirectoryReader(
-    "./Downloads/digital_agency_standard_guidelines/",
-    recursive=True,
-    required_exts=required_exts,
-    filename_as_id=True
-)
-documents=reader.load_data(num_workers=1)
+kamoku=['hoken1_seiho', 'hoken2_seiho', 'sonpo', 'nenkin']
+documents=dict()
+for k in kamoku:
+    varlog('k')
+    reader = SimpleDirectoryReader(
+        "./Downloads/actuaries-examin-textbook/"+k,
+        recursive=True,
+        required_exts=required_exts,
+        filename_as_id=True
+    )
+    documents[k]=reader.load_data(num_workers=1)
+    pass
 
 db_dir='./db_llama/'
 
@@ -72,13 +77,15 @@ for e in e_models:
     ef = embedding_functions.OpenAIEmbeddingFunction( model_name=e, api_key=os.getenv('OPENAI_API_KEY') )
     client = PersistentClient(path=db_path)
     #client = HttpClient(host='localhost', port=10000)
-    collection = client.get_or_create_collection(
-        name="digital_agency_standard_guidelines",
-        embedding_function=ef
-    )
-    for docs in documents:
-        if docs.text !='':
-            collection.add(documents=docs.text,ids=docs.doc_id)
+    for k in kamoku:
+        collection = client.get_or_create_collection(
+            name=k,
+            embedding_function=ef
+        )
+        for docs in documents[k]:
+            if docs.text !='':
+                collection.add(documents=docs.text,ids=docs.doc_id)
+                pass
             pass
         pass
     pass

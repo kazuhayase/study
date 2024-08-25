@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from varlog import varlog 
+#from varlog import varlog 
 
 # uncomment if needs more than varlog
 # from logging import getLogger
