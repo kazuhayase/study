@@ -53,6 +53,7 @@ Thumbs.db
 /.emacs.desktop
 /.emacs.desktop.lock
 *.elc
+*.eln
 auto-save-list
 tramp
 .\#*
@@ -97,3 +98,4 @@ a.out.dSYM
 
 yarn.lock
 package-lock.json
+myconf/current/.emacs.d/byte-comple.sh
