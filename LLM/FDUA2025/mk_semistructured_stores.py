@@ -4,6 +4,9 @@ import pandas as pd, numpy as np
 #from dataiku import pandasutils as pdu
 #from typing import Dict
 import os
+import logging
+import logging.config
+import json
 import pymupdf4llm
 import fitz  # import PyMuPDF
 if not hasattr(fitz.Page, "find_tables"):
@@ -24,6 +27,14 @@ from langchain_core.runnables import RunnablePassthrough
 
 from langchain_openai import AzureChatOpenAI 
 from langchain_openai import AzureOpenAIEmbeddings
+
+# logging.jsonのパスを確認
+logging_json_path = os.path.join(os.path.dirname(__file__), 'logging.json')
+
+with open(logging_json_path, 'r') as f:
+    config = json.load(f)
+    logging.config.dictConfig(config)
+logger = logging.getLogger(__name__)
 
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -48,8 +59,8 @@ embeddings = AzureOpenAIEmbeddings(
     api_version=API_VERSION
 )
 
-#print("Model: %s" % (model))
-#print("Embeddings: %s" % (embeddings))
+logger.info("Model: %s" % (model))
+logger.info("Embeddings: %s" % (embeddings))
 
 # Prompt
 #prompt_text = """You are an assistant tasked with summarizing tables and text. 
@@ -62,21 +73,16 @@ prompt = ChatPromptTemplate.from_template(prompt_text)
 # Summary chain
 summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
 
-cols=['metadata', 'text', 'tables']
-idx_cols=(['page', 'filename', 'index'])
-idx_cols.extend(cols)
-print(idx_cols)
-
-doc_directory = "/home/kazuyoshi/Documents/FDUA202501/validation/validation/documents/"
-#input_filenames = [filename for filename in os.listdir(doc_directory) if filename.endswith(".pdf")]
-input_filenames = ['8.pdf']
-print(input_filenames)
+doc_directory = "./validation/documents/"
+input_filenames = [filename for filename in os.listdir(doc_directory) if filename.endswith(".pdf")]
+#input_filenames = ['8.pdf']
+logger.info(input_filenames)
 
 def markdown_from_index(test_index):
     fn = input_filenames[test_index]
     fullpath = doc_directory + fn
     fn = fn[1:]
-    print("Full path: %s" % (fullpath))
+    logger.info("Full path: %s" % (fullpath))
     md_text = pymupdf4llm.to_markdown(fullpath, page_chunks = True)
     md_ret=dict()
     for col in idx_cols:
@@ -95,11 +101,11 @@ def store_tables_and_test(retriever, path):
     for page in doc:
         tables = page.find_tables()
         if tables.tables != []:
-            print("Tables: %s" % (tables))
+            logger.info("Tables: %s" % (tables))
             tabs = [t.to_markdown() for t in tables]
-            print("Tabs: %s" % (tabs))
+            logger.info("Tabs: %s" % (tabs))
             table_summaries = summarize_chain.batch(tabs, {"max_concurrency": 2})
-            print("Table summaries: %s" % (table_summaries))
+            logger.info("Table summaries: %s" % (table_summaries))
             table_ids = [str(uuid.uuid4()) for _ in tabs]
             summary_tables = [
                 Document(page_content=s, metadata={id_key: table_ids[i]})
@@ -112,10 +118,10 @@ def store_tables_and_test(retriever, path):
             retriever.vectorstore.add_documents(summary_tables)
             retriever.docstore.mset(list(zip(table_ids, doc_tables)))
         text = page.get_text()
-        print("Text: %s" % (text))
+        logger.info("Text: %s" % (text))
         if len(text) > 0:
             text_summaries = summarize_chain.batch([text], {"max_concurrency": 2})
-            print("Text summaries: %s" % (text_summaries))
+            logger.info("Text summaries: %s" % (text_summaries))
             doc_ids = str(uuid.uuid4())
             summary_texts = [
                 Document(page_content=str(text_summaries), metadata={id_key: doc_ids})
@@ -128,7 +134,7 @@ def store_tables_and_test(retriever, path):
 
 def load_pdf_data(retriever, input_filenames):
     for idx, filename in enumerate(input_filenames):
-        print("Index: %s => Filename: %s" % (idx, filename))
+        logger.info("Index: %s => Filename: %s" % (idx, filename))
         fullpath = doc_directory + filename
         store_tables_and_test(retriever, fullpath)
     return
