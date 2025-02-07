@@ -98,19 +98,24 @@ def markdown_from_index(test_index):
 
 def store_tables_and_test(retriever, path):
     doc = fitz.open(path)
-    for page in doc:
+    for pnum, page in enumerate(doc):
+        logger.info("Page number: %s" % (pnum))
         tables = page.find_tables()
         if tables.tables != []:
             logger.info("Tables: %s" % (tables))
             tabs = [t.to_markdown() for t in tables]
             logger.info("Tabs: %s" % (tabs))
-            table_summaries = summarize_chain.batch(tabs, {"max_concurrency": 2})
-            logger.info("Table summaries: %s" % (table_summaries))
             table_ids = [str(uuid.uuid4()) for _ in tabs]
-            summary_tables = [
-                Document(page_content=s, metadata={id_key: table_ids[i]})
-                for i, s in enumerate(table_summaries)
-            ]
+            try:
+                table_summaries = summarize_chain.batch(tabs, {"max_concurrency": 2})                
+                logger.info("Table summaries: %s" % (table_summaries))
+                summary_tables = [
+                    Document(page_content=s, metadata={id_key: table_ids[i]})
+                    for i, s in enumerate(table_summaries)
+                ]
+            except Exception as e:
+                logger.error("Error: %s" % (e))
+        
             doc_tables = [
                 Document(page_content=str(s), metadata={id_key: table_ids[i]})
                 for i, s in enumerate(tabs)
@@ -120,12 +125,15 @@ def store_tables_and_test(retriever, path):
         text = page.get_text()
         logger.info("Text: %s" % (text))
         if len(text) > 0:
-            text_summaries = summarize_chain.batch([text], {"max_concurrency": 2})
-            logger.info("Text summaries: %s" % (text_summaries))
             doc_ids = str(uuid.uuid4())
-            summary_texts = [
-                Document(page_content=str(text_summaries), metadata={id_key: doc_ids})
-            ]
+            try:
+                text_summaries = summarize_chain.batch([text], {"max_concurrency": 2})
+                logger.info("Text summaries: %s" % (text_summaries))
+                summary_texts = [
+                    Document(page_content=str(text_summaries), metadata={id_key: doc_ids})
+                ]
+            except Exception as e:
+                logger.error("Error: %s" % (e))
             doc_texts = [
                 Document(page_content=str(text), metadata={id_key: doc_ids})
             ]
