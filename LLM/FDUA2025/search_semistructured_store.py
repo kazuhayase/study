@@ -11,13 +11,10 @@ script_name = os.path.splitext(os.path.basename(__file__))[0]
 setup_logging(script_name)
 
 logger = logging.getLogger(__name__)
-logger.info("*** Start answering questions ***")
-
-
+logger.info("*** Start searching semistructured store with questions ***")
 
 import json
 import pandas as pd, numpy as np
-#import pymupdf4llm
 import fitz  # import PyMuPDF
 if not hasattr(fitz.Page, "find_tables"):
     raise RuntimeError("This PyMuPDF version does not support the table feature")
@@ -91,30 +88,13 @@ retriever = MultiVectorRetriever(
     vectorstore=vectorstore,
     docstore=store,
     id_key=id_key,
+    enable_limiting=True,
+    enable_logging=True,
     verbose=True,
-    max_retrievals=10,
-    min_score=0.1,
-    min_retrievals=5,
-    max_retrieval_attempts=30,
-    max_concurrency=4,
-    max_concurrent_retrievals=4,
-)
-# load prompty as langchain ChatPromptTemplate
-# Important Note: Langchain only support mustache templating. Add 
-#  template: mustache
-# to your prompty and use mustache syntax.
-folder = Path(__file__).parent.absolute().as_posix()
-path_to_prompty = folder + "/FDUA2025.prompty"
-prompt = create_chat_prompt(path_to_prompty)
-
-output_parser = StrOutputParser()
-
-# RAG pipeline
-chain = (
-    {"context": retriever, "question": RunnablePassthrough(verbose=True)}
-    | prompt
-    | model
-    | StrOutputParser()
+    max_retrievals=50,
+    min_score=0.005,
+    min_retrievals=20,
+    max_retrieval_attempts=100,
 )
 
 # CSVファイルを読み込む
@@ -130,18 +110,18 @@ for index, row in tqdm.tqdm(df.iterrows()):
     # ここに処理内容を記述
     logger.info(f"Row {index}: index = {index}, problem = {problem}")
     try:
-        result = chain.invoke(problem, verbose=True, max_concurrency=4,
-                                max_retrievals=50, min_score=0, min_retrievals=30, max_retrieval_attempts=100, 
-                                kwargs={"top_k": 20})
+        result = retriever.invoke(problem, verbose=True, 
+                                  max_retrievals=50, min_score=0, min_retrievals=30, max_retrieval_attempts=100, 
+                                  kwargs={"top_k": 20})
         logger.info(f"Result: {result}")
+        for doc in result:
+            logger.info(f"DocID: {doc.metadata['doc_id']}, Content: {doc.page_content}")
+        logger.info(f"Total documents retrieved: {len(result)}")
         answer_list.append([index,result])
     except Exception as e: 
         logger.error(f"Error: {e}")
-        answer_list.append([index,"わからない(エラー)"])
-for row in answer_list:
-    print(f'{row[0]},"{row[1]}"')
+        answer_list.append([index,"(検索エラー)"])
 
-logger.info("*** End answering questions ***")
-
-from email_notify import send_email
-send_email('Process Completed', 'Answered by prompty with semistructured store.', 'kazuyoshi.hayase@jcom.home.ne.jp')
+logger.info("*** End searching questions ***")
+#from email_notify import send_email
+#send_email('Process Completed', 'Answered by prompty with semistructured store.', 'kazuyoshi.hayase@jcom.home.ne.jp')
