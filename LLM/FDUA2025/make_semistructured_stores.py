@@ -9,7 +9,7 @@ from pathlib import Path
 from tqdm import tqdm
 import logging
 import os
-from logger_config import setup_logging
+from read_conf import setup_logging, get_retriever_conf, get_file_directry_conf, get_model
 
 # スクリプト名を取得
 script_name = os.path.splitext(os.path.basename(__file__))[0]
@@ -43,6 +43,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import AzureChatOpenAI 
 from langchain_openai import AzureOpenAIEmbeddings
 
+""" 
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
@@ -50,7 +51,7 @@ DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION
 DEPLOYMENT_ID_FOR_EMBEDDING = os.getenv("DEPLOYMENT_ID_FOR_EMBEDDING")
 
 # LangChainのOpenAIモデルを作成
-model = AzureChatOpenAI(
+model=AzureChatOpenAI(
     api_key=AZURE_OPENAI_API_KEY,
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
     azure_deployment=DEPLOYMENT_ID_FOR_CHAT_COMPLETION,
@@ -65,6 +66,11 @@ embeddings = AzureOpenAIEmbeddings(
     model='text-embedding-3-large',
     api_version=API_VERSION
 )
+
+ """
+models=get_model()
+model = models['summarize_azure_chat']
+embeddings = models['embeddings']
 
 logger.info("Model: %s" % (model))
 logger.info("Embeddings: %s" % (embeddings))
@@ -82,8 +88,8 @@ prompt = create_chat_prompt(path_to_prompty)
 
 # Summary chain
 summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
-
-doc_directory = "./validation/documents/"
+fd_conf = get_file_directry_conf()
+doc_directory = fd_conf["doc_directory"]
 input_filenames = [filename for filename in os.listdir(doc_directory) if filename.endswith(".pdf")]
 #input_filenames = ['8.pdf']
 logger.info(input_filenames)
@@ -182,8 +188,7 @@ def store_tables_and_test(retriever, path):
             #retriever.vectorstore.add_documents(summary_texts)
 
 # 進捗を保存するファイル
-progress_file = './log/progress.json'
-
+progress_file = fd_conf['progress_file']
 def save_progress(data):
     with open(progress_file, 'w') as f:
         json.dump(data, f)
@@ -211,11 +216,10 @@ def load_pdf_data(retriever, input_filenames):
         update_progress(idx)
     return
 
-db_directory = "./"
-doc_db = "documents.db"
-vec_db = "vectors.db"
-collection_name = "summaries"
-
+db_directory = fd_conf['db_directory']
+doc_db = fd_conf['doc_db']
+vec_db = fd_conf['vec_db']
+collection_name = fd_conf['collection_name']
 # Chromaに接続
 vectorstore = Chroma(persist_directory=db_directory+vec_db, embedding_function=embeddings, collection_name=collection_name)
 
@@ -229,14 +233,12 @@ id_key = "doc_id"
 # The retriever (empty to start)
 # TOP_K for retriever
 TOP_K = 20
+retriever_conf = get_retriever_conf()
 retriever = MultiVectorRetriever(
     vectorstore=vectorstore,
     docstore=store,
     id_key=id_key,
-    verbose=True,
-    max_concurrency=4,
-    max_retrievals=10,
-    search_kwargs={"K": TOP_K},
+    **retriever_conf
 )
 
 try:

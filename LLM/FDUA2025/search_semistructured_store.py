@@ -1,10 +1,10 @@
 # This Python file uses the following encoding: utf-8
-import getpass
 import os
 import tqdm
+import json
 import logging
 import logging.config
-from logger_config import setup_logging
+from read_conf import setup_logging, get_retriever_conf, get_file_directry_conf, get_model
 
 # スクリプト名を取得
 script_name = os.path.splitext(os.path.basename(__file__))[0]
@@ -13,7 +13,6 @@ setup_logging(script_name)
 logger = logging.getLogger(__name__)
 logger.info("*** Start searching semistructured store with questions ***")
 
-import json
 import pandas as pd, numpy as np
 import fitz  # import PyMuPDF
 if not hasattr(fitz.Page, "find_tables"):
@@ -45,7 +44,7 @@ AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
 DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION")
 DEPLOYMENT_ID_FOR_EMBEDDING = os.getenv("DEPLOYMENT_ID_FOR_EMBEDDING")
-
+""" 
 # LangChainのOpenAIモデルを作成
 model = AzureChatOpenAI(
     api_key=AZURE_OPENAI_API_KEY,
@@ -62,14 +61,20 @@ embeddings = AzureOpenAIEmbeddings(
     model='text-embedding-3-large',
     api_version=API_VERSION
 )
-
+ """
+models = get_model()
+#model = models['answer_azure_chat']
+model = models['answer_llama_chat']
+#model = models['answer_qwen_chat']
+embeddings = models['embeddings']
 logger.info("Model: %s" % (model))
 logger.info("Embeddings: %s" % (embeddings))
-db_directory = "./"
-doc_db = "documents.db"
-vec_db = "vectors.db"
-collection_name = "summaries"
-query_directory = "./validation/"
+fd_conf=get_file_directry_conf()
+db_directory = fd_conf['db_directory']
+doc_db = fd_conf['doc_db']
+vec_db = fd_conf['vec_db']
+collection_name = fd_conf['collection_name']
+query_directory = fd_conf['query_directory']
 
 # Chromaに接続
 vectorstore = Chroma(persist_directory=db_directory+vec_db, embedding_function=embeddings, collection_name=collection_name)
@@ -84,18 +89,33 @@ id_key = "doc_id"
 # The retriever (empty to start)
 # TOP_K for retriever
 TOP_K = 20
+retriever_conf = get_retriever_conf()
+logger.info(f"Retriever configuration: {retriever_conf}")
 retriever = MultiVectorRetriever(
     vectorstore=vectorstore,
     docstore=store,
     id_key=id_key,
-    enable_limiting=True,
-    enable_logging=True,
-    verbose=True,
-    max_retrievals=50,
-    min_score=0.005,
-    min_retrievals=20,
-    max_retrieval_attempts=100,
+    **retriever_conf
 )
+
+# retriever の全ての属性をログに出力するために、 dir() 関数を使用
+#attributes = dir(retriever)
+#logger.info(f"Retriever attributes: {attributes}")
+#exit()
+
+# method と _ で始まる属性を除外してログに出力
+attributes = retriever.__dict__
+for attr,value in attributes.items():
+    if not attr.startswith('_') and not callable(value):
+        logger.info(f"Attribute: {attr}, Value: {value}")
+
+retriever_config = {
+    "id_key": retriever.id_key,
+    "search_kwargs": retriever.search_kwargs
+}
+# 設定をJSON形式でログに出力
+logger.info(f"Retriever configuration: {json.dumps(retriever_config, indent=4)}")
+#exit()
 
 # CSVファイルを読み込む
 df = pd.read_csv(query_directory + 'query.csv')
@@ -110,18 +130,22 @@ for index, row in tqdm.tqdm(df.iterrows()):
     # ここに処理内容を記述
     logger.info(f"Row {index}: index = {index}, problem = {problem}")
     try:
-        result = retriever.invoke(problem, verbose=True, 
-                                  max_retrievals=50, min_score=0, min_retrievals=30, max_retrieval_attempts=100, 
-                                  kwargs={"top_k": 20})
+        result = retriever.invoke(problem, **retriever_conf)
         logger.info(f"Result: {result}")
         for doc in result:
             logger.info(f"DocID: {doc.metadata['doc_id']}, Content: {doc.page_content}")
         logger.info(f"Total documents retrieved: {len(result)}")
-        answer_list.append([index,result])
+        answer_list.append([index,problem,result])
     except Exception as e: 
         logger.error(f"Error: {e}")
-        answer_list.append([index,"(検索エラー)"])
-
+        answer_list.append([index,problem,["(検索エラー)"]])
+for i,a in enumerate(answer_list):
+    print(f"index: {a[0]}, problem: {a[1]}, #results: {len(a[2])}")
+    for doc in a[2]:
+        if isinstance(doc, str):
+            print(f"{doc}")
+        else:
+            print(f"DocID: {doc.metadata['doc_id']}, Content: {doc.page_content}")
 logger.info("*** End searching questions ***")
 #from email_notify import send_email
 #send_email('Process Completed', 'Answered by prompty with semistructured store.', 'kazuyoshi.hayase@jcom.home.ne.jp')

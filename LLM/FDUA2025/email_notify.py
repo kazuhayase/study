@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import logging
 import logging.config
-from logger_config import setup_logging
+from read_conf import setup_logging
 
 
 def send_email(subject, body, to_email):
