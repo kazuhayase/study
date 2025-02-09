@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
-import getpass
 import os
 import tqdm
+import json
 import logging
 import logging.config
 from read_conf import setup_logging, get_retriever_conf, get_file_directry_conf, get_model
@@ -11,15 +11,11 @@ script_name = os.path.splitext(os.path.basename(__file__))[0]
 setup_logging(script_name)
 
 logger = logging.getLogger(__name__)
-logger.info("*** Start answering questions ***")
+logger.info("*** Start ChromaDB client ***")
 
-import json
 import pandas as pd, numpy as np
-import fitz  # import PyMuPDF
-if not hasattr(fitz.Page, "find_tables"):
-    raise RuntimeError("This PyMuPDF version does not support the table feature")
-import uuid
 import sqlite3
+import chromadb
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 
 ##https://zenn.dev/koujimachi2023/articles/7a113a32473166
@@ -39,7 +35,6 @@ from langchain_openai import AzureOpenAIEmbeddings
 # pip install langchain-prompty
 from langchain_prompty import create_chat_prompt
 from pathlib import Path
-
 """ 
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -47,15 +42,6 @@ API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
 DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION")
 DEPLOYMENT_ID_FOR_EMBEDDING = os.getenv("DEPLOYMENT_ID_FOR_EMBEDDING")
 
-# LangChainのOpenAIモデルを作成
-model = AzureChatOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    azure_deployment=DEPLOYMENT_ID_FOR_CHAT_COMPLETION,
-    api_version=API_VERSION,
-    temperature=0,
-    max_tokens=100
-)
 embeddings = AzureOpenAIEmbeddings(
     api_key=AZURE_OPENAI_API_KEY,
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
@@ -64,21 +50,14 @@ embeddings = AzureOpenAIEmbeddings(
     api_version=API_VERSION
 )
  """
-
-models=get_model()
-model = models['answer_azure_chat']
-#model = models['answer_llama_chat']
-#model = models['answer_qwen_chat']
+models = get_model()
 embeddings = models['embeddings']
-
-logger.info("Model: %s" % (model))
 logger.info("Embeddings: %s" % (embeddings))
 fd_conf=get_file_directry_conf()
 db_directory = fd_conf['db_directory']
 doc_db = fd_conf['doc_db']
 vec_db = fd_conf['vec_db']
 collection_name = fd_conf['collection_name']
-query_directory = fd_conf['query_directory']
 
 # Chromaに接続
 vectorstore = Chroma(persist_directory=db_directory+vec_db, embedding_function=embeddings, collection_name=collection_name)
@@ -91,55 +70,43 @@ store = create_kv_docstore(fs)
 id_key = "doc_id"
 
 # The retriever (empty to start)
+# TOP_K for retriever
 
 retriever_conf = get_retriever_conf()
+logger.info(f"Retriever configuration: {retriever_conf}")
 retriever = MultiVectorRetriever(
     vectorstore=vectorstore,
     docstore=store,
     id_key=id_key,
     **retriever_conf
 )
-# load prompty as langchain ChatPromptTemplate
-# Important Note: Langchain only support mustache templating. Add 
-#  template: mustache
-# to your prompty and use mustache syntax.
-folder = Path(__file__).parent.absolute().as_posix()
-path_to_prompty = folder + "/FDUA2025.prompty"
-prompt = create_chat_prompt(path_to_prompty)
 
-output_parser = StrOutputParser()
+# retriever の全ての属性をログに出力するために、 dir() 関数を使用
+#attributes = dir(retriever)
+#logger.info(f"Retriever attributes: {attributes}")
+#exit()
 
-# RAG pipeline
-chain = (
-    {"context": retriever, "question": RunnablePassthrough(verbose=True)}
-    | prompt
-    | model
-    | StrOutputParser()
-)
+# method と _ で始まる属性を除外してログに出力
+attributes = retriever.__dict__
+for attr,value in attributes.items():
+    if not attr.startswith('_') and not callable(value):
+        logger.info(f"Attribute: {attr}, Value: {value}")
 
-# CSVファイルを読み込む
-df = pd.read_csv(query_directory + 'query.csv')
+retriever_config = {
+    "id_key": retriever.id_key,
+    "search_kwargs": retriever.search_kwargs
+}
+# 設定をJSON形式でログに出力
+logger.info(f"Retriever configuration: {json.dumps(retriever_config, indent=4)}")
+#exit()
 
-# 各行を処理するループ
-answer_list = []
-for index, row in tqdm.tqdm(df.iterrows()):
-    # 各列の値を取得
-    index = row['index']
-    problem = row['problem']
-    
-    # ここに処理内容を記述
-    logger.info(f"Row {index}: index = {index}, problem = {problem}")
-    try:
-        result = chain.invoke(problem, **retriever_conf)
-        logger.info(f"Result: {result}")
-        answer_list.append([index,result])
-    except Exception as e: 
-        logger.error(f"Error: {e}")
-        answer_list.append([index,"わからない(エラー)"])
-for row in answer_list:
-    print(f'{row[0]},"{row[1]}"')
+chroma_client = chromadb.PersistentClient(path=db_directory+vec_db)
 
-logger.info("*** End answering questions ***")
+# すべてのコレクションをリストアップ
+collections = chroma_client.list_collections()
 
-#from email_notify import send_email
-#send_email('Process Completed', 'Answered by prompty with semistructured store.', 'kazuyoshi.hayase@jcom.home.ne.jp')
+# 各コレクションをループして docids を取得
+for collection_name in collections:
+    collection = chroma_client.get_collection(collection_name)
+    result = collection.get(limit=0, where_document={"$contains": '{"text": ""}'})
+    print(f"Collection: {collection_name}, #DocIDs: {len(result['ids'])}")

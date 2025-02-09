@@ -1,6 +1,6 @@
 import logging
 import os
-from logger_config import setup_logging
+from read_conf import setup_logging
 
 # スクリプト名を取得
 script_name = os.path.splitext(os.path.basename(__file__))[0]
