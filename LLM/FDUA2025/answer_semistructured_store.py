@@ -33,7 +33,7 @@ from langchain_core.runnables import RunnablePassthrough
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-#from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_openai import AzureChatOpenAI 
 from langchain_openai import AzureOpenAIEmbeddings
 # pip install langchain-prompty
@@ -66,6 +66,7 @@ embeddings = AzureOpenAIEmbeddings(
  """
 
 models=get_model()
+#model = models['answer_openai_chat']
 model = models['answer_azure_chat']
 #model = models['answer_llama_chat']
 #model = models['answer_qwen_chat']

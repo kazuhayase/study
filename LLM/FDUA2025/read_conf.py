@@ -3,6 +3,7 @@ import os
 import json
 import requests
 from langchain_openai import AzureChatOpenAI 
+from langchain_openai import ChatOpenAI
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain_core.runnables import RunnableLambda
 
@@ -74,6 +75,13 @@ def get_model(path='./conf/model.json'):
         azure_endpoint=os.getenv(config['AzureOpenAI']['azure_endpoint']),
         azure_deployment=os.getenv(config['AnswerAzureChat']['deployment_id_for_chat_completion']),
         api_version=os.getenv(config['AzureOpenAI']['api_version']),
+        temperature=0,
+        max_tokens=100
+    )
+
+    models['answer_openai_chat'] = ChatOpenAI(
+        api_key=os.getenv(config['AnswerOpenAIChat']['api_key']),
+        model=config['AnswerOpenAIChat']['model'],
         temperature=0,
         max_tokens=100
     )
