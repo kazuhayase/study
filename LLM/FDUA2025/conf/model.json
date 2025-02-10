@@ -1,0 +1,21 @@
+{
+    "AzureOpenAI": {
+        "api_key": "AZURE_OPENAI_API_KEY",
+        "azure_endpoint": "AZURE_OPENAI_ENDPOINT",
+        "api_version": "AZURE_OPENAI_API_VERSION"
+    },
+    "SummarizeAzureChat": {
+        "deployment_id_for_chat_completion": "DEPLOYMENT_ID_FOR_CHAT_COMPLETION"
+    },
+    "AnswerAzureChat": {
+        "deployment_id_for_chat_completion": "DEPLOYMENT_ID_FOR_CHAT_COMPLETION"
+    },
+    "AnswerOpenAIChat": {
+        "api_key": "OPENAI_API_KEY",
+        "model": "o3-mini"    
+    },
+    "AzureEmbedding": {
+        "deployment_id_for_embedding": "DEPLOYMENT_ID_FOR_EMBEDDING",
+        "model": "text-embedding-3-large"
+    }
+}
