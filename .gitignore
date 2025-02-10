@@ -2,6 +2,7 @@
 python/SRMs/Greed-2.0-RC-7.1.0.jar
 actuary/backup/
 actuary/GOMI/
+*.bak
 ###
 ## See.
 ## https://help.github.com/articles/ignoring-files
