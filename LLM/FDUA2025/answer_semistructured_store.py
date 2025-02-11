@@ -66,8 +66,8 @@ embeddings = AzureOpenAIEmbeddings(
  """
 
 models=get_model()
-#model = models['answer_openai_chat']
-model = models['answer_azure_chat']
+model = models['answer_openai_chat']
+#model = models['answer_azure_chat']
 #model = models['answer_llama_chat']
 #model = models['answer_qwen_chat']
 embeddings = models['embeddings']

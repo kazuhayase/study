@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
+import getpass
 import os
 import tqdm
-import json
 import logging
 import logging.config
 from read_conf import setup_logging, get_retriever_conf, get_file_directry_conf, get_model
@@ -11,8 +11,9 @@ script_name = os.path.splitext(os.path.basename(__file__))[0]
 setup_logging(script_name)
 
 logger = logging.getLogger(__name__)
-logger.info("*** Start searching semistructured store with questions ***")
+logger.info("*** Start answering questions ***")
 
+import json
 import pandas as pd, numpy as np
 import fitz  # import PyMuPDF
 if not hasattr(fitz.Page, "find_tables"):
@@ -30,44 +31,28 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain.agents import initialize_agent
+from langchain_core.tools import Tool
+from pydantic.v1 import BaseModel, Field # <-- Uses v1 namespace
+
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-#from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_openai import AzureChatOpenAI 
 from langchain_openai import AzureOpenAIEmbeddings
 # pip install langchain-prompty
 from langchain_prompty import create_chat_prompt
 from pathlib import Path
 
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
-DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION")
-DEPLOYMENT_ID_FOR_EMBEDDING = os.getenv("DEPLOYMENT_ID_FOR_EMBEDDING")
-""" 
-# LangChainのOpenAIモデルを作成
-model = AzureChatOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    azure_deployment=DEPLOYMENT_ID_FOR_CHAT_COMPLETION,
-    api_version=API_VERSION,
-    temperature=0,
-    max_tokens=100
-)
-embeddings = AzureOpenAIEmbeddings(
-    api_key=AZURE_OPENAI_API_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    azure_deployment=DEPLOYMENT_ID_FOR_EMBEDDING,
-    model='text-embedding-3-large',
-    api_version=API_VERSION
-)
- """
-models = get_model()
+models=get_model()
+model = models['answer_openai_chat']
 #model = models['answer_azure_chat']
-#model = models['answer_openai_chat']
 #model = models['answer_llama_chat']
 #model = models['answer_qwen_chat']
 embeddings = models['embeddings']
+
 logger.info("Model: %s" % (model))
 logger.info("Embeddings: %s" % (embeddings))
 fd_conf=get_file_directry_conf()
@@ -88,35 +73,78 @@ store = create_kv_docstore(fs)
 id_key = "doc_id"
 
 # The retriever (empty to start)
-# TOP_K for retriever
-TOP_K = 20
+
 retriever_conf = get_retriever_conf()
-logger.info(f"Retriever configuration: {retriever_conf}")
 retriever = MultiVectorRetriever(
     vectorstore=vectorstore,
     docstore=store,
     id_key=id_key,
     **retriever_conf
 )
+# load prompty as langchain ChatPromptTemplate
+# Important Note: Langchain only support mustache templating. Add 
+#  template: mustache
+# to your prompty and use mustache syntax.
+folder = Path(__file__).parent.absolute().as_posix()
+path_to_prompty = folder + "/FDUA2025.prompty"
+prompt = create_chat_prompt(path_to_prompty)
 
-# retriever の全ての属性をログに出力するために、 dir() 関数を使用
-#attributes = dir(retriever)
-#logger.info(f"Retriever attributes: {attributes}")
-#exit()
 
-# method と _ で始まる属性を除外してログに出力
-attributes = retriever.__dict__
-for attr,value in attributes.items():
-    if not attr.startswith('_') and not callable(value):
-        logger.info(f"Attribute: {attr}, Value: {value}")
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
 
-retriever_config = {
-    "id_key": retriever.id_key,
-    "search_kwargs": retriever.search_kwargs
-}
-# 設定をJSON形式でログに出力
-logger.info(f"Retriever configuration: {json.dumps(retriever_config, indent=4)}")
-#exit()
+qa_chain = (
+    {
+        "context": vectorstore.as_retriever() | format_docs,
+        "question": RunnablePassthrough(),
+    }
+    | prompt
+    | model
+    | StrOutputParser()
+)
+
+tools = [
+    Tool(
+        name="multi_vector_search",
+        func=qa_chain.invoke,
+        description="multi vector search result with" + vec_db + "and" + doc_db
+    ),
+]
+from langgraph.prebuilt import create_react_agent
+graph = create_react_agent(model, tools=tools)
+from langchain.schema import AIMessage, HumanMessage
+import tiktoken
+def make_answer(problem):
+    # Ensure the input includes 'messages'
+    input = {
+        "messages": [
+            {"role": "user", "content": problem}
+        ]
+    }
+
+    #input={"problem" : problem}
+    try:
+        result=graph.invoke(input)
+        logger.info(f'result={result}')
+        logger.info(f'type(result)={type(result)}')
+        parsed_result = StrOutputParser().parse(result)
+        logger.info(f'parsed_result={parsed_result}')
+    except Exception as e:
+        logger.error(f"Error in make_answer: {e}")
+    # Filter and process only AIMessage objects
+    # メッセージのリストを取得
+    messages = result['messages']
+
+    # 最後のAIMessageを取得
+    for message in reversed(messages):
+        if isinstance(message, AIMessage):
+            final_ai_message_content = message.content
+            break
+ 
+   # Extract the content from AIMessage objects
+    ret =  ' '.join(final_ai_message_content.splitlines()) 
+    return ret
+    #return  parsed_result
 
 # CSVファイルを読み込む
 df = pd.read_csv(query_directory + 'query.csv')
@@ -131,22 +159,17 @@ for index, row in tqdm.tqdm(df.iterrows()):
     # ここに処理内容を記述
     logger.info(f"Row {index}: index = {index}, problem = {problem}")
     try:
-        result = retriever.invoke(problem, **retriever_conf)
+        result={}
+        result = make_answer(problem)
         logger.info(f"Result: {result}")
-        for doc in result:
-            logger.info(f"DocID: {doc.metadata['doc_id']}, Content: {doc.page_content}")
-        logger.info(f"Total documents retrieved: {len(result)}")
-        answer_list.append([index,problem,result])
+        answer_list.append([index,result])
     except Exception as e: 
         logger.error(f"Error: {e}")
-        answer_list.append([index,problem,["(検索エラー)"]])
-for i,a in enumerate(answer_list):
-    print(f"index: {a[0]}, problem: {a[1]}, #results: {len(a[2])}")
-    for doc in a[2]:
-        if isinstance(doc, str):
-            print(f"{doc}")
-        else:
-            print(f"DocID: {doc.metadata['doc_id']}, Content: {doc.page_content}")
-logger.info("*** End searching questions ***")
+        answer_list.append([index,"わからない(エラー)"])
+for row in answer_list:
+    print(f'{row[0]},"{row[1]}"')
+
+logger.info("*** End answering questions ***")
+
 #from email_notify import send_email
 #send_email('Process Completed', 'Answered by prompty with semistructured store.', 'kazuyoshi.hayase@jcom.home.ne.jp')

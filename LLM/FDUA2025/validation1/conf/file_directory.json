@@ -1,0 +1,11 @@
+{
+    "doc_directory": "./documents/",
+    "db_directory":  "./",
+    "doc_db": "documents.db",
+    "vec_db": "vectors.db",
+    "collection_name": "summaries",
+    "query_directory": "./",
+    "base_output_dir": "./",
+    "num_trials": 1,
+    "progress_file": "./log/progress.json"
+}

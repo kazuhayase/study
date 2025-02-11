@@ -1,0 +1,18 @@
+{
+    "verbose": true,
+    "enable_logging": true,
+    "enable_limit": false,
+    "max_retrievals": 50,
+    "min_score": 0.00,
+    "min_retrievals": 30,
+    "max_retrieval_attempts": 100,
+    "kwargs": {
+        "fetch_k": 30,
+        "score_threshold": 0.00,
+        "include_metadata": true,
+        "include_scores": true
+    },
+    "search_kwargs": {
+        "k": 10
+    }
+}
