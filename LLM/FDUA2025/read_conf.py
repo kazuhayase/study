@@ -82,8 +82,7 @@ def get_model(path='./conf/model.json'):
     models['answer_openai_chat'] = ChatOpenAI(
         api_key=os.getenv(config['AnswerOpenAIChat']['api_key']),
         model=config['AnswerOpenAIChat']['model'],
-        temperature=0,
-        max_tokens=100
+        max_tokens=54
     )
 
     models['embeddings'] = AzureOpenAIEmbeddings(
