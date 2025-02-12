@@ -1,14 +1,14 @@
 {
     "verbose": true,
     "enable_logging": true,
-    "enable_limit": false,
+    "enable_limit": true,
     "max_retrievals": 50,
-    "min_score": 0.00,
+    "min_score": 0.05,
     "min_retrievals": 30,
     "max_retrieval_attempts": 100,
     "kwargs": {
-        "fetch_k": 30,
-        "score_threshold": 0.00,
+        "fetch_k": 10,
+        "score_threshold": 0.05,
         "include_metadata": true,
         "include_scores": true
     },

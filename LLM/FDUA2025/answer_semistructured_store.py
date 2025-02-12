@@ -115,7 +115,7 @@ chain = (
     {"context": retriever, "question": RunnablePassthrough(verbose=True)}
     | prompt
     | model
-    | StrOutputParser()
+#    | StrOutputParser()
 )
 
 # CSVファイルを読み込む
@@ -133,7 +133,11 @@ for index, row in tqdm.tqdm(df.iterrows()):
     try:
         result = chain.invoke(problem, **retriever_conf)
         logger.info(f"Result: {result}")
-        answer_list.append([index,result])
+        logger.info(f'type(result)={type(result)}')
+        parsed_result = StrOutputParser().invoke(result)
+        logger.info(f'parsed_result={parsed_result}')        
+        logger.info(f'type(parsed_result)={type(parsed_result)}')
+        answer_list.append([index,parsed_result])
     except Exception as e: 
         logger.error(f"Error: {e}")
         answer_list.append([index,"わからない(エラー)"])
