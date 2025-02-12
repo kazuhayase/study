@@ -12,7 +12,7 @@
     },
     "AnswerOpenAIChat": {
         "api_key": "OPENAI_API_KEY",
-        "model": "gpt-4o"    
+        "model": "o3-mini"    
     },
     "AzureEmbedding": {
         "deployment_id_for_embedding": "DEPLOYMENT_ID_FOR_EMBEDDING",
