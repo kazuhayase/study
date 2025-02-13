@@ -48,7 +48,7 @@ import requests
 
 def get_model(path='./conf/model.json'):
     config = load_config(path)
-    AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
     API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
     DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION")
@@ -83,6 +83,19 @@ def get_model(path='./conf/model.json'):
         api_key=os.getenv(config['AnswerOpenAIChat']['api_key']),
         model=config['AnswerOpenAIChat']['model'],
         max_tokens=54
+    )
+
+    models['answer_openai_reasoning'] = ChatOpenAI(
+        api_key=os.getenv(config['AnswerOpenAIChat']['api_key']),
+        model=config['AnswerOpenAIReasoning']['model'],
+        max_tokens=54,
+        max_completion_tokens=25000
+    )
+
+    models['answer_gemini_chat'] = ChatOpenAI(
+        api_key=os.getenv(config['AnswerGeminiChat']['api_key']),
+        model=config['AnswerGeminiChat']['model'],
+        base_url=config['AnswerGeminiChat']['base_url']
     )
 
     models['embeddings'] = AzureOpenAIEmbeddings(

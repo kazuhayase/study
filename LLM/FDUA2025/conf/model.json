@@ -10,9 +10,18 @@
     "AnswerAzureChat": {
         "deployment_id_for_chat_completion": "DEPLOYMENT_ID_FOR_CHAT_COMPLETION"
     },
+    "AnswerGeminiChat": {
+        "api_key": "GEMINI_API_KEY",
+        "model": "gemini-2.0-flash",
+        "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/"    
+    },
     "AnswerOpenAIChat": {
         "api_key": "OPENAI_API_KEY",
         "model": "gpt-4o"    
+    },
+    "AnswerOpenAIReasoning": {
+        "api_key": "OPENAI_API_KEY",
+        "model": "o3-mini"    
     },
     "AzureEmbedding": {
         "deployment_id_for_embedding": "DEPLOYMENT_ID_FOR_EMBEDDING",
