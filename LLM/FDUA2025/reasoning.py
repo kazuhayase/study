@@ -40,34 +40,8 @@ from langchain_openai import AzureOpenAIEmbeddings
 from langchain_prompty import create_chat_prompt
 from pathlib import Path
 
-""" 
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
-DEPLOYMENT_ID_FOR_CHAT_COMPLETION = os.getenv("DEPLOYMENT_ID_FOR_CHAT_COMPLETION")
-DEPLOYMENT_ID_FOR_EMBEDDING = os.getenv("DEPLOYMENT_ID_FOR_EMBEDDING")
-
-# LangChainのOpenAIモデルを作成
-model = AzureChatOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    azure_deployment=DEPLOYMENT_ID_FOR_CHAT_COMPLETION,
-    api_version=API_VERSION,
-    temperature=0,
-    max_tokens=100
-)
-embeddings = AzureOpenAIEmbeddings(
-    api_key=AZURE_OPENAI_API_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    azure_deployment=DEPLOYMENT_ID_FOR_EMBEDDING,
-    model='text-embedding-3-large',
-    api_version=API_VERSION
-)
- """
-
 models=get_model()
-model = models['answer_gemini_chat']
-#model = models['answer_openai_chat']
+model = models['answer_openai_chat']
 #model = models['answer_azure_chat']
 #model = models['answer_llama_chat']
 #model = models['answer_qwen_chat']
@@ -106,7 +80,7 @@ retriever = MultiVectorRetriever(
 #  template: mustache
 # to your prompty and use mustache syntax.
 folder = Path(__file__).parent.absolute().as_posix()
-path_to_prompty = folder + "/FDUA2025.prompty"
+path_to_prompty = folder + "/FDUA2025-reasoning.prompty"
 prompt = create_chat_prompt(path_to_prompty)
 
 output_parser = StrOutputParser()
@@ -121,13 +95,14 @@ chain = (
 
 # CSVファイルを読み込む
 df = pd.read_csv(query_directory + 'query.csv')
-import time
+
 # 各行を処理するループ
 answer_list = []
 for index, row in tqdm.tqdm(df.iterrows()):
     # 各列の値を取得
     index = row['index']
     problem = row['problem']
+    
     # ここに処理内容を記述
     logger.info(f"Row {index}: index = {index}, problem = {problem}")
     try:
@@ -135,8 +110,6 @@ for index, row in tqdm.tqdm(df.iterrows()):
         logger.info(f"Result: {result}")
         logger.info(f'type(result)={type(result)}')
         parsed_result = StrOutputParser().invoke(result)
-        parsed_result = parsed_result.replace('\n','')
-        parsed_result.strip()
         logger.info(f'parsed_result={parsed_result}')        
         logger.info(f'type(parsed_result)={type(parsed_result)}')
         answer_list.append([index,parsed_result])
