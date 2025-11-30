@@ -81,17 +81,20 @@ missing_info = get_missing_data_info(df_all)
 print("--- 結合データセットの欠損値情報（上位） ---")
 print(missing_info.head(3))
 
+
 # 欠損値が「存在しない」ことを示すカテゴリ変数
 cols_none = ['PoolQC', 'MiscFeature', 'Alley', 'Fence', 'FireplaceQu', 
              'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond',
              'BsmtExposure', 'BsmtFinType2', 'BsmtFinType1', 'BsmtCond', 
              'BsmtQual', 'MasVnrType', 'MSZoning', 'Utilities', 
              'Functional', 'Exterior1st', 'Exterior2nd', 'KitchenQual',
-             'SaleType', 'Electrical'] # 多数あるため一部のみ記載
+             'SaleType', 'Electrical']
 
-# Noneで欠損値を埋める
+# .locを使って明示的に代入し、inplace=Trueを避ける
 for col in cols_none:
-    df_all[col].fillna('None', inplace=True)
+    df_all.loc[df_all[col].isnull(), col] = 'None'
+    # または、より簡潔に:
+    # df_all[col] = df_all[col].fillna('None')
 
 # ガレージ、地下室の数値特徴量
 cols_zero = ['GarageYrBlt', 'GarageArea', 'GarageCars', 
@@ -100,17 +103,22 @@ cols_zero = ['GarageYrBlt', 'GarageArea', 'GarageCars',
              'MasVnrArea']
 
 # 0で欠損値を埋める
+# .locを使って明示的に代入し、inplace=Trueを避ける
 for col in cols_zero:
-    df_all[col].fillna(0, inplace=True)
+    df_all.loc[df_all[col].isnull(), col] = 0
+    # または、より簡潔に:
+    # df_all[col] = df_all[col].fillna(0)
 
 # LotFrontageを、同じ近隣の物件の中央値で補完
 df_all['LotFrontage'] = df_all.groupby('Neighborhood')['LotFrontage'].transform(
     lambda x: x.fillna(x.median())
 )
 
-# 最頻値で補完
-df_all['Electrical'].fillna(df_all['Electrical'].mode()[0], inplace=True)
-df_all['MSZoning'].fillna(df_all['MSZoning'].mode()[0], inplace=True) 
+# 最頻値で補完（inplace=Trueを使わない）
+df_all['Electrical'] = df_all['Electrical'].fillna(df_all['Electrical'].mode()[0])
+df_all['MSZoning'] = df_all['MSZoning'].fillna(df_all['MSZoning'].mode()[0])
+
+
 # ... 他の残りの少数欠損値も同様に処理
 
 # 欠損値が残っているか再確認
