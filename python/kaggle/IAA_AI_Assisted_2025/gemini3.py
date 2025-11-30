@@ -109,19 +109,28 @@ for col in cols_zero:
     # または、より簡潔に:
     # df_all[col] = df_all[col].fillna(0)
 
+# LotFrontageの補完処理を修正
+
 # 1. Neighborhoodごとの中央値で補完
+# transformの戻り値を直接代入します (inplace=Trueは使用しない)
 df_all['LotFrontage'] = df_all.groupby('Neighborhood')['LotFrontage'].transform(
     lambda x: x.fillna(x.median())
 )
+# この transform の処理により、RuntimeWarning の原因となるグループは NaN のまま残ります。
 
-# 2. それでも欠損値が残っている場合（警告の原因となったグループ）は、
-#    全体のLotFrontageの中央値で補完する
+# 2. 残っている欠損値（NaN）を全体のLotFrontageの中央値で補完
+# df_all['LotFrontage'].fillna(median_all, inplace=True) の代わりに、
+# 戻り値を代入する形式を使います。
+
 if df_all['LotFrontage'].isnull().any():
+    # 欠損値がある場合のみ、全体のLotFrontageの中央値を計算
     median_all = df_all['LotFrontage'].median()
-    df_all['LotFrontage'].fillna(median_all, inplace=True) 
+    
+    # 戻り値を列に直接代入することで、FutureWarningを完全に回避します
+    df_all['LotFrontage'] = df_all['LotFrontage'].fillna(median_all)
+    
+print("LotFrontageの欠損値処理が完了しました。")
 
-# 注: df_all['LotFrontage'].fillna(...) の形式なら SettingWithCopyWarning は出にくいです。
-# 心配なら df_all.loc[:, 'LotFrontage'] = df_all['LotFrontage'].fillna(median_all) を使用。
 
 # 最頻値で補完（inplace=Trueを使わない）
 df_all['Electrical'] = df_all['Electrical'].fillna(df_all['Electrical'].mode()[0])
@@ -134,3 +143,85 @@ df_all['MSZoning'] = df_all['MSZoning'].fillna(df_all['MSZoning'].mode()[0])
 print("\n--- 欠損値処理後の残存確認 ---")
 print(df_all.isnull().sum().max()) # 最大値が0ならOK
 
+# 欠損値が残っている列とその数を確認
+missing_final = df_all.isnull().sum().sort_values(ascending=False)
+missing_final = missing_final[missing_final > 0]
+
+print("--- 欠損値処理後に残存している特徴量と数 ---")
+print(missing_final.head(5))
+
+# カテゴリカルな順序変数に数値を割り当てる
+df_all['OverallQual'] = df_all['OverallQual'].astype(str) # 念のため文字列に変換
+
+# 例: 外装材の品質 (ExterQual)
+qual_map = {'Ex': 5, 'Gd': 4, 'TA': 3, 'Fa': 2, 'Po': 1, 'None': 0}
+df_all['ExterQual'] = df_all['ExterQual'].replace(qual_map)
+df_all['ExterCond'] = df_all['ExterCond'].replace(qual_map)
+
+# 例: 地下室の品質 (BsmtQual)
+bsmt_map = {'Ex': 5, 'Gd': 4, 'TA': 3, 'Fa': 2, 'Po': 1, 'None': 0}
+df_all['BsmtQual'] = df_all['BsmtQual'].replace(bsmt_map)
+df_all['BsmtCond'] = df_all['BsmtCond'].replace(bsmt_map)
+
+# その他、順序を持つカテゴリ変数も同様に処理します（FireplaceQu, KitchenQual, GarageQual, GarageCond など）
+
+# Id列を除外した全てのカテゴリ変数のリストを取得
+categorical_cols = df_all.select_dtypes(include='object').columns
+
+# ワンホットエンコーディングの実行
+df_all = pd.get_dummies(df_all, columns=categorical_cols, dummy_na=False)
+
+# 処理後のデータ形状を確認
+print(f"\nワンホットエンコーディング後のデータ形状: {df_all.shape}")
+
+# Id列とSalePrice_Log（正解ラベル）は、訓練データとテストデータに分割する前に残しておきます。
+# Id列は提出時に必要、SalePrice_Logは目的変数として使用します。
+df_all.drop('Id', axis=1, inplace=True)
+
+
+# train_len は以前に保存した元の学習データの行数です
+train_len = 1460 # Ames Housingの学習データは1460行
+
+# 1. 目的変数 (Logスケール) を df_all から抽出
+# SalePrice_LogがNaNではない行（つまり元の学習データ）のみを抽出
+y_train = df_all['SalePrice_Log'].dropna() 
+# .dropna() を使うことで、テストデータの NaN を含む行を除外できます。
+
+# 2. 特徴量も同様に行数1460に一致するように分割
+# SalePrice_Log が NaN ではない行のインデックスを使ってX_trainを抽出
+X_train = df_all.loc[y_train.index].drop('SalePrice_Log', axis=1)
+
+# X_test は SalePrice_Log が NaN の行
+X_test = df_all.loc[df_all['SalePrice_Log'].isnull()].drop('SalePrice_Log', axis=1)
+
+# 3. データの形状をチェック
+print(f"X_train 形状: {X_train.shape}")
+print(f"y_train 形状: {y_train.shape}")
+print(f"X_test 形状: {X_test.shape}")
+
+exit()
+
+import xgboost as xgb
+from sklearn.model_selection import cross_val_score
+
+# XGBoostモデルのインスタンス化 (ハイパーパラメータはデフォルトに近い設定)
+model = xgb.XGBRegressor(
+    objective='reg:squarederror', # 目的変数をログ変換したため、通常の二乗誤差を最小化
+    n_estimators=300,             # 決定木の数
+    learning_rate=0.05,           # 学習率
+    max_depth=4,                  # 決定木の最大の深さ
+    random_state=42               # 再現性のためのシード
+)
+
+# モデルの学習
+model.fit(X_train, y_train)
+
+# 交差検証（Cross-Validation）でモデルの性能を評価（オプション）
+# RMSLEを評価指標とするため、ここでは負の二乗平均誤差(neg_mean_squared_error)の対数スケールを使用
+# 結果を元のRMSLEに戻すには np.sqrt(np.mean(cv_results)) などが必要ですが、
+# スコアの比較目的として一旦このまま実行
+cv_results = -cross_val_score(model, X_train, y_train, 
+                              scoring='neg_mean_squared_error', 
+                              cv=5) # 5分割交差検証
+
+print(f"\n交差検証 RMSLE (logスケール): {np.sqrt(cv_results.mean()):.4f}")
