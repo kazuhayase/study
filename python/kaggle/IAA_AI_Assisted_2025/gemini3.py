@@ -177,201 +177,220 @@ df_all['IsNew'] = (df_all['YearBuilt'] == df_all['YrSold']).astype(int)
 
 # -----------------------------------
 
-#Step 13. outlier removal
-# GrLivArea が 4000 sq ft を超える外れ値のインデックスを特定
-# df_all は SalePrice_Log を含む全結合データフレームを使用します。
-# GrLivArea が 4000 より大きく、かつ SalePrice_Log がNaNではない (訓練データである) 行を対象とします。
 
-# 訓練データ部分のインデックスを取得
-train_indices = df_all[df_all['SalePrice_Log'].notna()].index
+# Id列とSalePrice_Log（正解ラベル）は、訓練データとテストデータに分割する前に残しておきます。
+# Id列は提出時に必要、SalePrice_Logは目的変数として使用します。
+df_all.drop('Id', axis=1, inplace=True)
 
-# 訓練データの中で GrLivArea > 4000 の条件を満たす行を特定
-outlier_indices = df_all.loc[train_indices][df_all.loc[train_indices]['GrLivArea'] > 4000].index
 
-# 確認用: 該当する行の Id と GrLivArea を表示
-print(f"特定された外れ値の数: {len(outlier_indices)}")
-print("外れ値のインデックス:", outlier_indices.tolist())
+# train_len は以前に保存した元の学習データの行数です
+train_len = 1460 # Ames Housingの学習データは1460行
 
-# df_all からこれらの外れ値を削除
-df_all = df_all.drop(outlier_indices)
 
-# 1. 最終的なテストデータ X_test_final の再構築と Id の削除
-# df_all は外れ値が削除された状態です。
-# X_test_final には、df_all から SalePrice_Log が NaN の行（テストデータ）が含まれます。
-X_test_final = df_all[df_all['SalePrice_Log'].isna()].drop('SalePrice_Log', axis=1).copy() # copy()で警告回避
+# 1. SalePrice_Log (目的変数) のフルシリーズを取得
+y_train_full = df_all['SalePrice_Log'] 
 
-# X_test_final に含まれる 'Id' 列を必ず削除します。
-if 'Id' in X_test_final.columns:
-    X_test_final = X_test_final.drop('Id', axis=1)
+# 2. ブールマスクを使って学習データを確実に抽出
+# SalePrice_Log が NaN ではない行 (つまり学習データ) のみを選択
+X_train = df_all[y_train_full.notna()].drop('SalePrice_Log', axis=1)
+y_train = y_train_full.dropna()
 
-# 目的変数 (Logスケール) のフルシリーズを取得
-y_train_full_new = df_all['SalePrice_Log']
+# 3. ブールマスクを使ってテストデータを確実に抽出
+# SalePrice_Log が NaN の行 (つまり予測対象データ) のみを選択
+X_test = df_all[y_train_full.isna()].drop('SalePrice_Log', axis=1)
 
-# 学習データと目的変数に再分割
-# Id列がまだ df_all に残っている場合は、この時点で削除します
-if 'Id' in df_all.columns:
-    df_all = df_all.drop('Id', axis=1)
+# 4. データの形状を再チェック
+print("--- 修正後のデータ形状 ---")
+print(f"X_train 形状: {X_train.shape}")
+print(f"y_train 形状: {y_train.shape}")
+print(f"X_test 形状: {X_test.shape}")
 
-# 外れ値削除後の学習データ
-X_train_new = df_all[y_train_full_new.notna()].drop('SalePrice_Log', axis=1)
-y_train_new = y_train_full_new.dropna()
-
-print(f"X_train_new の列数: {X_train_new.shape[1]}")
-print(f"X_test_final の列数: {X_test_final.shape[1]}")
-# ここで列数が一致すればOKです (315列)
-
-# 外れ値削除後のテストデータ
-X_test_new = df_all[y_train_full_new.isna()].drop('SalePrice_Log', axis=1)
-
-print(f"\n外れ値処理後の X_train 形状: {X_train_new.shape}")
-print(f"外れ値処理後の X_test 形状: {X_test_new.shape}")
-
+print(f"特徴量追加後の X_train 形状: {X_train.shape}") 
+# 列数が311から315程度に増えているはずです。
 
 import xgboost as xgb
 from sklearn.linear_model import Ridge
 import pandas as pd
 import numpy as np
+
+# XGBoostモデルのインスタンス化
+model = xgb.XGBRegressor(
+    objective='reg:squarederror',
+    n_estimators=300,             # 決定木の数
+    learning_rate=0.05,           # 学習率
+    max_depth=4,                  # 決定木の最大の深さ
+    random_state=42               # 再現性のためのシード
+)
+
 import pickle
 import os
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform, randint
+import numpy as np
+import xgboost as xgb
 
-# --- 最適なパラメータを使用 (前回の結果を流用) ---
-# XGBoostの最適なパラメータを再設定
-# 例: best_params = {'n_estimators': 784, 'learning_rate': 0.0354, 'max_depth': 4, ...}
-# Ridgeの最適なαを再設定
-# 例: best_alpha = 10.0 など
-# --- 最適なパラメータを手動で定義 ---
-# 前回のランダムサーチ結果をここにコピー＆ペースト
-best_params = {
-    'colsample_bytree': 0.7257423924305306,
-    'learning_rate': 0.03542853455823514,
-    'max_depth': 4,
-    'n_estimators': 784,
-    'reg_alpha': 0.025029222914887496,
-    'reg_lambda': 1.4155743845534445,
-    'subsample': 0.9022204554172195
-}
-# -----------------------------------
+# ファイルが存在するかチェック
+if os.path.exists('best_xgb_model.pkl'):
+    with open('best_xgb_model.pkl', 'rb') as f:
+        best_model = pickle.load(f)
+        
+    print("学習済みモデルをロードしました。再学習はスキップします。")
+    # ロードしたモデルを使って予測に進む
+    #predictions_log = best_model.predict(X_test)
+else:
+    # ファイルが存在しない場合（初回実行時のみ）、学習処理を実行する
+    print("モデルファイルが存在しません。学習を開始します。")
+    
+    # モデルインスタンスの再作成
+    model_tune = xgb.XGBRegressor(
+        objective='reg:squarederror', 
+        random_state=42, 
+        # n_jobs=-1 でCPUの全コアを使用
+        n_jobs=-1
+    )
 
-# 1. XGBoostの再学習
-best_xgb_model_final = xgb.XGBRegressor(
-    objective='reg:squarederror', 
-    random_state=42, 
-    n_jobs=-1,
-    **best_params # ランダムサーチで見つけた最適なパラメータを直接渡します
-)
-print("XGBoost 再学習中...")
-best_xgb_model_final.fit(X_train_new, y_train_new)
+    # 調整するパラメータの範囲を定義
+    # L1/L2正則化と学習率を重点的に調整し、過学習を防ぎます。
+    param_dist = {
+        'n_estimators': randint(300, 1500),         # 決定木の数 (多くする)
+        'learning_rate': uniform(0.01, 0.05),       # 学習率 (低くする: 0.01-0.06の範囲)
+        'max_depth': randint(3, 6),                 # 木の深さ (浅く保つ: 3-5が目安)
+        'subsample': uniform(0.6, 0.4),             # サンプリング率
+        'colsample_bytree': uniform(0.6, 0.4),      # 特徴量のサンプリング率
+        'reg_alpha': uniform(0.0001, 0.1),          # L1正則化 (過学習抑制に重要)
+        'reg_lambda': uniform(0.8, 1.5)             # L2正則化
+    }
 
-# --- 最適なαを手動で定義 ---
-# 前回のRidge回帰グリッドサーチで見つけた最適なα値を代入
-best_alpha = 2.4201 # ← あなたの環境での最適なα値に置き換えてください
-# --------------------------
-# # 2. Ridge回帰の再学習
-best_ridge_model_final = Ridge(alpha=best_alpha, random_state=42)
-print("Ridge回帰 再学習中...")
-best_ridge_model_final.fit(X_train_new, y_train_new)
+    # ランダムサーチの設定 (50回の試行)
+    random_search = RandomizedSearchCV(
+        estimator=model_tune, 
+        param_distributions=param_dist, 
+        n_iter=50, # 試行回数。時間があれば100以上に増やします。
+        scoring='neg_mean_squared_error', # RMSLEの最適化に相当
+        cv=5,                             # 5分割交差検証
+        verbose=1, 
+        random_state=42, 
+        n_jobs=-1 
+    )
 
-# 3. 予測の実行
-xgb_predictions_log_final = best_xgb_model_final.predict(X_test_final)
-ridge_predictions_log_final = best_ridge_model_final.predict(X_test_final)
+    # チューニングの実行
+    print("--- XGBoost ランダムサーチ チューニング開始 ---")
+    random_search.fit(X_train, y_train)
+    print("--- XGBoost ランダムサーチ チューニング完了 ---")
 
-# 4. ブレンディングの実行 (重みもそのまま流用)
+    # 最適パラメータとスコアの表示
+    best_log_rmsle = np.sqrt(-random_search.best_score_)
+    best_params = random_search.best_params_
+
+    print(f"\n✨ 最適な交差検証 RMSLE (logスケール): {best_log_rmsle:.4f}")
+    print("最適なパラメータ:")
+    for k, v in best_params.items():
+        print(f"  {k}: {v}")
+
+    # 最適モデルの取得
+    best_model = random_search.best_estimator_
+
+    with open('best_xgb_model.pkl', 'wb') as f:
+        pickle.dump(best_model, f)
+        
+    print("学習済みXGBoostモデルを 'best_xgb_model.pkl' に保存しました。")
+
+# 最適モデルでの予測
+predictions_log_tuned = best_model.predict(X_test)
+
+# 元の価格スケールに戻す
+predictions_price_tuned = np.expm1(predictions_log_tuned)
+
+# 提出ファイルの作成
+# Id列は、前回のステップで保存した test_id_submission を使用
+# （Id列を取得したコードが直前にあることを確認してください）
+submission_df_tuned = pd.DataFrame({
+    'Id': test_id_submission,
+    # 予測結果は Id の行数に合わせて使用
+    'SalePrice': predictions_price_tuned[:len(test_id_submission)]
+})
+
+# 提出ファイルをCSVとして保存
+#submission_df_tuned.to_csv('submission_xgb_tuned.csv', index=False)
+
+#print("\n🎉 チューニング後の提出ファイル 'submission_xgb_tuned.csv' が作成されました。")
+
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import GridSearchCV
+import numpy as np
+
+# ファイルが存在するかチェック
+if os.path.exists('best_ridge_model.pkl'):
+    with open('best_ridge_model.pkl', 'rb') as f:
+        best_ridge_model = pickle.load(f)
+        
+    print("学習済みridgeモデルをロードしました。再学習はスキップします。")
+    
+else:
+    print("Ridgeモデルファイルが存在しません。学習を開始します。")
+    # Ridgeモデルのインスタンス化
+    ridge = Ridge(random_state=42)
+
+    # 調整するαの範囲を定義 (0.01から50.0まで、対数スケールで探索)
+    param_grid = {'alpha': np.logspace(-2, 2, 100)} 
+    # np.logspace(-2, 2, 100) は、0.01から100.0までの間に100個の値を生成します
+
+    # グリッドサーチの設定
+    grid_search_ridge = GridSearchCV(
+        estimator=ridge,
+        param_grid=param_grid,
+        scoring='neg_mean_squared_error',
+        cv=5,
+        verbose=0,
+        n_jobs=-1
+    )
+
+    # チューニングの実行
+    print("--- Ridge回帰 グリッドサーチ チューニング開始 ---")
+    grid_search_ridge.fit(X_train, y_train)
+    print("--- Ridge回帰 グリッドサーチ チューニング完了 ---")
+
+    # 最適パラメータとスコアの表示
+    best_log_rmsle_ridge = np.sqrt(-grid_search_ridge.best_score_)
+    best_alpha = grid_search_ridge.best_params_['alpha']
+
+    print(f"\n✨ Ridge回帰の最適交差検証 RMSLE (logスケール): {best_log_rmsle_ridge:.4f}")
+    print(f"最適なα: {best_alpha:.4f}")
+
+    # 最適なRidgeモデルの保存
+    best_ridge_model = grid_search_ridge.best_estimator_ # チューニングで得られた最適なRidgeモデル
+
+    with open('best_ridge_model.pkl', 'wb') as f:
+        pickle.dump(best_ridge_model, f)
+        
+    print("学習済みRidgeモデルを 'best_ridge_model.pkl' に保存しました。")
+
+# Ridge回帰による予測 (対数スケール)
+ridge_predictions_log = best_ridge_model.predict(X_test)
+
+
+# 最適なXGBoostモデル (best_model) の予測（前回のステップで計算済み）
+# predictions_log_tuned を使用
+
+# 統合の重みを設定
+# XGBoost: 0.7、Ridge: 0.3 とします
 weight_xgb = 0.7
 weight_ridge = 0.3
 
-blended_predictions_log_final = (weight_xgb * xgb_predictions_log_final) + \
-                                (weight_ridge * ridge_predictions_log_final)
+# 統合された予測 (対数スケール)
+blended_predictions_log = (weight_xgb * predictions_log_tuned) + \
+                          (weight_ridge * ridge_predictions_log)
 
-blended_predictions_price_final = np.expm1(blended_predictions_log_final)
+# 元の価格スケールに戻す
+blended_predictions_price = np.expm1(blended_predictions_log)
 
-import numpy as np
-
-# 1. 要素数（長さ）の確認
-expected_length = 1456
-actual_length = len(blended_predictions_price_final)
-print(f"✅ 予測結果の長さ: {actual_length}")
-
-if actual_length == expected_length:
-    print("   要素数は期待通り 1456 個です。")
-else:
-    print(f"   🚨 警告: 要素数が {expected_length} 個と一致しません。")
-    
-# 2. 数値内容の確認
-# 配列内に NaN や無限大（Inf）が含まれていないかチェックします。
-
-# blended_predictions_price_final を NumPy 配列として扱います
-predictions_array = np.array(blended_predictions_price_final)
-
-# NaN (Not a Number) が含まれていないか
-has_nan = np.isnan(predictions_array).any()
-# Inf (無限大) が含まれていないか
-has_inf = np.isinf(predictions_array).any()
-
-print(f"✅ NaNの有無: {has_nan}")
-print(f"✅ Infの有無: {has_inf}")
-
-if has_nan or has_inf:
-    print("   🚨 エラー: 予測結果に NaN または Inf が含まれています。計算をやり直す必要があります。")
-    
-# 3. データの範囲と最初の数値をチェック
-# 住宅価格として妥当な範囲か (例: 5万ドル以上)
-min_val = predictions_array.min()
-max_val = predictions_array.max()
-
-print(f"✅ 最小予測価格: {min_val:.2f}")
-print(f"✅ 最大予測価格: {max_val:.2f}")
-print(f"✅ 最初の5つの予測値: {predictions_array[:5]}")
-
-if min_val < 10000:
-    print("   ⚠️ 警告: 予測値に異常に低い値が含まれている可能性があります。")
-
-
-# 外れ値として削除されたのは訓練データのみであり、
-# テストデータ（df_test）の行数は変わっていないはずですが、念のため確認します。
-
-print(f"最終予測結果の長さ: {len(blended_predictions_price_final)}")
-#print(f"最終提出用 Id の長さ: {len(final_test_id)}")
-
-import pandas as pd
-import numpy as np
-# (test_id_submission_safe、blended_predictions_price_final、X_test_final は前のステップで定義済みとします)
-
-# --- 提出ファイルの再構築（シンプルかつ確実な Id 結合） ---
-
-# 1. X_test_final に含まれる Id を抽出 (1456行)
-# X_test_final のインデックスを使って、元の df_test から Id を抽出します。
-# ※ df_test がメモリに残っていることを前提とします。
-current_id_for_prediction = df_test.loc[X_test_final.index, 'Id']
-
-# 2. 予測値と対応する Id を持つデータフレーム (1456行) を作成
-predictions_df = pd.DataFrame({
-    'Id': current_id_for_prediction,
-    'SalePrice': blended_predictions_price_final
+# 提出ファイルの作成
+submission_df_blended = pd.DataFrame({
+    'Id': test_id_submission, # 前回のステップで保存した Id を使用
+    'SalePrice': blended_predictions_price[:len(test_id_submission)]
 })
 
-# 3. 提出用データフレーム (1465行) を元の Id で初期化
-final_submission = pd.DataFrame(test_id_submission_safe, columns=['Id'])
-
-# 4. Id をキーにして予測結果を結合 (merge)
-# 欠落した 9 行は NaN になります。
-final_submission = pd.merge(
-    final_submission, 
-    predictions_df, 
-    on='Id', 
-    how='left'
-)
-
-# 5. NaN（欠落した9行）を平均値で補完
-mean_price = final_submission['SalePrice'].mean()
-final_submission['SalePrice'] = final_submission['SalePrice'].fillna(mean_price)
-
-# 最終確認
-print(f"最終提出ファイルの行数: {len(final_submission)}")
-print(f"SalePriceのNaNの有無: {final_submission['SalePrice'].isnull().any()}") # False であるべき
-
 # 提出ファイルをCSVとして保存
-final_submission.to_csv('submission_final_merged.csv', index=False)
+submission_df_blended.to_csv('submission_xgb_ridge_blended.csv', index=False)
 
-print("\n🎉 最終提出ファイル 'submission_final_merged.csv' が作成されました。再度提出をお願いします。")
+print("\n🎉 アンサンブル後の提出ファイル 'submission_xgb_ridge_blended.csv' が作成されました。")
