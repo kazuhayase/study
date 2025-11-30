@@ -109,10 +109,19 @@ for col in cols_zero:
     # または、より簡潔に:
     # df_all[col] = df_all[col].fillna(0)
 
-# LotFrontageを、同じ近隣の物件の中央値で補完
+# 1. Neighborhoodごとの中央値で補完
 df_all['LotFrontage'] = df_all.groupby('Neighborhood')['LotFrontage'].transform(
     lambda x: x.fillna(x.median())
 )
+
+# 2. それでも欠損値が残っている場合（警告の原因となったグループ）は、
+#    全体のLotFrontageの中央値で補完する
+if df_all['LotFrontage'].isnull().any():
+    median_all = df_all['LotFrontage'].median()
+    df_all['LotFrontage'].fillna(median_all, inplace=True) 
+
+# 注: df_all['LotFrontage'].fillna(...) の形式なら SettingWithCopyWarning は出にくいです。
+# 心配なら df_all.loc[:, 'LotFrontage'] = df_all['LotFrontage'].fillna(median_all) を使用。
 
 # 最頻値で補完（inplace=Trueを使わない）
 df_all['Electrical'] = df_all['Electrical'].fillna(df_all['Electrical'].mode()[0])
