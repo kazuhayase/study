@@ -368,53 +368,86 @@ else:
 # Ridge回帰による予測 (対数スケール)
 ridge_predictions_log = best_ridge_model.predict(X_test)
 
-import numpy as np
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import GridSearchCV
+
 import pandas as pd
-from sklearn.metrics import mean_squared_error
+import numpy as np
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+import pickle
+import os
 
-# --- 前提: 最適なXGBoostモデルとRidgeモデルは既に学習済み ---
-# best_xgb_model, best_ridge_model が X_train, y_train (元のデータセット) で学習済みであること。
+# モデルファイル名
+LASSO_MODEL_FILE = 'best_lasso_pipeline.pkl'
 
-# 1. 交差検証の予測結果を取得
-# まず、XGBoostとRidgeの交差検証予測（OOF: Out-Of-Fold）が必要です。
-# これは前回のチューニングステップの際に出力しているはずですが、ここではシンプルに訓練データ全体で予測します。
-
-xgb_train_pred = best_xgb_model.predict(X_train)
-ridge_train_pred = best_ridge_model.predict(X_train)
-
-best_weight = 0.7
-best_rmsle = float('inf')
-
-print("--- ブレンディング重み探索開始 ---")
-
-# 2. 重み (w) を 0.05 から 0.95 まで 0.05 刻みで試す
-for w in np.arange(0.05, 1.0, 0.05):
-    # 重み付け平均
-    blended_pred = (w * xgb_train_pred) + ((1 - w) * ridge_train_pred)
+if os.path.exists(LASSO_MODEL_FILE):
+    # ファイルが存在する場合、ロードしてチューニングをスキップ
+    with open(LASSO_MODEL_FILE, 'rb') as f:
+        best_lasso_model = pickle.load(f)
+    print(f"✅ 学習済みLassoパイプライン '{LASSO_MODEL_FILE}' をロードしました。")
     
-    # RMSLEの計算 (logスケール)
-    # y_train は logスケールです。
-    rmsle = np.sqrt(mean_squared_error(y_train, blended_pred))
+else:
+    # ファイルが存在しない場合、学習を実行
+    print("⏳ Lassoモデルファイルが存在しません。スケーリングとチューニングを開始します...")
+
+    # A. パイプラインの定義 (スケーリング + Lasso)
+    lasso_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        # max_iterを100000に増やしましたが、スケーリング適用で通常は10000程度で十分です
+        ('lasso', Lasso(random_state=42, max_iter=10000)) 
+    ])
+
+    # B. チューニングするパラメータの定義
+    param_grid_lasso = {'lasso__alpha': np.logspace(-4, -2, 100)} 
+
+    # C. グリッドサーチの設定
+    grid_search_lasso = GridSearchCV(
+        estimator=lasso_pipeline,
+        param_grid=param_grid_lasso,
+        scoring='neg_mean_squared_error',
+        cv=5,
+        verbose=0,
+        n_jobs=-1
+    )
+
+    # D. チューニングの実行 (X_train, y_train は元のデータを使用)
+    grid_search_lasso.fit(X_train, y_train) 
+    print("--- Lasso回帰 グリッドサーチ チューニング完了 ---")
     
-    if rmsle < best_rmsle:
-        best_rmsle = rmsle
-        best_weight = w
-        
-    print(f"重み w={w:.2f} (XGB) : RMSLE={rmsle:.4f}")
+    # 最適モデルの取得と保存
+    best_lasso_model = grid_search_lasso.best_estimator_
 
-print("--- ブレンディング重み探索完了 ---")
-print(f"\n✨ 最適な重み (XGBoost): {best_weight:.2f}")
-print(f"✨ 最適なCV RMSLE: {best_rmsle:.4f}")
+    with open(LASSO_MODEL_FILE, 'wb') as f:
+        pickle.dump(best_lasso_model, f)
+    
+    print(f"💾 学習済みLassoパイプラインを '{LASSO_MODEL_FILE}' に保存しました。")
+    
+# ロードまたは学習後の best_lasso_model を使って予測に進む
+# X_test に対する予測 (スケーリングはパイプライン内で自動的に適用されます)
+lasso_predictions_log = best_lasso_model.predict(X_test)
 
-# 最適な重みを使ってテストデータで予測
-final_pred_log = (best_weight * predictions_log_tuned) + ((1 - best_weight) * ridge_predictions_log)
-final_pred_price = np.expm1(final_pred_log)
+# 統合の重みを設定
+weight_xgb = 0.6
+weight_ridge = 0.2
+weight_lasso = 0.2
 
-# 提出ファイルの作成（Idは test_id_submission_safe を使用）
-submission_df = pd.DataFrame({
-    'Id': test_id_submission_safe,
-    'SalePrice': final_pred_price
+# 統合された予測 (対数スケール)
+blended_predictions_log_3way = (weight_xgb * predictions_log_tuned) + \
+                               (weight_ridge * ridge_predictions_log) + \
+                               (weight_lasso * lasso_predictions_log)
+
+# 元の価格スケールに戻す
+blended_predictions_price_3way = np.expm1(blended_predictions_log_3way)
+
+# 提出ファイルの作成
+submission_df_3way = pd.DataFrame({
+    'Id': test_id_submission_safe, # スクリプト最初に保存した安全なIdを使用
+    'SalePrice': blended_predictions_price_3way
 })
 
-submission_df.to_csv('submission_optimized_weight.csv', index=False)
-print("\n🎉 最適化された提出ファイル 'submission_optimized_weight.csv' が作成されました。")
+submission_df_3way.to_csv('submission_3way_blended.csv', index=False)
+
+print("\n🎉 3モデル統合の提出ファイル 'submission_3way_blended.csv' が作成されました。")
