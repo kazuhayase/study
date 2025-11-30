@@ -429,25 +429,76 @@ else:
 # X_test に対する予測 (スケーリングはパイプライン内で自動的に適用されます)
 lasso_predictions_log = best_lasso_model.predict(X_test)
 
-# --- 最適な重みを設定 ---
-weight_xgb = 0.70
-weight_ridge = 0.15
-weight_lasso = 0.15
+import lightgbm as lgb
+import pickle
+import os 
+import pandas as pd
+import numpy as np
+
+# モデルファイル名
+LGBM_MODEL_FILE = 'best_lgbm_model.pkl'
+
+# --- 1. LightGBM モデルの定義と学習/ロード ---
+if os.path.exists(LGBM_MODEL_FILE):
+    # ファイルが存在する場合、ロードして学習をスキップ
+    with open(LGBM_MODEL_FILE, 'rb') as f:
+        lgb_model = pickle.load(f)
+    print(f"✅ 学習済みLightGBMモデル '{LGBM_MODEL_FILE}' をロードしました。")
+    
+else:
+    # ファイルが存在しない場合、学習を実行
+    print("⏳ LightGBMモデルファイルが存在しません。学習を開始します...")
+
+    # LightGBMモデルの定義 (最適なパラメータを適用)
+    lgb_model = lgb.LGBMRegressor(
+        objective='regression',
+        n_estimators=784,
+        learning_rate=0.035,
+        num_leaves=20,
+        max_depth=4,
+        min_child_samples=15,
+        random_state=42,
+        n_jobs=-1
+    )
+
+    # 学習の実行 (X_train, y_train は元のデータを使用)
+    lgb_model.fit(X_train, y_train) 
+    print("--- LightGBM 学習完了 ---")
+    
+    # モデルを保存
+    with open(LGBM_MODEL_FILE, 'wb') as f:
+        pickle.dump(lgb_model, f)
+    
+    print(f"💾 学習済みLightGBMモデルを '{LGBM_MODEL_FILE}' に保存しました。")
+    
+# --- 2. 予測の実行 ---
+# ロードまたは学習後の lgb_model を使って予測に進む
+lgb_predictions_log = lgb_model.predict(X_test)
+print("✅ LightGBMの予測結果を取得しました。")
+
+
+# --- 3. 4モデル統合のブレンディング（重みは変更なし） ---
+
+# 統合の重みを設定
+weight_xgb = 0.55
+weight_lgb = 0.25
+weight_ridge = 0.10
+weight_lasso = 0.10
 
 # 統合された予測 (対数スケール)
-blended_predictions_log_3way = (weight_xgb * predictions_log_tuned) + \
+blended_predictions_log_4way = (weight_xgb * predictions_log_tuned) + \
+                               (weight_lgb * lgb_predictions_log) + \
                                (weight_ridge * ridge_predictions_log) + \
                                (weight_lasso * lasso_predictions_log)
 
 # 元の価格スケールに戻す
-blended_predictions_price_3way = np.expm1(blended_predictions_log_3way)
+blended_predictions_price_4way = np.expm1(blended_predictions_log_4way)
 
 # 提出ファイルの作成
-submission_df_optimized = pd.DataFrame({
-    'Id': test_id_submission_safe, # スクリプト最初に保存した安全なIdを使用
-    'SalePrice': blended_predictions_price_3way
+submission_df_4way = pd.DataFrame({
+    'Id': test_id_submission_safe,
+    'SalePrice': blended_predictions_price_4way
 })
 
-submission_df_optimized.to_csv('submission_final_tuned_070.csv', index=False)
-
-print("\n🎉 最終調整済み提出ファイル 'submission_final_tuned_070.csv' が作成されました。")
+submission_df_4way.to_csv('submission_4way_blended.csv', index=False)
+print("\n🎉 4モデル統合の提出ファイル 'submission_4way_blended.csv' が作成されました。")
