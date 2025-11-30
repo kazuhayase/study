@@ -429,10 +429,10 @@ else:
 # X_test に対する予測 (スケーリングはパイプライン内で自動的に適用されます)
 lasso_predictions_log = best_lasso_model.predict(X_test)
 
-# 統合の重みを設定
-weight_xgb = 0.6
-weight_ridge = 0.2
-weight_lasso = 0.2
+# --- 最適な重みを設定 ---
+weight_xgb = 0.70
+weight_ridge = 0.15
+weight_lasso = 0.15
 
 # 統合された予測 (対数スケール)
 blended_predictions_log_3way = (weight_xgb * predictions_log_tuned) + \
@@ -443,11 +443,11 @@ blended_predictions_log_3way = (weight_xgb * predictions_log_tuned) + \
 blended_predictions_price_3way = np.expm1(blended_predictions_log_3way)
 
 # 提出ファイルの作成
-submission_df_3way = pd.DataFrame({
+submission_df_optimized = pd.DataFrame({
     'Id': test_id_submission_safe, # スクリプト最初に保存した安全なIdを使用
     'SalePrice': blended_predictions_price_3way
 })
 
-submission_df_3way.to_csv('submission_3way_blended.csv', index=False)
+submission_df_optimized.to_csv('submission_final_tuned_070.csv', index=False)
 
-print("\n🎉 3モデル統合の提出ファイル 'submission_3way_blended.csv' が作成されました。")
+print("\n🎉 最終調整済み提出ファイル 'submission_final_tuned_070.csv' が作成されました。")
