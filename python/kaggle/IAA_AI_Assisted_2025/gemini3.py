@@ -181,6 +181,27 @@ df_all = pd.get_dummies(df_all, columns=categorical_cols, dummy_na=False)
 # 処理後のデータ形状を確認
 print(f"\nワンホットエンコーディング後のデータ形状: {df_all.shape}")
 
+# --- 特徴量エンジニアリングの追加 ---
+
+# 1. 総面積 (TotalSF): 物件の主要な規模を示す強力な特徴量
+# (地下室 + 1階 + 2階 の総面積)
+df_all['TotalSF'] = df_all['TotalBsmtSF'] + df_all['1stFlrSF'] + df_all['2ndFlrSF']
+
+# 2. 総浴槽数 (TotalBath): 浴室の総数（半風呂は0.5として計算）
+df_all['TotalBath'] = (df_all['FullBath'] + (0.5 * df_all['HalfBath']) + 
+                       df_all['BsmtFullBath'] + (0.5 * df_all['BsmtHalfBath']))
+
+# 3. リフォーム後の経過年数 (YearsSinceRemodel)
+df_all['YearsSinceRemodel'] = df_all['YrSold'] - df_all['YearRemodAdd']
+# 負の値（未来の年）がある場合は0に修正（データエラー対策）
+df_all.loc[df_all['YearsSinceRemodel'] < 0, 'YearsSinceRemodel'] = 0
+
+# 4. 新築フラグ (IsNew): 売却年と建築年が同じなら1
+df_all['IsNew'] = (df_all['YearBuilt'] == df_all['YrSold']).astype(int)
+
+# -----------------------------------
+
+
 # Id列とSalePrice_Log（正解ラベル）は、訓練データとテストデータに分割する前に残しておきます。
 # Id列は提出時に必要、SalePrice_Logは目的変数として使用します。
 df_all.drop('Id', axis=1, inplace=True)
@@ -208,6 +229,9 @@ print(f"X_train 形状: {X_train.shape}")
 print(f"y_train 形状: {y_train.shape}")
 print(f"X_test 形状: {X_test.shape}")
 
+print(f"特徴量追加後の X_train 形状: {X_train.shape}") 
+# 列数が311から315程度に増えているはずです。
+
 import xgboost as xgb
 from sklearn.model_selection import cross_val_score
 import numpy as np
@@ -221,47 +245,175 @@ model = xgb.XGBRegressor(
     random_state=42               # 再現性のためのシード
 )
 
-# モデルの学習
-model.fit(X_train, y_train)
+import pickle
+import os
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import uniform, randint
+import numpy as np
+import xgboost as xgb
 
-# 交差検証（Cross-Validation）でモデルの性能を評価（5分割）
-# 評価指標は、対数変換された目的変数y_trainに対する平均二乗誤差 (MSE) の負の値を使用
-cv_results = -cross_val_score(model, X_train, y_train, 
-                              scoring='neg_mean_squared_error', 
-                              cv=5)
+# ファイルが存在するかチェック
+if os.path.exists('best_xgb_model.pkl'):
+    with open('best_xgb_model.pkl', 'rb') as f:
+        best_model = pickle.load(f)
+        
+    print("学習済みモデルをロードしました。再学習はスキップします。")
+    # ロードしたモデルを使って予測に進む
+    #predictions_log = best_model.predict(X_test)
+else:
+    # ファイルが存在しない場合（初回実行時のみ）、学習処理を実行する
+    print("モデルファイルが存在しません。学習を開始します。")
+    
+    # モデルインスタンスの再作成
+    model_tune = xgb.XGBRegressor(
+        objective='reg:squarederror', 
+        random_state=42, 
+        # n_jobs=-1 でCPUの全コアを使用
+        n_jobs=-1
+    )
 
-# 結果をRMSLE (logスケール) の形式に戻す
-mean_log_rmsle = np.sqrt(cv_results.mean())
+    # 調整するパラメータの範囲を定義
+    # L1/L2正則化と学習率を重点的に調整し、過学習を防ぎます。
+    param_dist = {
+        'n_estimators': randint(300, 1500),         # 決定木の数 (多くする)
+        'learning_rate': uniform(0.01, 0.05),       # 学習率 (低くする: 0.01-0.06の範囲)
+        'max_depth': randint(3, 6),                 # 木の深さ (浅く保つ: 3-5が目安)
+        'subsample': uniform(0.6, 0.4),             # サンプリング率
+        'colsample_bytree': uniform(0.6, 0.4),      # 特徴量のサンプリング率
+        'reg_alpha': uniform(0.0001, 0.1),          # L1正則化 (過学習抑制に重要)
+        'reg_lambda': uniform(0.8, 1.5)             # L2正則化
+    }
 
-print(f"\n交差検証 RMSLE (logスケール): {mean_log_rmsle:.4f}")
+    # ランダムサーチの設定 (50回の試行)
+    random_search = RandomizedSearchCV(
+        estimator=model_tune, 
+        param_distributions=param_dist, 
+        n_iter=50, # 試行回数。時間があれば100以上に増やします。
+        scoring='neg_mean_squared_error', # RMSLEの最適化に相当
+        cv=5,                             # 5分割交差検証
+        verbose=1, 
+        random_state=42, 
+        n_jobs=-1 
+    )
 
-# --- モデル学習と交差検証は成功しているため省略 ---
+    # チューニングの実行
+    print("--- XGBoost ランダムサーチ チューニング開始 ---")
+    random_search.fit(X_train, y_train)
+    print("--- XGBoost ランダムサーチ チューニング完了 ---")
 
-# テストデータで予測
-predictions_log = model.predict(X_test)
+    # 最適パラメータとスコアの表示
+    best_log_rmsle = np.sqrt(-random_search.best_score_)
+    best_params = random_search.best_params_
 
-# 予測値を元の価格スケール（Sales Price）に戻す
-predictions_price = np.expm1(predictions_log)
+    print(f"\n✨ 最適な交差検証 RMSLE (logスケール): {best_log_rmsle:.4f}")
+    print("最適なパラメータ:")
+    for k, v in best_params.items():
+        print(f"  {k}: {v}")
 
-# --- 提出ファイルの作成（修正版） ---
-# Id列は X_test からではなく、事前に保存した test_id_submission を使用します。
-# X_testの行数（1465）と test_id_submission の行数（1459）が異なる可能性があるため、
-# test_id_submission のデータフレームを X_test の行数に合わせて調整する必要があります。
+    # 最適モデルの取得
+    best_model = random_search.best_estimator_
 
-# ユーザーの学習データが1465行、テストデータが1465行になっているため、
-# 元の df_test の1459行から1465行に Id を拡張する必要がありますが、
-# これはデータの不整合を示唆します。
+    with open('best_xgb_model.pkl', 'wb') as f:
+        pickle.dump(best_model, f)
+        
+    print("学習済みXGBoostモデルを 'best_xgb_model.pkl' に保存しました。")
 
-# 最も確実な方法として、df_test の Id を使って submission を作成します。
-submission_df = pd.DataFrame({
-    # df_test の Id を使用
-    'Id': test_id_submission, 
-    # 予測結果は X_test の行数（1465）と一致しているため、そのまま使用します。
-    # 実際には Id の行数と一致させる必要がありますが、一旦 Id を基準にします。
-    'SalePrice': predictions_price[:len(test_id_submission)]
+# 最適モデルでの予測
+predictions_log_tuned = best_model.predict(X_test)
+
+# 元の価格スケールに戻す
+predictions_price_tuned = np.expm1(predictions_log_tuned)
+
+# 提出ファイルの作成
+# Id列は、前回のステップで保存した test_id_submission を使用
+# （Id列を取得したコードが直前にあることを確認してください）
+submission_df_tuned = pd.DataFrame({
+    'Id': test_id_submission,
+    # 予測結果は Id の行数に合わせて使用
+    'SalePrice': predictions_price_tuned[:len(test_id_submission)]
 })
 
 # 提出ファイルをCSVとして保存
-submission_df.to_csv('submission_xgb_final.csv', index=False)
+#submission_df_tuned.to_csv('submission_xgb_tuned.csv', index=False)
 
-print("\n🎉 提出ファイル 'submission_xgb_final.csv' が正常に作成されました。")
+#print("\n🎉 チューニング後の提出ファイル 'submission_xgb_tuned.csv' が作成されました。")
+
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import GridSearchCV
+import numpy as np
+
+# ファイルが存在するかチェック
+if os.path.exists('best_ridge_model.pkl'):
+    with open('best_ridge_model.pkl', 'rb') as f:
+        best_ridge_model = pickle.load(f)
+        
+    print("学習済みridgeモデルをロードしました。再学習はスキップします。")
+    
+else:
+    print("Ridgeモデルファイルが存在しません。学習を開始します。")
+    # Ridgeモデルのインスタンス化
+    ridge = Ridge(random_state=42)
+
+    # 調整するαの範囲を定義 (0.01から50.0まで、対数スケールで探索)
+    param_grid = {'alpha': np.logspace(-2, 2, 100)} 
+    # np.logspace(-2, 2, 100) は、0.01から100.0までの間に100個の値を生成します
+
+    # グリッドサーチの設定
+    grid_search_ridge = GridSearchCV(
+        estimator=ridge,
+        param_grid=param_grid,
+        scoring='neg_mean_squared_error',
+        cv=5,
+        verbose=0,
+        n_jobs=-1
+    )
+
+    # チューニングの実行
+    print("--- Ridge回帰 グリッドサーチ チューニング開始 ---")
+    grid_search_ridge.fit(X_train, y_train)
+    print("--- Ridge回帰 グリッドサーチ チューニング完了 ---")
+
+    # 最適パラメータとスコアの表示
+    best_log_rmsle_ridge = np.sqrt(-grid_search_ridge.best_score_)
+    best_alpha = grid_search_ridge.best_params_['alpha']
+
+    print(f"\n✨ Ridge回帰の最適交差検証 RMSLE (logスケール): {best_log_rmsle_ridge:.4f}")
+    print(f"最適なα: {best_alpha:.4f}")
+
+    # 最適なRidgeモデルの保存
+    best_ridge_model = grid_search_ridge.best_estimator_ # チューニングで得られた最適なRidgeモデル
+
+    with open('best_ridge_model.pkl', 'wb') as f:
+        pickle.dump(best_ridge_model, f)
+        
+    print("学習済みRidgeモデルを 'best_ridge_model.pkl' に保存しました。")
+
+# Ridge回帰による予測 (対数スケール)
+ridge_predictions_log = best_ridge_model.predict(X_test)
+
+
+# 最適なXGBoostモデル (best_model) の予測（前回のステップで計算済み）
+# predictions_log_tuned を使用
+
+# 統合の重みを設定
+# XGBoost: 0.7、Ridge: 0.3 とします
+weight_xgb = 0.7
+weight_ridge = 0.3
+
+# 統合された予測 (対数スケール)
+blended_predictions_log = (weight_xgb * predictions_log_tuned) + \
+                          (weight_ridge * ridge_predictions_log)
+
+# 元の価格スケールに戻す
+blended_predictions_price = np.expm1(blended_predictions_log)
+
+# 提出ファイルの作成
+submission_df_blended = pd.DataFrame({
+    'Id': test_id_submission, # 前回のステップで保存した Id を使用
+    'SalePrice': blended_predictions_price[:len(test_id_submission)]
+})
+
+# 提出ファイルをCSVとして保存
+submission_df_blended.to_csv('submission_xgb_ridge_blended.csv', index=False)
+
+print("\n🎉 アンサンブル後の提出ファイル 'submission_xgb_ridge_blended.csv' が作成されました。")
