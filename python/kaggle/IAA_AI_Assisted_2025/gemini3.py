@@ -232,11 +232,11 @@ import xgboost as xgb
 # ファイルが存在するかチェック
 if os.path.exists('best_xgb_model.pkl'):
     with open('best_xgb_model.pkl', 'rb') as f:
-        best_model = pickle.load(f)
+        best_xgb_model = pickle.load(f)
         
     print("学習済みモデルをロードしました。再学習はスキップします。")
     # ロードしたモデルを使って予測に進む
-    #predictions_log = best_model.predict(X_test)
+    #predictions_log = best_xgb_model.predict(X_test)
 else:
     # ファイルが存在しない場合（初回実行時のみ）、学習処理を実行する
     print("モデルファイルが存在しません。学習を開始します。")
@@ -288,15 +288,15 @@ else:
         print(f"  {k}: {v}")
 
     # 最適モデルの取得
-    best_model = random_search.best_estimator_
+    best_xgb_model = random_search.best_estimator_
 
     with open('best_xgb_model.pkl', 'wb') as f:
-        pickle.dump(best_model, f)
+        pickle.dump(best_xgb_model, f)
         
-    print("学習済みXGBoostモデルを 'best_xgb_model.pkl' に保存しました。")
+    print("学習済みXGBoostモデルを 'best_xgb_model.pkl' に保存しました。")    
 
 # 最適モデルでの予測
-predictions_log_tuned = best_model.predict(X_test)
+predictions_log_tuned = best_xgb_model.predict(X_test)
 
 # 元の価格スケールに戻す
 predictions_price_tuned = np.expm1(predictions_log_tuned)
@@ -368,29 +368,53 @@ else:
 # Ridge回帰による予測 (対数スケール)
 ridge_predictions_log = best_ridge_model.predict(X_test)
 
+import numpy as np
+import pandas as pd
+from sklearn.metrics import mean_squared_error
 
-# 最適なXGBoostモデル (best_model) の予測（前回のステップで計算済み）
-# predictions_log_tuned を使用
+# --- 前提: 最適なXGBoostモデルとRidgeモデルは既に学習済み ---
+# best_xgb_model, best_ridge_model が X_train, y_train (元のデータセット) で学習済みであること。
 
-# 統合の重みを設定
-# XGBoost: 0.7、Ridge: 0.3 とします
-weight_xgb = 0.7
-weight_ridge = 0.3
+# 1. 交差検証の予測結果を取得
+# まず、XGBoostとRidgeの交差検証予測（OOF: Out-Of-Fold）が必要です。
+# これは前回のチューニングステップの際に出力しているはずですが、ここではシンプルに訓練データ全体で予測します。
 
-# 統合された予測 (対数スケール)
-blended_predictions_log = (weight_xgb * predictions_log_tuned) + \
-                          (weight_ridge * ridge_predictions_log)
+xgb_train_pred = best_xgb_model.predict(X_train)
+ridge_train_pred = best_ridge_model.predict(X_train)
 
-# 元の価格スケールに戻す
-blended_predictions_price = np.expm1(blended_predictions_log)
+best_weight = 0.7
+best_rmsle = float('inf')
 
-# 提出ファイルの作成
-submission_df_blended = pd.DataFrame({
-    'Id': test_id_submission, # 前回のステップで保存した Id を使用
-    'SalePrice': blended_predictions_price[:len(test_id_submission)]
+print("--- ブレンディング重み探索開始 ---")
+
+# 2. 重み (w) を 0.05 から 0.95 まで 0.05 刻みで試す
+for w in np.arange(0.05, 1.0, 0.05):
+    # 重み付け平均
+    blended_pred = (w * xgb_train_pred) + ((1 - w) * ridge_train_pred)
+    
+    # RMSLEの計算 (logスケール)
+    # y_train は logスケールです。
+    rmsle = np.sqrt(mean_squared_error(y_train, blended_pred))
+    
+    if rmsle < best_rmsle:
+        best_rmsle = rmsle
+        best_weight = w
+        
+    print(f"重み w={w:.2f} (XGB) : RMSLE={rmsle:.4f}")
+
+print("--- ブレンディング重み探索完了 ---")
+print(f"\n✨ 最適な重み (XGBoost): {best_weight:.2f}")
+print(f"✨ 最適なCV RMSLE: {best_rmsle:.4f}")
+
+# 最適な重みを使ってテストデータで予測
+final_pred_log = (best_weight * predictions_log_tuned) + ((1 - best_weight) * ridge_predictions_log)
+final_pred_price = np.expm1(final_pred_log)
+
+# 提出ファイルの作成（Idは test_id_submission_safe を使用）
+submission_df = pd.DataFrame({
+    'Id': test_id_submission_safe,
+    'SalePrice': final_pred_price
 })
 
-# 提出ファイルをCSVとして保存
-submission_df_blended.to_csv('submission_xgb_ridge_blended.csv', index=False)
-
-print("\n🎉 アンサンブル後の提出ファイル 'submission_xgb_ridge_blended.csv' が作成されました。")
+submission_df.to_csv('submission_optimized_weight.csv', index=False)
+print("\n🎉 最適化された提出ファイル 'submission_optimized_weight.csv' が作成されました。")
