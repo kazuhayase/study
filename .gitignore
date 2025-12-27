@@ -100,3 +100,6 @@ a.out.dSYM
 yarn.lock
 package-lock.json
 myconf/current/.emacs.d/byte-comple.sh
+.venv/
+__pycache__/
+.ipynb_checkpoints/
