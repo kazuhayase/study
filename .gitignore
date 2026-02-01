@@ -2,6 +2,7 @@
 python/SRMs/Greed-2.0-RC-7.1.0.jar
 actuary/backup/
 actuary/GOMI/
+*.bak
 ###
 ## See.
 ## https://help.github.com/articles/ignoring-files
@@ -53,6 +54,7 @@ Thumbs.db
 /.emacs.desktop
 /.emacs.desktop.lock
 *.elc
+*.eln
 auto-save-list
 tramp
 .\#*
@@ -97,6 +99,10 @@ a.out.dSYM
 
 yarn.lock
 package-lock.json
+myconf/current/.emacs.d/byte-comple.sh
+.venv/
+__pycache__/
+.ipynb_checkpoints/
 LLM/DA-Elyza2024/python/requirements.txt.20240825
 .gitignore
 LLM/DA-Elyza2024/python/requirements.txt.old
