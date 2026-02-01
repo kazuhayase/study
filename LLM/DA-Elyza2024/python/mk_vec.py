@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-from varlog import varlog 
 
 # uncomment if needs more than varlog
 # from logging import getLogger
@@ -27,7 +26,7 @@ ebook_dir ="/home/kazu/Books/Actuary-ebook/" ## Ubuntu@lavie
 #ebook_dir ="/mnt/c/Users/kazuy/MEGAsync/ebooks/Actuary-ebook/"  ## Debian@mouseNoteWin11
 
 file_path = ebook_dir + source_text
-varlog('file_path')
+#varlog('file_path')
 
 ### try llamaindex 
 # 1. PDFを読み込む
@@ -38,7 +37,7 @@ pages = TextLoader(file_path).load()
 # 2. ドキュメントをチャンクに分割
 #docs = CharacterTextSplitter(chunk_size=5000, chunk_overlap=0).split_documents(pages)
 docs = CharacterTextSplitter().split_documents(pages)
-varlog('len(docs)')
+#varlog('len(docs)')
 
 # 3. 埋め込みモデルの初期化
 ### open ai の embeddingがupgrade
@@ -59,7 +58,7 @@ varlog('len(docs)')
 e_models=['text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large']
 
 for e in e_models:
-    varlog('e')
+#    varlog('e')
     openai_ef = embedding_functions.OpenAIEmbeddingFunction(
         model_name=e,
         api_key=os.getenv('OPENAI_API_KEY'),

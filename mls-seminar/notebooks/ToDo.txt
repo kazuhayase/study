@@ -1,0 +1,86 @@
+ドキュメントには、このあとも、
+# 主効果を可視化する
+
+grid.arrange(ggmid(mid_2d, term = "age_of_car_M"),
+
+ggmid(mid_2d, term = "Age_client"),
+
+ggmid(mid_2d, term = "Client_Seniority"),
+
+ggmid(mid_2d, term = "num_policiesC"))term <- "age_of_car_M:Client_Seniority"
+
+# 交互作用を可視化する
+
+plot1 <- ggmid(mid_2d, term) +
+
+theme(legend.position = "bottom", legend.text = element_text(size = 8)) +
+
+labs(subtitle = "Interaction Effect")
+
+# 主効果を含む交互作用プロットを作成する
+
+plot2 <- ggmid(mid_2d, term, main.effects = TRUE) +
+
+theme(legend.position = "bottom", legend.text = element_text(size = 8)) +
+
+labs(subtitle = "Main + Interaction Effects")
+
+grid.arrange(plot1, plot2, nrow = 1)# ICE をプロットするサンプルを抽出する
+
+set.seed(42)
+
+df_ice <- df_all[sample(nrow(df_all), 200L), ]
+
+# ICE を計算する
+
+ice <- mid.conditional(mid_2d, variable = "age_of_car_M", data = df_ice)
+
+# ICE プロットを作成する
+
+plot1 <- ggmid(ice, var.color = Age_client, theme = "mako") +
+
+theme(legend.position = "bottom") +
+
+labs(subtitle = "ICE")
+
+# Centered ICE プロットを作成する
+
+plot2 <- ggmid(ice, type = "centered", var.color = Age_client, theme = "inferno") +
+
+theme(legend.position = "bottom") +
+
+labs(subtitle = "c-ICE")
+
+grid.arrange(plot1, plot2, nrow = 1)# 関数分解に沿って予測値を分解する
+
+bd1 <- mid.breakdown(mid_2d, data = df_all[1, ])
+
+# 予測値への各項の寄与を可視化する
+
+ggmid(bd1, theme = "Tableau 10") +
+
+theme(legend.position = "none")# 対象モデルの予測値を計算する
+
+preds_rf <- get.yhat(model_rf, df_all)
+
+print(head(preds_rf))# 解釈モデルの予測値を計算する
+
+preds_mid <- get.yhat(mid_2d, df_all)
+
+print(head(preds_mid))library(Metrics)
+
+# 学習データでの評価指標を確認する
+
+RSS <- sse(preds_rf[rows_mid], preds_mid[rows_mid])
+
+TSS <- sse(preds_rf[rows_mid], mean(preds_rf[rows_mid]))
+
+n1 <- length(rows_mid)
+
+cat("RMSE:", sqrt(RSS / n1))cat("Uninterpreted Rate:", RSS / TSS)# 関数分解に利用しなかった評価データでの評価指標を確認する
+
+RSS <- sse(preds_rf[-rows_mid], preds_mid[-rows_mid])
+
+TSS <- sse(preds_rf[-rows_mid], mean(preds_rf[-rows_mid]))cat("RMSE:", sqrt(RSS / n2))
+
+n2 <- nrow(df_all) - n1cat("Uninterpreted Rate:", RSS/TSS)
