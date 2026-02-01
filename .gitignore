@@ -97,3 +97,6 @@ a.out.dSYM
 
 yarn.lock
 package-lock.json
+LLM/DA-Elyza2024/python/requirements.txt.20240825
+.gitignore
+LLM/DA-Elyza2024/python/requirements.txt.old
