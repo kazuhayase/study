@@ -1,0 +1,3 @@
+# Override root-level *.sql exclusion for this project
+!*.sql
+!**/*.sql
