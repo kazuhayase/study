@@ -1,0 +1,44 @@
+{
+  "date": "2026-04-18",
+  "window": "7d",
+  "metrics": {
+    "commits": 4,
+    "non_merge_commits": 3,
+    "contributors": 1,
+    "prs_merged": 0,
+    "insertions": 667,
+    "deletions": 1,
+    "net_loc": 666,
+    "test_loc": 0,
+    "test_ratio": 0,
+    "active_days": 2,
+    "sessions": 3,
+    "deep_sessions": 0,
+    "avg_session_minutes": 5,
+    "loc_per_session_hour": null,
+    "feat_pct": 0.67,
+    "fix_pct": 0.0,
+    "chore_pct": 0.33,
+    "peak_hour": 19,
+    "ai_assisted_commits": 2,
+    "ai_assisted_pct": 0.67
+  },
+  "authors": {
+    "Kazuyoshi Hayase": {
+      "commits": 4,
+      "insertions": 667,
+      "deletions": 1,
+      "test_ratio": 0,
+      "top_area": "talent-mgmt-db/"
+    }
+  },
+  "version_range": [],
+  "streak_days": 0,
+  "tweetable": "Week of Apr 11: 3 commits (solo), +667 LOC, 2 active days (Apr 12 + 14), 67% AI-assisted | talent-mgmt-db launched",
+  "test_health": {
+    "total_test_files": 0,
+    "tests_added_this_period": 0,
+    "regression_test_commits": 0,
+    "test_files_changed": 0
+  }
+}
