@@ -11,8 +11,9 @@ taskipy = "^1.12.2"
 fastapi = "^0.109.0"
 uvicorn = "^0.26.0"
 gunicorn = "^21.2.0"
-langchain = "^0.1.1"
+langchain = "^1.2.5"
 openai = "^1.8.0"
+h11 = ">=0.16.0"
 
 
 [tool.poetry.group.dev.dependencies]

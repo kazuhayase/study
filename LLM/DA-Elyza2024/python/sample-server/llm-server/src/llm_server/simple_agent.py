@@ -1,5 +1,5 @@
-from langchain import PromptTemplate, LLMChain
-from langchain.llms import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import OpenAI
 
 
 def ask_question(question: str) -> str:
@@ -9,7 +9,7 @@ def ask_question(question: str) -> str:
     Answer:"""
 
     prompt = PromptTemplate(template=template, input_variables=["question"])
-    llm_chain = LLMChain(prompt=prompt, llm=llm)
+    chain = prompt | llm
 
-    answer = llm_chain.run(question)
+    answer = chain.invoke({"question": question})
     return answer

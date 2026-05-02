@@ -9,6 +9,8 @@ packages = [{include = "llm_server", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 uvicorn = "^0.26.0"
+h11 = ">=0.16.0"
+langchain-openai = ">=0.3.0"
 
 
 [build-system]
