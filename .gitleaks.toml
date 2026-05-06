@@ -1,0 +1,42 @@
+title = "gitleaks config"
+
+[extend]
+useDefault = true
+
+# --- 日本固有の個人情報ルール ---
+
+[[rules]]
+id = "japanese-mynumber"
+description = "マイナンバー（12桁）"
+regex = '''\b\d{4}[\s-]?\d{4}[\s-]?\d{4}\b'''
+tags = ["PII", "japan"]
+
+[[rules.allowlist]]
+description = "年月日・バージョン番号など4桁区切りの誤検知を除外"
+regexes = [
+  '''20\d{2}[\s-]?\d{2}[\s-]?\d{2}''',  # YYYY-MM-DD
+]
+
+[[rules]]
+id = "japanese-phone-mobile"
+description = "日本の携帯電話番号 (090/080/070)"
+regex = '''0[789]0[-\s]?\d{4}[-\s]?\d{4}'''
+tags = ["PII", "japan"]
+
+[[rules]]
+id = "japanese-phone-landline"
+description = "日本の固定電話番号 (0X-XXXX-XXXX)"
+regex = '''0\d{1,4}[-\s]\d{2,4}[-\s]\d{4}'''
+tags = ["PII", "japan"]
+
+[[rules]]
+id = "japanese-postal-code"
+description = "日本の郵便番号（〒マーク付き）"
+regex = '''〒\d{3}-\d{4}'''
+tags = ["PII", "japan"]
+
+[[rules]]
+id = "aws-access-key-id"
+description = "AWS Access Key ID（デフォルトルールの補強）"
+regex = '''(?i)(aws_access_key_id|aws_key)\s*[=:]\s*['\"]?AKIA[0-9A-Z]{16}['\"]?'''
+tags = ["secret", "aws"]
