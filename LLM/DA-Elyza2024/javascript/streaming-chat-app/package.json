@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@langchain/community": "^0.0.19",
+    "@langchain/community": "^1.1.18",
     "@langchain/openai": "^0.0.12",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "hnswlib-node": "^2.1.0",
-    "langchain": "^0.1.5",
+    "langchain": "^0.3.37",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -42,6 +42,6 @@
     ]
   },
   "resolutions": {
-    "@langchain/core": "0.1.16"
+    "@langchain/core": "0.3.80"
   }
 }
