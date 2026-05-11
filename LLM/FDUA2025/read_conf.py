@@ -119,7 +119,7 @@ def get_model(path='./conf/model.json'):
             "repeat_penalty": 1.0,
             "prompt": input.__dict__
         }
-        response = requests.post(HITACHI_LLAMA_API_URL, headers=headers, data=json.dumps(data), verify=False)
+        response = requests.post(HITACHI_LLAMA_API_URL, headers=headers, data=json.dumps(data))
         return response.json()
 
     models['answer_llama_chat'] = RunnableLambda(inference_llama)
@@ -138,7 +138,7 @@ def get_model(path='./conf/model.json'):
             "repeat_penalty": 1.0,
             "prompt": input.__dict__
         }
-        response = requests.post(HITACHI_QWEN_API_URL, headers=headers, data=json.dumps(data), verify=False)
+        response = requests.post(HITACHI_QWEN_API_URL, headers=headers, data=json.dumps(data))
         return response.json()
 
     models['answer_qwen_chat'] = RunnableLambda(inference_qwen)
