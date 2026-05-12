@@ -24,7 +24,9 @@ Contains multiple independent sub-projects for LLM/AI experiments, ML seminars, 
 
 ## Memory — Automatic Update Rules
 
-Memory is stored at: `/home/kazu/.claude/projects/-home-kazu-git-study/memory/`
+Memory path varies by machine:
+- **Debian**: `/home/kazu/.claude/projects/-home-kazu-git-study/memory/`
+- **Mac**: `/Users/kazu/.claude/projects/-Users-kazu-github-study/memory/`
 
 **Always update memory at the end of the conversation**, especially when:
 - Significant work was completed (fixes, new features, setup)
