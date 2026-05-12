@@ -7,8 +7,10 @@ Future:        scheduled agent (run with --episode-id to skip selection)
 """
 
 import argparse
+import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 from extract import Episode, extract_text, list_episodes
@@ -41,20 +43,26 @@ def select_episode_interactive(episodes: list[Episode]) -> Episode:
 
 
 def send_mail(to: str, subject: str, body: str) -> None:
+    # Write body to a temp file to avoid AppleScript string escaping issues
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
+        f.write(body)
+        tmp_path = f.name
+
+    safe_subject = subject.replace("\\", "\\\\").replace('"', '\\"')
     script = f"""
+    set bodyText to read POSIX file "{tmp_path}" as «class utf8»
     tell application "Mail"
-        set msg to make new outgoing message with properties {{
-            subject: "{subject}",
-            content: "{body}",
-            visible: false
-        }}
+        set msg to make new outgoing message with properties {{subject: "{safe_subject}", content: bodyText, visible: false}}
         tell msg
             make new to recipient with properties {{address: "{to}"}}
         end tell
         send msg
     end tell
     """
-    subprocess.run(["osascript", "-e", script], check=True)
+    try:
+        subprocess.run(["osascript", "-e", script], check=True)
+    finally:
+        os.unlink(tmp_path)
 
 
 def run(episode: Episode, save: bool = False, model: str | None = None) -> str:
