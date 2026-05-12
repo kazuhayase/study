@@ -63,29 +63,43 @@ def main():
     parser = argparse.ArgumentParser(description="Apple Podcasts transcript summarizer")
     parser.add_argument("--limit", type=int, default=30, help="表示するエピソード数")
     parser.add_argument("--unplayed", action="store_true", help="未再生エピソードのみ表示")
+    parser.add_argument("--all", action="store_true", help="全件を自動で要約（--unplayedと組み合わせ可）")
     parser.add_argument("--save", action="store_true", help="summaries/ に保存")
     parser.add_argument("--model", help="mlx-lmモデル名 (default: Qwen2.5-7B-Instruct-4bit)")
-    # future agent flags
+    # non-interactive flags for agent use
     parser.add_argument("--transcript-id", help="TTMLパス（自動実行用）")
     parser.add_argument("--episode-title", help="エピソードタイトル（自動実行用）")
     parser.add_argument("--podcast-title", help="Podcastタイトル（自動実行用）")
     args = parser.parse_args()
 
     if args.transcript_id:
-        # non-interactive mode for future scheduler/agent use
         episode = Episode(
             title=args.episode_title or "Unknown",
             podcast=args.podcast_title or "Unknown",
             transcript_id=args.transcript_id,
         )
+        run(episode, save=args.save, model=args.model)
+
+    elif args.all:
+        episodes = list_episodes(limit=args.limit, unplayed_only=args.unplayed)
+        if not episodes:
+            print("文字起こし付きエピソードが見つかりません")
+            sys.exit(1)
+        print(f"\n{len(episodes)}件を順番に要約します（Ctrl+C で中断）\n")
+        for i, episode in enumerate(episodes, 1):
+            print(f"[{i}/{len(episodes)}]", end=" ")
+            try:
+                run(episode, save=True, model=args.model)
+            except Exception as e:
+                print(f"  スキップ: {e}")
+
     else:
         episodes = list_episodes(limit=args.limit, unplayed_only=args.unplayed)
         if not episodes:
             print("文字起こし付きエピソードが見つかりません")
             sys.exit(1)
         episode = select_episode_interactive(episodes)
-
-    run(episode, save=args.save, model=args.model)
+        run(episode, save=args.save, model=args.model)
 
 
 if __name__ == "__main__":
