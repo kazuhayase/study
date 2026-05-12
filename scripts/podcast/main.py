@@ -7,6 +7,7 @@ Future:        scheduled agent (run with --episode-id to skip selection)
 """
 
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
@@ -14,6 +15,11 @@ from extract import Episode, extract_text, list_episodes
 from summarize import summarize
 
 OUTPUT_DIR = Path(__file__).parent / "summaries"
+
+
+def summary_path(episode: Episode) -> Path:
+    safe_title = "".join(c if c.isalnum() or c in " -_" else "_" for c in episode.title)
+    return OUTPUT_DIR / f"{safe_title[:80]}.md"
 
 
 def select_episode_interactive(episodes: list[Episode]) -> Episode:
@@ -34,6 +40,23 @@ def select_episode_interactive(episodes: list[Episode]) -> Episode:
     return episodes[choice]
 
 
+def send_mail(to: str, subject: str, body: str) -> None:
+    script = f"""
+    tell application "Mail"
+        set msg to make new outgoing message with properties {{
+            subject: "{subject}",
+            content: "{body}",
+            visible: false
+        }}
+        tell msg
+            make new to recipient with properties {{address: "{to}"}}
+        end tell
+        send msg
+    end tell
+    """
+    subprocess.run(["osascript", "-e", script], check=True)
+
+
 def run(episode: Episode, save: bool = False, model: str | None = None) -> str:
     if not episode.has_transcript:
         raise FileNotFoundError(f"TTMLファイルが見つかりません: {episode.transcript_id}")
@@ -46,13 +69,11 @@ def run(episode: Episode, save: bool = False, model: str | None = None) -> str:
     summary = summarize(episode.title, episode.podcast, transcript, model=model)
 
     header = f"{'=' * 60}\n  {episode.podcast}\n  {episode.title}\n{'=' * 60}"
-    output = f"{header}\n{summary}"
-    print(output)
+    print(f"{header}\n{summary}")
 
     if save:
         OUTPUT_DIR.mkdir(exist_ok=True)
-        safe_title = "".join(c if c.isalnum() or c in " -_" else "_" for c in episode.title)
-        out_path = OUTPUT_DIR / f"{safe_title[:80]}.md"
+        out_path = summary_path(episode)
         out_path.write_text(f"# {episode.podcast} — {episode.title}\n\n{summary}\n")
         print(f"\n保存しました: {out_path}")
 
@@ -63,8 +84,9 @@ def main():
     parser = argparse.ArgumentParser(description="Apple Podcasts transcript summarizer")
     parser.add_argument("--limit", type=int, default=30, help="表示するエピソード数")
     parser.add_argument("--unplayed", action="store_true", help="未再生エピソードのみ表示")
-    parser.add_argument("--all", action="store_true", help="全件を自動で要約（--unplayedと組み合わせ可）")
+    parser.add_argument("--all", action="store_true", help="全件を自動で要約")
     parser.add_argument("--save", action="store_true", help="summaries/ に保存")
+    parser.add_argument("--mail", metavar="ADDRESS", help="要約をメール送信")
     parser.add_argument("--model", help="mlx-lmモデル名 (default: Qwen2.5-7B-Instruct-4bit)")
     # non-interactive flags for agent use
     parser.add_argument("--transcript-id", help="TTMLパス（自動実行用）")
@@ -78,20 +100,36 @@ def main():
             podcast=args.podcast_title or "Unknown",
             transcript_id=args.transcript_id,
         )
-        run(episode, save=args.save, model=args.model)
+        summary = run(episode, save=args.save, model=args.model)
+        if args.mail:
+            send_mail(args.mail, f"[Podcast要約] {episode.title}", summary)
+            print(f"メール送信: {args.mail}")
 
     elif args.all:
         episodes = list_episodes(limit=args.limit, unplayed_only=args.unplayed)
         if not episodes:
             print("文字起こし付きエピソードが見つかりません")
             sys.exit(1)
-        print(f"\n{len(episodes)}件を順番に要約します（Ctrl+C で中断）\n")
-        for i, episode in enumerate(episodes, 1):
-            print(f"[{i}/{len(episodes)}]", end=" ")
+
+        OUTPUT_DIR.mkdir(exist_ok=True)
+        pending = [ep for ep in episodes if not summary_path(ep).exists()]
+        skipped = len(episodes) - len(pending)
+        print(f"\n{len(episodes)}件中 {skipped}件はスキップ（要約済み）、{len(pending)}件を処理します\n")
+
+        mail_bodies: list[str] = []
+        for i, episode in enumerate(pending, 1):
+            print(f"[{i}/{len(pending)}]", end=" ")
             try:
-                run(episode, save=True, model=args.model)
+                summary = run(episode, save=True, model=args.model)
+                if args.mail:
+                    mail_bodies.append(f"## {episode.podcast} — {episode.title}\n\n{summary}")
             except Exception as e:
                 print(f"  スキップ: {e}")
+
+        if args.mail and mail_bodies:
+            body = "\n\n---\n\n".join(mail_bodies)
+            send_mail(args.mail, f"[Podcast要約] {len(mail_bodies)}件", body)
+            print(f"\nメール送信: {args.mail} ({len(mail_bodies)}件)")
 
     else:
         episodes = list_episodes(limit=args.limit, unplayed_only=args.unplayed)
@@ -99,7 +137,10 @@ def main():
             print("文字起こし付きエピソードが見つかりません")
             sys.exit(1)
         episode = select_episode_interactive(episodes)
-        run(episode, save=args.save, model=args.model)
+        summary = run(episode, save=args.save, model=args.model)
+        if args.mail:
+            send_mail(args.mail, f"[Podcast要約] {episode.title}", summary)
+            print(f"メール送信: {args.mail}")
 
 
 if __name__ == "__main__":
