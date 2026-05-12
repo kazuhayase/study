@@ -34,15 +34,18 @@ class Episode:
         return self.ttml_path is not None
 
 
-def list_episodes(limit: int = 50) -> list[Episode]:
+def list_episodes(limit: int = 50, unplayed_only: bool = False) -> list[Episode]:
+    # ZPLAYSTATE: 0=未再生, 1=途中, 2=再生済み
+    played_filter = "AND e.ZPLAYSTATE = 0" if unplayed_only else ""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute(
-        """
+        f"""
         SELECT e.ZTITLE, p.ZTITLE, e.ZTRANSCRIPTIDENTIFIER
         FROM ZMTEPISODE e
         JOIN ZMTPODCAST p ON e.ZPODCAST = p.Z_PK
         WHERE e.ZTRANSCRIPTIDENTIFIER IS NOT NULL
+        {played_filter}
         ORDER BY e.ZPUBDATE DESC
         LIMIT ?
         """,

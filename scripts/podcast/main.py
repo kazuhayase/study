@@ -34,7 +34,7 @@ def select_episode_interactive(episodes: list[Episode]) -> Episode:
     return episodes[choice]
 
 
-def run(episode: Episode, save: bool = False) -> str:
+def run(episode: Episode, save: bool = False, model: str | None = None) -> str:
     if not episode.has_transcript:
         raise FileNotFoundError(f"TTMLファイルが見つかりません: {episode.transcript_id}")
 
@@ -43,7 +43,7 @@ def run(episode: Episode, save: bool = False) -> str:
     print(f"  {len(transcript)}文字を抽出しました")
 
     print("要約を生成中...\n")
-    summary = summarize(episode.title, episode.podcast, transcript)
+    summary = summarize(episode.title, episode.podcast, transcript, model=model)
 
     header = f"{'=' * 60}\n  {episode.podcast}\n  {episode.title}\n{'=' * 60}"
     output = f"{header}\n{summary}"
@@ -62,7 +62,9 @@ def run(episode: Episode, save: bool = False) -> str:
 def main():
     parser = argparse.ArgumentParser(description="Apple Podcasts transcript summarizer")
     parser.add_argument("--limit", type=int, default=30, help="表示するエピソード数")
+    parser.add_argument("--unplayed", action="store_true", help="未再生エピソードのみ表示")
     parser.add_argument("--save", action="store_true", help="summaries/ に保存")
+    parser.add_argument("--model", help="mlx-lmモデル名 (default: Qwen2.5-7B-Instruct-4bit)")
     # future agent flags
     parser.add_argument("--transcript-id", help="TTMLパス（自動実行用）")
     parser.add_argument("--episode-title", help="エピソードタイトル（自動実行用）")
@@ -77,13 +79,13 @@ def main():
             transcript_id=args.transcript_id,
         )
     else:
-        episodes = list_episodes(limit=args.limit)
+        episodes = list_episodes(limit=args.limit, unplayed_only=args.unplayed)
         if not episodes:
             print("文字起こし付きエピソードが見つかりません")
             sys.exit(1)
         episode = select_episode_interactive(episodes)
 
-    run(episode, save=args.save)
+    run(episode, save=args.save, model=args.model)
 
 
 if __name__ == "__main__":
