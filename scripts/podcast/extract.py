@@ -3,7 +3,18 @@
 import sqlite3
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+# Core Data timestamps are seconds since 2001-01-01 UTC
+_APPLE_EPOCH = datetime(2001, 1, 1, tzinfo=timezone.utc)
+
+
+def _to_date(core_data_ts: float | None) -> str:
+    if core_data_ts is None:
+        return ""
+    dt = (_APPLE_EPOCH + timedelta(seconds=core_data_ts)).astimezone()
+    return dt.strftime("%Y-%m-%d")
 
 PODCASTS_BASE = Path.home() / "Library/Group Containers/243LU875E5.groups.com.apple.podcasts"
 DB_PATH = PODCASTS_BASE / "Documents/MTLibrary.sqlite"
@@ -18,6 +29,7 @@ class Episode:
     title: str
     podcast: str
     transcript_id: str
+    pub_date: str = ""  # YYYY-MM-DD
 
     @property
     def ttml_path(self) -> Path | None:
@@ -41,7 +53,7 @@ def list_episodes(limit: int = 50, unplayed_only: bool = False) -> list[Episode]
     cur = conn.cursor()
     cur.execute(
         f"""
-        SELECT e.ZTITLE, p.ZTITLE, e.ZTRANSCRIPTIDENTIFIER
+        SELECT e.ZTITLE, p.ZTITLE, e.ZTRANSCRIPTIDENTIFIER, e.ZPUBDATE
         FROM ZMTEPISODE e
         JOIN ZMTPODCAST p ON e.ZPODCAST = p.Z_PK
         WHERE e.ZTRANSCRIPTIDENTIFIER IS NOT NULL
@@ -54,7 +66,7 @@ def list_episodes(limit: int = 50, unplayed_only: bool = False) -> list[Episode]
     rows = cur.fetchall()
     conn.close()
 
-    episodes = [Episode(title=r[0], podcast=r[1], transcript_id=r[2]) for r in rows]
+    episodes = [Episode(title=r[0], podcast=r[1], transcript_id=r[2], pub_date=_to_date(r[3])) for r in rows]
     return [ep for ep in episodes if ep.has_transcript][:limit]
 
 

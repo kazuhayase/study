@@ -21,7 +21,8 @@ OUTPUT_DIR = Path(__file__).parent / "summaries"
 
 def summary_path(episode: Episode) -> Path:
     safe_title = "".join(c if c.isalnum() or c in " -_" else "_" for c in episode.title)
-    return OUTPUT_DIR / f"{safe_title[:80]}.md"
+    prefix = f"{episode.pub_date}_" if episode.pub_date else ""
+    return OUTPUT_DIR / f"{prefix}{safe_title[:80]}.md"
 
 
 def select_episode_interactive(episodes: list[Episode]) -> Episode:
@@ -76,13 +77,15 @@ def run(episode: Episode, save: bool = False, model: str | None = None) -> str:
     print("要約を生成中...\n")
     summary = summarize(episode.title, episode.podcast, transcript, model=model)
 
-    header = f"{'=' * 60}\n  {episode.podcast}\n  {episode.title}\n{'=' * 60}"
+    date_str = f"  {episode.pub_date}\n" if episode.pub_date else ""
+    header = f"{'=' * 60}\n  {episode.podcast}\n  {episode.title}\n{date_str}{'=' * 60}"
     print(f"{header}\n{summary}")
 
     if save:
         OUTPUT_DIR.mkdir(exist_ok=True)
         out_path = summary_path(episode)
-        out_path.write_text(f"# {episode.podcast} — {episode.title}\n\n{summary}\n")
+        date_line = f"**公開日**: {episode.pub_date}\n\n" if episode.pub_date else ""
+        out_path.write_text(f"# {episode.podcast} — {episode.title}\n\n{date_line}{summary}\n")
         print(f"\n保存しました: {out_path}")
 
     return summary
