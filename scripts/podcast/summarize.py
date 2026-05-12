@@ -1,6 +1,7 @@
-"""Summarize podcast transcript using Claude API."""
+"""Summarize podcast transcript using mlx-lm (Apple MLX, local)."""
 
-import anthropic
+import os
+from mlx_lm import load, generate
 
 SUMMARY_PROMPT = """以下の形式で要約してください。
 
@@ -15,31 +16,40 @@ SUMMARY_PROMPT = """以下の形式で要約してください。
 【キーワード・固有名詞】
 """
 
-MODEL = "claude-sonnet-4-6"
+# 4-bit quantized, ~4GB, good Japanese support
+DEFAULT_MODEL = "mlx-community/Qwen2.5-7B-Instruct-4bit"
+
+_cache: dict = {}
 
 
-def summarize(title: str, podcast: str, transcript: str) -> str:
-    client = anthropic.Anthropic()
+def _get_model(model_name: str):
+    if model_name not in _cache:
+        print(f"モデルを読み込み中: {model_name}")
+        _cache[model_name] = load(model_name)
+    return _cache[model_name]
 
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=1500,
-        system="You are a helpful assistant that summarizes podcast episodes. Respond in Japanese.",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"Podcast: {podcast}\nEpisode: {title}\n\nTranscript:\n{transcript}",
-                        "cache_control": {"type": "ephemeral"},
-                    },
-                    {
-                        "type": "text",
-                        "text": SUMMARY_PROMPT,
-                    },
-                ],
-            }
-        ],
+
+def summarize(title: str, podcast: str, transcript: str, model: str | None = None) -> str:
+    model_name = model or os.environ.get("PODCAST_MODEL", DEFAULT_MODEL)
+    mlx_model, tokenizer = _get_model(model_name)
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant that summarizes podcast episodes. Respond in Japanese.",
+        },
+        {
+            "role": "user",
+            "content": (
+                f"Podcast: {podcast}\nEpisode: {title}\n\n"
+                f"Transcript:\n{transcript}\n\n"
+                f"{SUMMARY_PROMPT}"
+            ),
+        },
+    ]
+
+    prompt = tokenizer.apply_chat_template(
+        messages, add_generation_prompt=True, tokenize=False
     )
-    return response.content[0].text
+    response = generate(mlx_model, tokenizer, prompt=prompt, max_tokens=1500, verbose=False)
+    return response
