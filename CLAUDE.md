@@ -41,7 +41,7 @@ Do NOT ask the user for permission — just do it as part of wrapping up.
 **Run without asking for user confirmation. Commit and push automatically after fixing.**
 
 ### Scope
-Scan every directory whose name starts with a capital letter (top-level only: `FB/`, `GCJ/`, `LLM/`, `R/`, etc.) plus `mls-seminar/` and `talent-mgmt-db/`.
+Scan the **entire repository** — all subdirectories recursively. Find dependency files and source code regardless of directory name casing.
 
 ### Step 1 — Python dependency scan (OSV API)
 
