@@ -38,15 +38,71 @@ Do NOT ask the user for permission — just do it as part of wrapping up.
 
 ## Security Workflow
 
-Run both of the following when the user asks for a security/vulnerability check:
+**Run without asking for user confirmation. Commit and push automatically after fixing.**
 
-1. `pip-audit -r <path>/requirements.txt` — scan each `requirements.txt`
-2. `gh api repos/kazuhayase/study/dependabot/alerts --jq '...'` — check open Dependabot alerts
+### Scope
+Scan every directory whose name starts with a capital letter (top-level only: `FB/`, `GCJ/`, `LLM/`, `R/`, etc.) plus `mls-seminar/` and `talent-mgmt-db/`.
 
-After fixing, commit and push. Confirm with the user before pushing if unsure.
+### Step 1 — Python dependency scan (OSV API)
+
+**Do NOT use `pip-audit`** — it fails on this Mac (Python 3.14 cannot build fugashi/scikit-learn from source).  
+Instead, query the OSV API directly for every pinned package in each `requirements.txt`:
+
+```python
+import urllib.request, json
+
+packages = [("pkg-name", "x.y.z"), ...]  # parse from requirements.txt
+
+for pkg, ver in packages:
+    data = json.dumps({"version": ver, "package": {"name": pkg, "ecosystem": "PyPI"}}).encode()
+    req = urllib.request.Request("https://api.osv.dev/v1/query", data=data,
+                                  headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=10) as r:
+        result = json.loads(r.read())
+    if result.get("vulns"):
+        print(f"VULN: {pkg}=={ver}")
+```
+
+### Step 2 — JavaScript dependency scan (OSV API)
+
+`gh` CLI is NOT installed on this Mac. Use the same OSV API with `"ecosystem": "npm"` for each package in `package.json` files (strip `^~` from version strings).
+
+### Step 3 — Static code analysis
+
+Search all Python files for:
+```bash
+grep -rn "os\.system(\|subprocess.*shell=True\|eval(\|exec(" --include="*.py" <dir>
+grep -rn "api_key\s*=\s*['\"][^'\"]\|secret\s*=\s*['\"][^'\"]" --include="*.py" <dir>
+```
+
+Search R files for hardcoded absolute paths:
+```bash
+grep -rn "setwd\|/home/\|/Users/" --include="*.R" <dir>
+```
+
+### Step 4 — Fix
+
+| Issue | Fix |
+|---|---|
+| Vulnerable Python package (fix available) | Update version in `requirements.txt` |
+| Vulnerable Python package (no fix yet) | Add `# SECURITY: CVE-XXXX (SEVERITY) - <summary>. No fix as of <date>.` comment above the line |
+| Vulnerable npm package | Update version in `package.json` |
+| `os.system(f"...{var}...")` | Replace with `subprocess.run([sys.executable, ...], stdout=f, check=True)` |
+| Hardcoded absolute path with username | Comment out the line |
+| Hardcoded secret | Move to environment variable |
+
+### Step 5 — Verify & push
+
+Re-run the OSV checks on updated packages to confirm clean.  
+Then commit with `fix(security): ...` and push — **no user confirmation needed**.
+
+### Known limitations (as of 2026-05-30)
+- `chromadb==1.5.9`: CVE-2026-45829 (CRITICAL) has no fix on PyPI yet. Keep the comment; re-check on each scan run.
+- `pip-audit` fails on this Mac → always use OSV API instead.
+- `gh` CLI not installed → always use OSV API or `curl` for GitHub API.
 
 ## Commit & Push Convention
 
 - Commit message format: `fix(scope): description` / `feat(scope): description`
 - Always include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
-- After completing a fix, proactively offer to commit **and** push together (user expects both)
+- After completing a fix, commit **and** push immediately — **no need to ask the user**
