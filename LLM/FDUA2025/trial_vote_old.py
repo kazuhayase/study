@@ -1,4 +1,6 @@
 import os
+import subprocess
+import sys
 import pandas as pd
 from collections import Counter
 import zipfile
@@ -12,7 +14,8 @@ def run_trials_and_save_results(num_trials, base_output_dir):
             os.makedirs(output_dir)
         
         output_file = os.path.join(output_dir, 'predictions.csv')
-        os.system(f'python answer_semistructured_store.py > {output_file}')
+        with open(output_file, 'w') as f:
+            subprocess.run([sys.executable, 'answer_semistructured_store.py'], stdout=f, check=True)
         print(f'Trial {trial_number} completed and saved to {output_file}')
 
 def majority_vote(*rows):
