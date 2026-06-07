@@ -27,6 +27,8 @@ Contains multiple independent sub-projects for LLM/AI experiments, ML seminars, 
 Memory path varies by machine:
 - **Debian**: `/home/kazu/.claude/projects/-home-kazu-git-study/memory/`
 - **Mac**: `/Users/kazu/.claude/projects/-Users-kazu-github-study/memory/`
+- **Windows / Cowork**: `.claude-memory/` (at the repo root, i.e. `C:\Users\kazuy\GitHub\study\.claude-memory\`).
+  The OS-level `C:\Users\kazuy\.claude\` path is protected and cannot be mounted into a Cowork session — use this in-repo directory instead so memory updates keep working there.
 
 **Always update memory at the end of the conversation**, especially when:
 - Significant work was completed (fixes, new features, setup)
