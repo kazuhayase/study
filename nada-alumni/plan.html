@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>灘校同窓会システム構築プラン</title>
+<meta name="description" content="Webサイト・名簿管理・会費徴収をQuality/Cost/Deliveryの3軸で比較した段階導入プラン">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="灘校同窓会 IT化検討資料">
+<meta property="og:title" content="灘校同窓会システム構築プラン — Webサイト・名簿管理・会費徴収の比較">
+<meta property="og:description" content="現状分析→4パターンのQCD比較→段階導入プランまで。低コスト・低工数で品質を落とさない構成の検討資料。">
+<meta property="og:url" content="https://kazuhayase.github.io/study/nada-alumni/plan.html">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="灘校同窓会システム構築プラン">
+<meta name="twitter:description" content="Webサイト・名簿管理・会費徴収をQCDで比較した段階導入プラン">
+
+<style>
+  :root {
+    --paper: #eeede6;
+    --surface: #fbfaf6;
+    --surface-2: #f2f1ea;
+    --ink: #1b2130;
+    --muted: #5b5a52;
+    --line: #d6d2c4;
+    --accent: #2b4c7e;
+    --accent-ink: #ffffff;
+    --accent-soft: #dce3ee;
+    --accent-soft-line: #b9c9de;
+    --good: #3e7a54;
+    --good-soft: #e1ede4;
+    --warn: #a8752e;
+    --warn-soft: #f1e6d5;
+    --bad: #a1493b;
+    --bad-soft: #f1e0dc;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14171d;
+      --surface: #1b1f27;
+      --surface-2: #20242d;
+      --ink: #e9e7de;
+      --muted: #a3a08f;
+      --line: #333a46;
+      --accent: #8fb0dd;
+      --accent-ink: #10151f;
+      --accent-soft: #24344a;
+      --accent-soft-line: #3c567c;
+      --good: #7bc397;
+      --good-soft: #1e2f24;
+      --warn: #e0ac67;
+      --warn-soft: #332a1a;
+      --bad: #e6897a;
+      --bad-soft: #35211d;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14171d;
+    --surface: #1b1f27;
+    --surface-2: #20242d;
+    --ink: #e9e7de;
+    --muted: #a3a08f;
+    --line: #333a46;
+    --accent: #8fb0dd;
+    --accent-ink: #10151f;
+    --accent-soft: #24344a;
+    --accent-soft-line: #3c567c;
+    --good: #7bc397;
+    --good-soft: #1e2f24;
+    --warn: #e0ac67;
+    --warn-soft: #332a1a;
+    --bad: #e6897a;
+    --bad-soft: #35211d;
+  }
+  :root[data-theme="light"] {
+    --paper: #eeede6;
+    --surface: #fbfaf6;
+    --surface-2: #f2f1ea;
+    --ink: #1b2130;
+    --muted: #5b5a52;
+    --line: #d6d2c4;
+    --accent: #2b4c7e;
+    --accent-ink: #ffffff;
+    --accent-soft: #dce3ee;
+    --accent-soft-line: #b9c9de;
+    --good: #3e7a54;
+    --good-soft: #e1ede4;
+    --warn: #a8752e;
+    --warn-soft: #f1e6d5;
+    --bad: #a1493b;
+    --bad-soft: #f1e0dc;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", -apple-system, sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .doc {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  h1, h2, h3 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .mono, .num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Masthead ---- */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 28px;
+    margin-bottom: 44px;
+  }
+  .masthead .kicker {
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .masthead h1 {
+    font-size: 30px;
+    line-height: 1.4;
+    margin: 0 0 12px;
+  }
+  .masthead .dek {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 58ch;
+  }
+
+  /* ---- Sections ---- */
+  section { margin-bottom: 56px; }
+  .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  h2 { font-size: 21px; margin: 0 0 18px; }
+  h3 { font-size: 16.5px; margin: 28px 0 10px; }
+  p { margin: 0 0 14px; max-width: 62ch; }
+  p.lede { font-size: 15.5px; }
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 18px 20px;
+    margin: 18px 0;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+  .callout strong { color: var(--ink); }
+
+  /* ---- Option cards (A/B/C/D) ---- */
+  .options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  @media (max-width: 620px) {
+    .options { grid-template-columns: 1fr; }
+  }
+  .opt {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+  .opt .tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent-soft-line);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    margin-right: 8px;
+  }
+  .opt h3 { margin: 0 0 8px; font-size: 15.5px; display: flex; align-items: center; }
+  .opt p { font-size: 13.8px; color: var(--muted); margin: 0; max-width: none; }
+
+  /* ---- QCD table ---- */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 640px;
+    font-size: 14px;
+  }
+  thead th {
+    text-align: left;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.recommended { background: var(--accent-soft); }
+  td.opt-name {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td.opt-name .sub {
+    display: block;
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-top: 2px;
+    white-space: normal;
+  }
+  td.grade-cell { white-space: nowrap; }
+  .grade {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 12.5px;
+    margin-right: 8px;
+  }
+  .grade.good { background: var(--good-soft); color: var(--good); }
+  .grade.warn { background: var(--warn-soft); color: var(--warn); }
+  .grade.bad  { background: var(--bad-soft);  color: var(--bad); }
+  td.explain { font-size: 13px; color: var(--muted); max-width: 240px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* ---- Phase timeline ---- */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .phase {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 18px;
+    padding-bottom: 26px;
+    position: relative;
+  }
+  .phase:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 34px;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+  .phase .dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .phase .body h3 { margin: 2px 0 6px; font-size: 15.5px; }
+  .phase .body .when {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .phase .body p { font-size: 14px; max-width: 56ch; }
+  .phase .body ul { margin: 8px 0 0; padding-left: 20px; font-size: 14px; }
+  .phase .body li { margin-bottom: 4px; }
+
+  /* ---- Cost table ---- */
+  .cost-table td, .cost-table th { text-align: left; }
+  .cost-table td.num, .cost-table th.num { text-align: right; }
+  .cost-table tfoot td {
+    font-weight: 700;
+    border-top: 1px solid var(--line);
+    border-bottom: none;
+  }
+
+  /* ---- Next actions ---- */
+  .actions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .actions li {
+    display: flex;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .actions li::before {
+    content: "→";
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ---- Sources ---- */
+  .sources {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .sources ol { padding-left: 20px; margin: 0; }
+  .sources li { margin-bottom: 6px; }
+  .sources a { color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 60px;
+    padding-top: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="doc">
+
+  <div class="masthead">
+    <div class="kicker">校友会 IT 化検討資料</div>
+    <h1>灘校同窓会システム構築プラン<br>— Webサイト・名簿管理・会費徴収の比較</h1>
+    <p class="dek">できるだけ低コスト・低工数で、しかし品質を妥協しない構成を Quality / Cost / Delivery の3軸で比較する。対象は全学年を横断する公式同窓会（校友会）。現状はゼロベースからの構築。</p>
+  </div>
+
+  <section>
+    <div class="eyebrow">現状</div>
+    <h2>灘校同窓会は、ほぼ完全にアナログ運用</h2>
+    <p class="lede">公式ページ（nada.ac.jp/dousoukai.html）を確認したところ、名簿システムや会員専用ページへのリンクは存在せず、連絡はメール・電話・FAXが中心。オンライン化されているのは「ふるさとチョイス」経由の寄付受付のみだった。</p>
+    <div class="callout">
+      裏を返せば、<strong>移行すべき既存システムが存在しない</strong>ため、しがらみなく最適な構成をゼロから選べる。開成・麻布・武蔵・甲陽学院など他の伝統校についても、公式に高度な名簿・決済システムを公開している事例は確認できず、第三者運営の非公式コミュニティサイトに卒業年別掲示板がある程度だった。参考にすべき「模範解答」が他校にあるわけではなく、市販の同窓会・校友会向けサービスの中から選定するのが現実的な進め方になる。
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">選択肢</div>
+    <h2>検討した4つの構成パターン</h2>
+    <div class="options">
+      <div class="opt">
+        <h3><span class="tag">A</span>オールインワン専用SaaS</h3>
+        <p>アルムネット・シクミネット等、名簿・会員サイト・会費決済が最初から一体化した校友会向けサービス。導入すればほぼ完成形。</p>
+      </div>
+      <div class="opt">
+        <h3><span class="tag">B</span>組み合わせ型（分業）</h3>
+        <p>名簿DB（kintone）＋公開サイト（STUDIO等ノーコード）＋決済（年額パンダ／会費ペイ）を、それぞれ最適なツールで軽く連携。</p>
+      </div>
+      <div class="opt">
+        <h3><span class="tag">C</span>自作最安型</h3>
+        <p>Google フォーム／スプレッドシートと無料サイトビルダーのみで構成。追加費用ゼロを追求。</p>
+      </div>
+      <div class="opt">
+        <h3><span class="tag">D</span>完全アウトソース</h3>
+        <p>同窓会事務局代行業者に、名簿管理・サイト運営・イベント運営ごと委託。幹事の作業をほぼゼロにする。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">比較</div>
+    <h2>QCD比較</h2>
+    <p>Quality（できあがりの質）・Cost（費用）・Delivery（立ち上げと運用の手間）の3軸で評価した。<strong>B の組み合わせ型</strong>が、予算感（月数千円〜年数万円程度）と工数のバランスで最も現実的。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>構成</th>
+            <th>Quality</th>
+            <th>Cost</th>
+            <th>Delivery</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="opt-name">A. オールインワンSaaS<span class="sub">アルムネット／シクミネット 等</span></td>
+            <td class="grade-cell"><span class="grade good">S</span></td>
+            <td class="grade-cell"><span class="grade bad">C</span></td>
+            <td class="grade-cell"><span class="grade good">A</span></td>
+          </tr>
+          <tr class="recommended">
+            <td class="opt-name">B. 組み合わせ型<span class="sub">kintone + STUDIO + 年額パンダ</span></td>
+            <td class="grade-cell"><span class="grade good">A</span></td>
+            <td class="grade-cell"><span class="grade good">A</span></td>
+            <td class="grade-cell"><span class="grade warn">B</span></td>
+          </tr>
+          <tr>
+            <td class="opt-name">C. 自作最安型<span class="sub">Google フォーム／スプレッドシート</span></td>
+            <td class="grade-cell"><span class="grade bad">C</span></td>
+            <td class="grade-cell"><span class="grade good">S</span></td>
+            <td class="grade-cell"><span class="grade bad">C</span></td>
+          </tr>
+          <tr>
+            <td class="opt-name">D. 完全アウトソース<span class="sub">同窓会事務局代行</span></td>
+            <td class="grade-cell"><span class="grade good">A</span></td>
+            <td class="grade-cell"><span class="grade bad">D</span></td>
+            <td class="grade-cell"><span class="grade good">S</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="grade good" style="margin:0;">S/A</span> 良好</span>
+      <span><span class="grade warn" style="margin:0;">B</span> 許容範囲</span>
+      <span><span class="grade bad" style="margin:0;">C/D</span> 要注意</span>
+    </div>
+
+    <h3>各評価の根拠</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>構成</th><th>根拠</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="opt-name">A</td>
+            <td class="explain">名簿・会員ポータル・権限管理・サポートまで標準装備で品質は最高水準。ただしアルムネット基本機能のみで月14,000円〜（年168,000円〜）、同窓会特化のシクミネットは初期55,000円〜＋月30,000円〜。想定予算を大きく超える。</td>
+          </tr>
+          <tr>
+            <td class="opt-name">B</td>
+            <td class="explain">名簿DB・サイト・決済それぞれ実務水準の品質を、予算内（詳細は次章）で確保できる。ただし3ツール間の連携は手動作業が残り、初期構築に数日〜数週間のスポット作業が必要。</td>
+          </tr>
+          <tr>
+            <td class="opt-name">C</td>
+            <td class="explain">実質0円で始められる一方、スプレッドシートは個人情報のアクセス権限が粗く、検索性・ログイン機構もない。会費未納チェックや名簿更新が手作業中心になり、長期的な幹事負担が最大になる。</td>
+          </tr>
+          <tr>
+            <td class="opt-name">D</td>
+            <td class="explain">プロが個人情報管理まで一括対応し幹事の作業はほぼゼロ。ただし単発の幹事代行は「参加者数×6,000〜10,000円」が相場で、卒業生数万人規模の常設運営を委託する場合は要見積り・高額になる可能性が高い。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">推奨</div>
+    <h2>段階導入プラン</h2>
+    <p class="lede">最初から完成形（A）を目指すと予算を超過しやすい。まず最小構成（B の縮小版）で低コスト・低工数に立ち上げ、利用実態を見ながら段階的に投資する方が、結果的に「お金も手間もかけずに素晴らしいもの」に近づく。</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="dot">1</div>
+        <div class="body">
+          <div class="when">今すぐ着手</div>
+          <h3>最小構成で立ち上げる</h3>
+          <p>公開サイトと会費徴収だけをオンライン化する。固定費はほぼゼロ。</p>
+          <ul>
+            <li>公開サイト：STUDIO（Free〜Miniプラン）でお知らせ・沿革・イベント告知ページを作成</li>
+            <li>会費徴収：年額パンダ／会費ペイで入会フォーム＋自動決済（初期費・月額0円、決済額の約3.5%のみ）</li>
+            <li>入会フォームの回答がそのまま簡易名簿になる（会費を納めた会員のみが対象）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="dot">2</div>
+        <div class="body">
+          <div class="when">利用が定着したら</div>
+          <h3>本格的な名簿基盤に移行</h3>
+          <p>会費未納者・連絡先未更新者も含めた全卒業生の名簿が必要になった段階で、専用データベースへ切り替える。</p>
+          <ul>
+            <li>kintone ライトコース（10ユーザー〜）で権限管理・検索・重複排除・入力フォームを整備</li>
+            <li>個人情報の利用目的・管理体制を明文化し、灘校サイトの個人情報保護方針と整合させる</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="dot">3</div>
+        <div class="body">
+          <div class="when">規模拡大・専任事務局化の段階で検討</div>
+          <h3>オールインワンSaaS／事務局代行へ</h3>
+          <p>運営体制が整い予算にも余裕が出た段階で、A（アルムネット等）または D（事務局代行）への切り替えを検討する。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">概算コスト</div>
+    <h2>Phase 1 の内訳（税抜・目安）</h2>
+    <div class="table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>サービス</th>
+            <th class="num">初期費用</th>
+            <th class="num">月額</th>
+            <th class="num">年間目安</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>公開サイト</td>
+            <td>STUDIO Miniプラン（年払い）</td>
+            <td class="num num">¥0</td>
+            <td class="num num">¥590</td>
+            <td class="num num">¥7,080</td>
+          </tr>
+          <tr>
+            <td>名簿＋会費徴収</td>
+            <td>年額パンダ</td>
+            <td class="num num">¥0</td>
+            <td class="num num">¥0</td>
+            <td class="num num">会費総額 × 約3.5%</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">固定費 合計</td>
+            <td class="num num">¥0</td>
+            <td class="num num">¥590</td>
+            <td class="num num">約 ¥7,080 + 決済手数料</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h3>Phase 2 で追加する費用</h3>
+    <div class="table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>サービス</th>
+            <th class="num">初期費用</th>
+            <th class="num">月額</th>
+            <th class="num">年間目安</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>本格名簿DB</td>
+            <td>kintone ライトコース（10ユーザー・年払い）</td>
+            <td class="num num">¥0</td>
+            <td class="num num">約 ¥10,000</td>
+            <td class="num num">約 ¥120,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px; color: var(--muted); margin-top: 10px;">※ 各サービスの料金は2026年7月時点の公開情報に基づく目安。最新の料金は各社公式サイトで要確認。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">次のアクション</div>
+    <h2>技術選定より先に決めるべきこと</h2>
+    <ul class="actions">
+      <li>会費制度を新設するか、これまで通り任意寄付ベースを続けるかを校友会内で方針決定する（技術選定に直結する）</li>
+      <li>名簿に載せる個人情報の範囲と利用目的を明文化し、灘校サイトの個人情報保護方針と整合させる</li>
+      <li>Phase 1 の最小構成を試験的に立ち上げ、次回総会や会報で告知して反応（登録数・入金率）を見る</li>
+      <li>反応を踏まえて Phase 2（kintone 等への投資）の要否とタイミングを判断する</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="eyebrow">出典</div>
+    <h2>参照したページ</h2>
+    <div class="sources">
+      <ol>
+        <li><a href="https://www.nada.ac.jp/dousoukai.html" target="_blank" rel="noopener">灘中学校・灘高等学校 同窓会ページ</a></li>
+        <li><a href="https://alumnet.jp/" target="_blank" rel="noopener">アルムネット（AlumNet）公式サイト</a></li>
+        <li><a href="https://shikuminet.com/column/dousoukai-member-management-system/" target="_blank" rel="noopener">同窓会の会員管理システム比較｜シクミネット</a></li>
+        <li><a href="https://shikuminet.com/column/membership-fee-system-cost/" target="_blank" rel="noopener">会費徴収システムの費用比較｜シクミネット</a></li>
+        <li><a href="https://kaihipay.jp/blog/membershipfee-system/" target="_blank" rel="noopener">会費徴収に使えるシステム比較｜会費ペイブログ</a></li>
+        <li><a href="https://getsugaku-panda.jp/" target="_blank" rel="noopener">月額パンダ／年額パンダ 公式サイト</a></li>
+        <li><a href="https://kintone.cybozu.co.jp/price/" target="_blank" rel="noopener">kintone 料金｜Cybozu</a></li>
+        <li><a href="https://studio.design/ja/pricing" target="_blank" rel="noopener">STUDIO 料金プラン</a></li>
+        <li><a href="https://dskcircus.com/column/almuni-comparison" target="_blank" rel="noopener">同窓会幹事代行サービス比較｜同窓会プロデュース</a></li>
+        <li><a href="https://omoidecom.jp/" target="_blank" rel="noopener">思い出こみゅ（第三者運営の非公式卒業生コミュニティ）</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    2026年7月時点の公開情報に基づく調査・試算。最終的な採否・契約前には各社最新情報を必ず確認してください。
+  </footer>
+
+</div>
+</body>
+</html>
