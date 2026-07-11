@@ -23,11 +23,25 @@ description = "日本の携帯電話番号 (090/080/070)"
 regex = '''0[789]0[-\s]?\d{4}[-\s]?\d{4}'''
 tags = ["PII", "japan"]
 
+[rules.allowlist]
+description = "ロックファイルのsha256ハッシュ内の偶然の数字列を除外"
+paths = [
+  '''.*\.lock$''',
+  '''package-lock\.json$''',
+]
+
 [[rules]]
 id = "japanese-phone-landline"
 description = "日本の固定電話番号 (0X-XXXX-XXXX)"
 regex = '''0\d{1,4}[-\s]\d{2,4}[-\s]\d{4}'''
 tags = ["PII", "japan"]
+
+[rules.allowlist]
+description = "ロックファイルのsha256ハッシュ内の偶然の数字列を除外"
+paths = [
+  '''.*\.lock$''',
+  '''package-lock\.json$''',
+]
 
 [[rules]]
 id = "japanese-postal-code"
