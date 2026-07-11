@@ -109,3 +109,6 @@ LLM/DA-Elyza2024/python/requirements.txt.old
 AI_Model_Interpretation_Report.pdf
 mls-seminar/notebooks/Interpretation_Report_English.pdf
 actuary/
+
+work/twitter-bot/token.txt
+work/twitter-bot/token-old.txt
