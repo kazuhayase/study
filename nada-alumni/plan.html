@@ -555,6 +555,13 @@
             <td class="explain">委託先の決済フロー・提携決済代行会社を要確認</td>
           </tr>
           <tr>
+            <td class="opt-name">過去の報道インシデント</td>
+            <td class="explain">シクミネットで2022年10月、権限設定の不備が報道された（詳細下記）。アルムネットは公開情報で確認できる重大インシデントの報道は見当たらなかった（未確認＝安全とは限らない点に注意）</td>
+            <td class="explain">kintone基盤自体の漏洩事故は確認できず。ただしkintoneと外部システムを連携した構成での事例あり（詳細下記）</td>
+            <td class="explain">Googleフォーム／スプレッドシートの共有設定ミスによる漏洩は業種を問わず多数報告されている（下記参照）</td>
+            <td class="explain">事業者ごとの過去実績は個別に問い合わせて確認する必要がある（横断的な公開データは確認できず）</td>
+          </tr>
+          <tr>
             <td class="opt-name">最大のリスク要因</td>
             <td class="explain">ベンダーロックイン、値上げ・サービス終了時の移行負荷</td>
             <td class="explain">3ツール間の連携漏れ・権限設定ミスなど人為的ミス</td>
@@ -564,7 +571,13 @@
         </tbody>
       </table>
     </div>
-    <p style="font-size:13px; color: var(--muted); margin-top: 10px;">Googleフォーム／スプレッドシートの実運用では「回答の概要を表示」設定や、スプレッドシートの共有範囲が「リンクを知っている全員」になっていることに気づかず個人情報が閲覧可能な状態になる事故が複数報告されている。C案を採る場合は、この2点を最優先で確認すること。</p>
+
+    <div class="callout">
+      <strong>A・Bで確認できた具体的な事例</strong><br><br>
+      <strong>A（シクミネット）</strong>：2022年10月、全日本スキー連盟の会員管理システム（シクミネット提供）で、11人いる管理者のうち1人が、本来閲覧権限のない会員807人分の名簿からCSVファイル（223件、氏名・住所・電話番号・メールアドレス・会員番号を含む）をダウンロードできる状態になっていたと報道された。権限設定の不備が原因で、外部への流出は確認されていない。<br><br>
+      <strong>B（kintone）</strong>：2021年4月、東京都が運営した医療従事者向けワクチン予約サイトで、約27人分の個人情報が本人以外にも閲覧可能な状態になっていた。このサイトはkintoneと外部の受付フォーム・資格確認システムをAPI連携する構成で、サイボウズは「kintone自体の脆弱性ではなく、連携していた受付フォーム・確認プロセス側の設定不備」と説明している。
+    </div>
+    <p style="font-size:13px; color: var(--muted); margin-top: 10px;">両事例に共通するのは、<strong>基盤側の第三者認証（Pマーク・ISMS・ISMAP等）を取得していても、権限設定や外部連携部分の運用ミスで漏洩は起こり得る</strong>という点。認証の有無を確認するだけでなく、契約前にベンダーへ過去のインシデント開示状況や再発防止策を直接確認することが望ましい。<br><br>Googleフォーム／スプレッドシートについても、「回答の概要を表示」設定や、スプレッドシートの共有範囲が「リンクを知っている全員」になっていることに気づかず個人情報が閲覧可能な状態になる事故が複数報告されている。C案を採る場合は、この2点を最優先で確認すること。</p>
   </section>
 
   <section>
@@ -708,6 +721,8 @@
         <li><a href="https://kaihipay.jp/" target="_blank" rel="noopener">会費ペイ 公式サイト（PCI DSS準拠の記載）</a></li>
         <li><a href="https://news.mynavi.jp/techplus/article/google_workspace-95/" target="_blank" rel="noopener">Googleフォームの個人情報漏えい事例と設定確認ポイント｜マイナビ</a></li>
         <li><a href="https://nomizo-law.com/column/data_law/privacy_law_13" target="_blank" rel="noopener">個人情報保護法22条・委託先の監督義務｜野溝法律事務所</a></li>
+        <li><a href="https://www.itmedia.co.jp/news/articles/2210/04/news144.html" target="_blank" rel="noopener">全日本スキー連盟の会員情報閲覧問題（シクミネット提供システム）｜ITmedia NEWS</a></li>
+        <li><a href="https://www.itmedia.co.jp/news/articles/2104/27/news162.html" target="_blank" rel="noopener">東京都ワクチン予約サイトの個人情報問題とサイボウズの見解｜ITmedia NEWS</a></li>
       </ol>
     </div>
   </section>
