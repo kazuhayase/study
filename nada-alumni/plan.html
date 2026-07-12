@@ -507,6 +507,67 @@
   </section>
 
   <section>
+    <div class="eyebrow">セキュリティ</div>
+    <h2>セキュリティ比較 — 自作・委託それぞれの留意点</h2>
+    <p class="lede">「安いから」「楽だから」という理由だけで自作（C）や委託（D）を選ぶと、個人情報の扱いで足元をすくわれやすい。まず押さえるべき前提がある。</p>
+    <div class="callout">
+      <strong>委託しても、校友会側の責任は消えない。</strong>個人情報保護法第22条は、個人データの取扱いを第三者に委託する場合、委託元が委託先に対して「必要かつ適切な監督」を行う義務を課している（①委託先の適切な選定、②委託契約の締結、③委託先の取扱状況の把握、の3点）。つまり D（事務局代行）を選んでも、業者選定と契約内容の確認は校友会側の仕事として残る。
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>観点</th>
+            <th>A. オールインワンSaaS</th>
+            <th>B. 組み合わせ型</th>
+            <th>C. 自作最安型</th>
+            <th>D. 完全アウトソース</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="opt-name">名簿の権限管理</td>
+            <td class="explain">ベンダー提供の会員ポータル機能に依存（粒度は要仕様確認）</td>
+            <td class="explain">kintoneはレコード・フィールド単位の権限設定、IPアドレス制限、2要素認証に対応</td>
+            <td class="explain">Googleアカウント単位の共有権限のみ。粒度が粗く、設定ミスがそのまま流出につながる</td>
+            <td class="explain">委託先のシステム次第。契約前に権限設計を確認する必要がある</td>
+          </tr>
+          <tr>
+            <td class="opt-name">監査ログ</td>
+            <td class="explain">ベンダーによる（要確認）</td>
+            <td class="explain">kintoneはログイン履歴・操作ログを保持</td>
+            <td class="explain">Googleドライブの変更履歴はあるが、監査目的の設計ではない</td>
+            <td class="explain">委託先次第（要確認）</td>
+          </tr>
+          <tr>
+            <td class="opt-name">第三者認証</td>
+            <td class="explain">事業者ごとに異なる。公開情報からは確認できず、個別に要問合せ</td>
+            <td class="explain">kintone基盤はISO/IEC 27001・27017認証取得済み、ISMAP（政府クラウド評価制度）登録済み</td>
+            <td class="explain">Google自体はISO27001等取得済みだが、校友会の運用ルールには当然ながら認証が及ばない</td>
+            <td class="explain">Pマーク・ISMSの有無は業者ごとに差が大きい。契約前の必須チェック項目にすべき</td>
+          </tr>
+          <tr>
+            <td class="opt-name">会費決済のカード情報</td>
+            <td class="explain">決済代行会社と連携する構成が一般的（PCI DSS準拠が前提）</td>
+            <td class="explain">年額パンダ／会費ペイはPCI DSS準拠。カード番号を校友会側で直接保持しない設計</td>
+            <td class="explain">オンライン決済を組み込まない場合は対象外（その分、催促・消込は手作業）</td>
+            <td class="explain">委託先の決済フロー・提携決済代行会社を要確認</td>
+          </tr>
+          <tr>
+            <td class="opt-name">最大のリスク要因</td>
+            <td class="explain">ベンダーロックイン、値上げ・サービス終了時の移行負荷</td>
+            <td class="explain">3ツール間の連携漏れ・権限設定ミスなど人為的ミス</td>
+            <td class="explain"><strong>共有リンクの公開設定ミスによる名簿流出</strong>。技術的な脆弱性より運用ミスが最大要因</td>
+            <td class="explain"><strong>業者による管理体制の差</strong>。選定を誤ると他の3案より漏洩リスクが高くなり得る</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px; color: var(--muted); margin-top: 10px;">Googleフォーム／スプレッドシートの実運用では「回答の概要を表示」設定や、スプレッドシートの共有範囲が「リンクを知っている全員」になっていることに気づかず個人情報が閲覧可能な状態になる事故が複数報告されている。C案を採る場合は、この2点を最優先で確認すること。</p>
+  </section>
+
+  <section>
     <div class="eyebrow">推奨</div>
     <h2>段階導入プラン</h2>
     <p class="lede">最初から完成形（A）を目指すと予算を超過しやすい。まず最小構成（B の縮小版）で低コスト・低工数に立ち上げ、利用実態を見ながら段階的に投資する方が、結果的に「お金も手間もかけずに素晴らしいもの」に近づく。</p>
@@ -623,6 +684,8 @@
       <li>名簿に載せる個人情報の範囲と利用目的を明文化し、灘校サイトの個人情報保護方針と整合させる</li>
       <li>Phase 1 の最小構成を試験的に立ち上げ、次回総会や会報で告知して反応（登録数・入金率）を見る</li>
       <li>反応を踏まえて Phase 2（kintone 等への投資）の要否とタイミングを判断する</li>
+      <li>C（自作最安型）を採る場合は、フォーム・スプレッドシートの共有範囲を「制限付き」に設定できているか、着手前に必ず確認する</li>
+      <li>D（委託）を検討する場合は、Pマーク／ISMS取得の有無と委託契約書の内容を比較検討の必須項目にする</li>
     </ul>
   </section>
 
@@ -641,6 +704,10 @@
         <li><a href="https://studio.design/ja/pricing" target="_blank" rel="noopener">STUDIO 料金プラン</a></li>
         <li><a href="https://dskcircus.com/column/almuni-comparison" target="_blank" rel="noopener">同窓会幹事代行サービス比較｜同窓会プロデュース</a></li>
         <li><a href="https://omoidecom.jp/" target="_blank" rel="noopener">思い出こみゅ（第三者運営の非公式卒業生コミュニティ）</a></li>
+        <li><a href="https://kintone.cybozu.co.jp/security/" target="_blank" rel="noopener">kintone セキュリティ｜Cybozu</a></li>
+        <li><a href="https://kaihipay.jp/" target="_blank" rel="noopener">会費ペイ 公式サイト（PCI DSS準拠の記載）</a></li>
+        <li><a href="https://news.mynavi.jp/techplus/article/google_workspace-95/" target="_blank" rel="noopener">Googleフォームの個人情報漏えい事例と設定確認ポイント｜マイナビ</a></li>
+        <li><a href="https://nomizo-law.com/column/data_law/privacy_law_13" target="_blank" rel="noopener">個人情報保護法22条・委託先の監督義務｜野溝法律事務所</a></li>
       </ol>
     </div>
   </section>
