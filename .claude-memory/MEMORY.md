@@ -25,3 +25,8 @@ of each conversation per the rules in `CLAUDE.md` → "Memory — Automatic Upda
   `backup/master-prerewrite-20260802` を作成のうえ `git reset --mixed origin/master`
   ＋ `git checkout -- .` で同期（`--hard` は actuary の実ファイルを消すので使わない）。
   併せて `.claude/worktrees/` を `.gitignore` に追加（gitlink として誤ってステージされていた）。
+- 2026-08-02: 主作業機は Mac。Win11 クローン（`C:\Users\kazuy\GitHub\study`）は `master` のみを
+  origin に追随させる運用とし、過去セッション由来の `claude/*` ローカルブランチ4本を削除した
+  （いずれも origin の方が新しく、内容は完全に吸収済みであることを確認のうえ実施）。
+  Win11 では `.git/` 配下の削除が Permission denied になりやすく、`git worktree remove` や
+  ブランチ削除後の空ディレクトリ掃除が失敗する。実害はないので放置可、消すなら手動 `rmdir`。
