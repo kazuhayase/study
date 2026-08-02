@@ -45,3 +45,16 @@ of each conversation per the rules in `CLAUDE.md` → "Memory — Automatic Upda
   マシン間でコミットハッシュの話をするときは、study と actuary のどちらのリポジトリかを必ず確認すること。
   actuary.git には `session_lessons.md` があり、セッション開始時に読み・終了時に更新する運用が
   リポジトリ側で指示されている（コミット `e1bc1f7`）。actuary 側の作業時は確認すること。
+- 2026-08-02: **xlsx を openpyxl で保存すると埋め込み画像が失われる**。暗記集Excelは実際に
+  画像60枚→21枚に欠落していた（計算問題は画像貼付のため実害大）。Win11 には Excel 2016 と
+  pywin32 があるので、画像・図形を保つ書き換えは `win32com.client.DispatchEx('Excel.Application')`
+  を使う（`DispatchEx` はユーザーが開いている Excel セッションと分離した新インスタンスになる）。
+  検証は zip 内 `xl/media/` の数と `xl/drawings/_rels/*.rels` の Relationship 数で行う。
+  openpyxl が無い場合は `python -m pip install openpyxl` で入る（pip 24.0 / Python 3.11）。
+- 2026-08-02: アク研の暗記集Excelの**正本は G-Drive 上の共有ブック**
+  `G:\マイドライブ\アク研生保2次資料\2026年度_v2\生保2\2026年度生保2暗記集.xlsx` で、
+  actuary リポジトリの `_local` はその派生コピー。共有ブックには他担当者の追記が入り続けるため、
+  `_local` を丸ごと書き戻してはいけない。詳細な運用は actuary.git の
+  `2026/seiho2-anaume/pipeline/output/inventory/session_lessons.md` に記載（コミット `2c40ab3`）。
+  G-Drive のファイルは別プロセスがロックしていることがあり、`Copy-Item` が失敗する場合は
+  `[System.IO.File]::Open($src,'Open','Read','ReadWrite')` の共有読み取りでコピーできる。
