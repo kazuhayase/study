@@ -30,3 +30,11 @@ of each conversation per the rules in `CLAUDE.md` → "Memory — Automatic Upda
   （いずれも origin の方が新しく、内容は完全に吸収済みであることを確認のうえ実施）。
   Win11 では `.git/` 配下の削除が Permission denied になりやすく、`git worktree remove` や
   ブランチ削除後の空ディレクトリ掃除が失敗する。実害はないので放置可、消すなら手動 `rmdir`。
+- 2026-08-02: `actuary/` は study.git とは**独立したリポジトリ** `kazuhayase/actuary`（private）で、
+  study 側では `.gitignore` により除外＋Mac ではネストした clone として配置されている。
+  よって seiho2-anaume 等の作業には actuary.git を別途 clone/pull する必要があり、
+  study の pull だけでは `actuary/` 配下は一切更新されない。
+  Win11 の `C:\Users\kazuy\GitHub\study\actuary`（175ファイル / 88.6 MB）は `.git` を持たない
+  移管前の取り残しファイル群。中の `2026年度生保2暗記集_local.xlsx`（SHA256 EE45341A…59EBA7、
+  更新日 2026-06-07）は未 push のローカルコミット `11d8b15` 由来で actuary.git 未反映の
+  可能性があるため、clone 前に `ren actuary actuary_old_20260802` で退避しハッシュ比較すること。
