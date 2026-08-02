@@ -34,7 +34,14 @@ of each conversation per the rules in `CLAUDE.md` → "Memory — Automatic Upda
   study 側では `.gitignore` により除外＋Mac ではネストした clone として配置されている。
   よって seiho2-anaume 等の作業には actuary.git を別途 clone/pull する必要があり、
   study の pull だけでは `actuary/` 配下は一切更新されない。
-  Win11 の `C:\Users\kazuy\GitHub\study\actuary`（175ファイル / 88.6 MB）は `.git` を持たない
-  移管前の取り残しファイル群。中の `2026年度生保2暗記集_local.xlsx`（SHA256 EE45341A…59EBA7、
-  更新日 2026-06-07）は未 push のローカルコミット `11d8b15` 由来で actuary.git 未反映の
-  可能性があるため、clone 前に `ren actuary actuary_old_20260802` で退避しハッシュ比較すること。
+  Win11 では **`C:\Users\kazuy\GitHub\actuary` に sibling として clone 済み**（Mac のネスト構成とは
+  異なる。study 配下の旧 `actuary/` を触らずに済むためこちらを採用）。
+  study 配下にあった移管前の取り残しファイル群（175ファイル / 88.6 MB）は照合の結果、
+  `2026年度生保2暗記集_local.xlsx` の blob が actuary.git の `807c2c9`（2026-06-28）と完全一致し、
+  その後 2026-07-10 の編集2件（`c3503f9`, `c1bddf2`）で上書きされているため固有の内容なしと確認、削除した。
+  照合には SHA256 ではなく `git hash-object` と `git rev-parse <commit>:<path>` の blob 比較が有効
+  （xlsx は zip のため内容が同じでも保存時刻で SHA256 が変わる）。
+- 2026-08-02: 「Mac が cd2cd3e のまま」という話は **study.git ではなく actuary.git のコミット**だった。
+  マシン間でコミットハッシュの話をするときは、study と actuary のどちらのリポジトリかを必ず確認すること。
+  actuary.git には `session_lessons.md` があり、セッション開始時に読み・終了時に更新する運用が
+  リポジトリ側で指示されている（コミット `e1bc1f7`）。actuary 側の作業時は確認すること。
