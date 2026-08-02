@@ -16,3 +16,12 @@ of each conversation per the rules in `CLAUDE.md` → "Memory — Automatic Upda
   ためプレースホルダーあり、原本PDFでの確認が必要。
 - 2026-06-07: Cowork環境ではOSの `.claude` フォルダにアクセスできないため、
   メモリ保存先をリポジトリ内 `.claude-memory/` に変更し、CLAUDE.md にルールを追記した。
+- 2026-08-02: Windowsクローンの `master` が履歴書き換え前の古い系統のままで、`origin/master`
+  と2017年まで遡る乖離（ローカル422 / origin310、うち299件は件名・日付が一致＝書き換え済み）に
+  なっていた。ローカル固有の内容は `actuary/`（private kazuhayase/actuary へ移管済み）、
+  `work/twitter-bot/token*.txt`（漏洩トークン、origin で削除済み）、`openai-quickstart-python`
+  と `vcpkg`（GitHub Pages を壊す壊れた gitlink、origin で削除済み）のみで、push すべき成果物
+  なし。**この乖離は merge してはいけない**（削除済みの秘密情報とactuary資料が復活するため）。
+  `backup/master-prerewrite-20260802` を作成のうえ `git reset --mixed origin/master`
+  ＋ `git checkout -- .` で同期（`--hard` は actuary の実ファイルを消すので使わない）。
+  併せて `.claude/worktrees/` を `.gitignore` に追加（gitlink として誤ってステージされていた）。
