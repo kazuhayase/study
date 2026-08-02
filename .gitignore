@@ -112,3 +112,6 @@ actuary/
 
 work/twitter-bot/token.txt
 work/twitter-bot/token-old.txt
+
+# Claude Code worktrees (would be committed as broken submodule gitlinks)
+.claude/worktrees/
