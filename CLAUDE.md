@@ -67,7 +67,7 @@ for pkg, ver in packages:
 
 ### Step 2 — JavaScript dependency scan (OSV API)
 
-`gh` CLI is NOT installed on this Mac. Use the same OSV API with `"ecosystem": "npm"` for each package in `package.json` files (strip `^~` from version strings).
+Use the same OSV API with `"ecosystem": "npm"` for each package in `package.json` files (strip `^~` from version strings).
 
 ### Step 3 — Static code analysis
 
@@ -98,10 +98,29 @@ grep -rn "setwd\|/home/\|/Users/" --include="*.R" <dir>
 Re-run the OSV checks on updated packages to confirm clean.  
 Then commit with `fix(security): ...` and push — **no user confirmation needed**.
 
-### Known limitations (as of 2026-05-30)
+### Step 2b — Cross-check against Dependabot (optional)
+
+`gh` CLI **is** installed and authenticated on this Mac, and its token can read Dependabot
+alerts. This is a useful second opinion on the OSV results — it catches transitive dependencies
+pinned in `uv.lock` that a `requirements.txt` scan never looks at:
+
+```bash
+gh api '/repos/kazuhayase/study/dependabot/alerts?state=open&per_page=100' --paginate \
+  -q '.[] | "\(.security_advisory.severity)\t\(.dependency.package.name)\t\(.security_vulnerability.first_patched_version.identifier // "no-fix")\t\(.dependency.manifest_path)"' \
+  | sort -u
+```
+
+OSV remains the primary scan: it works offline of GitHub and covers packages Dependabot skips.
+
+### Known limitations (as of 2026-08-21)
 - `chromadb==1.5.9`: CVE-2026-45829 (CRITICAL) has no fix on PyPI yet. Keep the comment; re-check on each scan run.
 - `pip-audit` fails on this Mac → always use OSV API instead.
-- `gh` CLI not installed → always use OSV API or `curl` for GitHub API.
+  (The blocker is the **system** Python 3.14 at `/opt/homebrew/bin/python3`, which cannot build
+  fugashi/scikit-learn from source. Projects with their own uv-managed 3.13 `.venv` — e.g.
+  `Cyber/` — are not affected, but OSV is still the standard for repo-wide scans.)
+- ~~`gh` CLI not installed~~ — **corrected 2026-08-21: `gh` is installed at `/opt/homebrew/bin/gh`,
+  authenticated as `kazuhayase` with `repo` scope.** `gh api` works, including
+  `/repos/.../dependabot/alerts`. Use it for GitHub API access instead of hand-rolled `curl`.
 
 ## Commit & Push Convention
 
