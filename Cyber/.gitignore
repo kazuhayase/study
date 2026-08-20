@@ -1,0 +1,17 @@
+# Override root-level exclusions for this project
+# Root .gitignore ignores *.sql (treats them as database dumps); ours are schema migrations.
+!*.sql
+!**/*.sql
+
+# DuckDB database files (multi-GB; distributed via CI artifacts, never committed)
+*.duckdb
+*.duckdb.wal
+
+# Downloaded feed payloads and working data
+data/
+logs/
+
+# Python
+.venv/
+__pycache__/
+*.pyc

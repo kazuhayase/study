@@ -1,0 +1,4 @@
+# Pinned with == so the repo-wide OSV security scan (see root CLAUDE.md) can parse it.
+# Everything else this project needs comes from the standard library:
+#   urllib.request (HTTP), gzip + csv (EPSS), tarfile (Vulnrichment), json, sqlite3-free.
+duckdb==1.4.2
