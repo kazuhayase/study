@@ -49,7 +49,8 @@ models:
 
 ```bash
 # studyリポジトリのワークフロー
-pip-audit -r requirements.txt
+# pip-audit は使わない（システムPython 3.14でfugashi/scikit-learnのビルドが通らない）。
+# 代わりに OSV API を直接叩く。手順はルート CLAUDE.md の「Security Workflow」を参照。
 gh api repos/kazuhayase/study/dependabot/alerts --jq '.[] | select(.state=="open") | {pkg: .security_vulnerability.package.name, severity: .security_advisory.severity, summary: .security_advisory.summary}'
 ```
 
@@ -63,6 +64,6 @@ Google Cloud環境（Cloud Run + BigQuery）でのベストプラクティスも
 
 # 使用メモ
 
-- studyリポジトリでは pip-audit + Dependabot API の両方を実行するのが標準
+- studyリポジトリでは OSV API + Dependabot API の両方を実行するのが標準（pip-audit は不可）
 - 修正後は必ずコミット＆プッシュまでセットで行う
 - 機密情報（APIキー等）が含まれるコードは貼り付けない
