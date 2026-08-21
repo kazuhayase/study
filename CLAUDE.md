@@ -24,11 +24,32 @@ Contains multiple independent sub-projects for LLM/AI experiments, ML seminars, 
 
 ## Memory — Automatic Update Rules
 
-Memory path varies by machine:
-- **Debian**: `/home/kazu/.claude/projects/-home-kazu-git-study/memory/`
-- **Mac**: `/Users/kazu/.claude/projects/-Users-kazu-github-study/memory/`
-- **Windows / Cowork**: `.claude-memory/` (at the repo root, i.e. `C:\Users\kazuy\GitHub\study\.claude-memory\`).
-  The OS-level `C:\Users\kazuy\.claude\` path is protected and cannot be mounted into a Cowork session — use this in-repo directory instead so memory updates keep working there.
+**Memory lives in the repo at `.claude-memory/` on every machine** (unified 2026-08-21, previously
+one path per OS). Being version-controlled is the point: work continues on another machine by
+pulling, not by re-explaining.
+
+The OS-level path Claude Code loads automatically is a **symlink** to that directory, so
+auto-loading and version control both work:
+
+| Machine | Setup |
+|---|---|
+| **Mac** | `ln -s ~/github/study/.claude-memory ~/.claude/projects/-Users-kazu-github-study/memory` (done) |
+| **Debian** | `ln -s ~/git/study/.claude-memory ~/.claude/projects/-home-kazu-git-study/memory` |
+| **Windows** | `cmd /c mklink /D "%USERPROFILE%\.claude\projects\-C--Users-kazuy-GitHub-study\memory" "%USERPROFILE%\GitHub\study\.claude-memory"` (needs an admin shell or Developer Mode) |
+| **Cowork** | Use `.claude-memory/` directly — the OS-level `.claude\` path cannot be mounted into a session. |
+
+If the symlink cannot be created, just read and write `.claude-memory/` directly; nothing breaks
+except automatic loading at session start.
+
+### Never commit workplace information
+
+**This repository is public.** Memories about work done in an employer's environment stay local:
+add the filename to `.claude-memory/.gitignore` and note its existence in `MEMORY.md` **without
+describing the contents** — the reason for excluding a file must not restate what the file says.
+`project_talent_mgmt_progress.md` is excluded on these grounds.
+
+Before adding any memory file, ask whether it would be acceptable for a stranger to read it. If
+not, it goes in `.gitignore`, not in a commit.
 
 **Always update memory at the end of the conversation**, especially when:
 - Significant work was completed (fixes, new features, setup)
