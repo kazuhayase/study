@@ -1,0 +1,7 @@
+# Local-only memories: never commit these to a public repository.
+#
+# project_talent_mgmt_progress.md records work done in an employer's Snowflake environment,
+# including employee data scale and an access-control misconfiguration. That belongs on this
+# machine only. The file still lives in this directory so Claude can read it locally -- it is
+# excluded from git, not deleted.
+project_talent_mgmt_progress.md
