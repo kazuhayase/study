@@ -60,18 +60,33 @@ originSessionId: 979e4fb4-591a-49da-99fc-843d02f27d66
   → 再開時は新masterへ cherry-pick すること。
 - GitHub上の旧SHA直アクセスはGC まで残存し得る（fork 0のためリスク小。完全消去はGitHubサポート依頼）。
 
-## リポジトリ分離(計画中、2026-08-21時点でメモリ記録のみ)
+## Cyber/ は git 完全対象外化(2026-08-25 実施済み)
 
-**`Cyber/` も private リポジトリに分離する予定。** actuary(上記)と同じ理由(study が public)
-だと推測されるが、ユーザーからは分離することのみ確認済みで、詳細な実施方法は未確認・未実施。
+**`Cyber/`(vulndb)はコード・データ・CSV出力すべて git 管理外(private リポも含む)にする方針
+に確定し、実施済み。** 当初は actuary と同じ「private リポへ履歴ごと分離」を実施したが、
+その後ユーザーの方針が「git に一切載せない」に変わり、作成した private リポも削除した。
 
-- **今回のセッションでは実作業は行っていない。** 次回、実施方法を改めてユーザーに確認すること
-  (選択肢として提示したもの: (a) actuary と同じ手順 — `git filter-repo` で `Cyber/` の履歴を
-  抽出し新規 private リポ(例: `kazuhayase/cyber`)へ移行、study 側は force-push で全履歴から
-  `Cyber/` を除去する破壊的操作、(b) 履歴を保持せず新規リポにコピーするだけ、(c) その他の方法)
-- 実施する場合、actuary分離時の注意点がそのまま当てはまる:
-  他マシン(Debian/Windows/Cowork)は再クローンまたは
-  `git clone git@github.com:kazuhayase/<repo>.git study/Cyber` の追加実行が必要になる
-- **影響範囲の洗い出しが必要**(実施前に確認すること): `.github/workflows/cyber-vulndb-update.yml`
-  が `kazuhayase/study` を前提にしている、`gh run download --repo kazuhayase/study ...` で
-  artifact を取得する運用([[project-cyber-vulndb]])、README/CLAUDE.md 内の相対パス言及など
+実施した手順(Windows機、2026-08-25):
+1. `git filter-repo`(pip install、`Cyber/.venv` に導入)で study の使い捨てクローンから
+   `Cyber/` 履歴を抽出 → `kazuhayase/cyber`(private, `gh repo create ... --source=. --push`)へ push
+2. ユーザー方針転換により **`kazuhayase/cyber` は削除**(削除はGitHub側の完全削除操作にあたるため
+   Claude では実行せず、ユーザー本人が Settings → Danger Zone / `gh repo delete` で実施)
+3. `backup/pre-cyber-extraction-20260825` ブランチを origin に push(ロールバック用、削除していない)
+4. 別の使い捨てクローンで `git filter-repo --path Cyber/ --invert-paths` を実行し、
+   study の全履歴から `Cyber/` を除去
+5. `git push origin master --force` で origin/study に反映
+6. ローカル `~/github/study` を `git fetch` + `git reset --hard origin/master` で同期
+   (`Cyber/` 配下の追跡ファイルはこの時点で作業ツリーから消える —
+   `git ls-files Cyber/` で事前に取得した39ファイルのバックアップから復元して解決)
+7. ルート `.gitignore` に `/Cyber/` を追加してコミット・push
+
+**重要な制約: このセッションの auto mode classifier が `git push`(通常/force問わず)と
+`git reset --hard` を Claude のツール呼び出しから一律ブロックした。** これらは全てユーザー本人に
+ターミナルで実行してもらう形になった(コマンド自体はClaudeが用意)。同様の破壊的git操作を伴う
+作業を今後行う際は、実行主体がユーザーになる前提で計画すること。
+
+**現状**: `Cyber/` はディスク上には(コード・data/・.venv含め)完全に残っているが、
+git(study・private リポ含めどこにも)には一切追跡されていない。`.gitignore` の `/Cyber/` で
+明示的に除外。バックアップ・同期は git に頼らず別手段を検討する方針(ユーザー談、未確定)。
+`.github/workflows/cyber-vulndb-update.yml`(studyリポ内、CI用)は現状放置 — Cyber/ が
+study から消えたため**このワークフローは次回実行時に失敗する見込み**、要対応。

@@ -120,21 +120,57 @@ gold への統合や社内DBとの結合は別途行う想定（意図的に未�
   で `tests/test_parsers.py` に追加済み。`.venv` 無しでも動く（transform.py は標準ライブラリ
   のみで duckdb 非依存）
 
-### セッション終了時点の状態(2026-08-21)
+### 2026-08-25: フル init 完走 + http.py の耐障害性を大幅強化
 
-- ベンダーアドバイザリ実装(上記)は**ローカルで未コミット**。次回セッションでまず
-  `git status` を確認し、レビューのうえコミットする(実装・テストは完了済み、
-  `Cyber/tests/test_parsers.py` は全件パス、4ソースとも実データで動作確認済み)
-- `NVD_API_KEY` をこの Windows 機に `setx` で永続化したが、**このセッション中は未反映**
-  (`setx` は既存プロセスに効かない Windows の仕様。詳細は [[project-windows-environment]]
-  の「NVD_API_KEY の setx」節)。次回セッション(新しいターミナル)ではおそらく反映されて
-  いるはずなので、`echo $env:NVD_API_KEY` で確認してから全件 `init`/`update` を試す
-- 次にやりたいこと候補: IBM の日次コスト(約27分)が気になるなら
-  `config.IBM_PRODUCT_SEARCH_TERMS` を絞る、この Windows 機で `vulndb init`(全ソース)を
-  流して実データを確認する、または Actions artifact から全件DBを取得する(冒頭の
-  `gh run download` コマンド)
-- **`Cyber/` を private リポジトリに分離する計画あり(2026-08-21、メモリ記録のみで未実施)。**
-  詳細・影響範囲(CI ワークフローの `kazuhayase/study` 前提など)は [[project-repo-setup]] の
-  「リポジトリ分離(計画中)」節を参照
+このWindows機のネットワークが著しく不安定な晩で、NVD全件initが**当初の見積り(数十分)に対し
+数時間~でも完走しない**という事態になり、根本原因を3つ特定・修正した:
+
+1. **`http.client.IncompleteRead` が retry 対象の例外集合から漏れていた**
+   (`urllib.error.URLError, TimeoutError, ConnectionError` のみを捕捉、`IncompleteRead` は
+   `http.client.HTTPException` の別系統)。接続が転送途中で切られる事故がこのネットワークでは
+   頻発し、これが最大の原因だった。`http.py` の `_fetch` に `http.client.HTTPException` を追加
+2. **JSON パースがリトライループの外側にあった**(`get_json` = `json.loads(get_bytes(...))`)。
+   転送自体は「成功」扱いなのに中身が truncated な JSON になるケースがあり(200 OK・期待サイズ
+   っぽい bytes 数でも中身が壊れている実例を確認)、`json.JSONDecodeError` が無防備に伝播して
+   `sync()` 全体がクラッシュしていた。`http._fetch_json` を新設し、JSON パースもリトライ対象に
+   含めた(`get_json`/`post_json` 共通化)
+3. **`HTTP_TIMEOUT` が120秒と長すぎた**。ソケットの無応答タイムアウト(転送全体の制限ではない)
+   なので、20秒に短縮しても大きい転送は壊れない。この夜のネットワークは「繋がらない」より
+   「繋がるが途中で無応答になる」ことが多く、120秒だと1回の詰まりの検知だけで2分溶ける計算に
+   なっていた。20秒に短縮して体感速度が大幅改善
+
+さらに **NVD に startIndex のページ単位レジューム機能を追加**(`meta.sync_state` に
+`nvd_init_progress` として逐次保存、完走時に削除)。**IBM にも語単位のレジューム機能を追加**
+(`meta.sync_state` に `ibm_term_done:<term>` として語ごとに記録、`init` は既に成功済みの語を
+スキップ、`update` は毎回全語を舐める)。どちらも「中断しても振り出しに戻らない」ことが目的。
+
+**IBM 検索語の追加分割**(2026-08-25、`config.IBM_PRODUCT_SEARCH_TERMS`):
+`WebSphere` も 2,000件キャップ+約24MBで頻繁に失敗したため Db2 と同様に分割
+(`IBM WebSphere`, `WebSphere Application Server Liberty/Network Deployment/Portal/Commerce/
+for z/OS` 等)。ユーザーの社内脆弱性管理台帳の検索キーワード一覧(職場情報のためリポジトリには
+未収録)から `IBM Data Server Client`・`IBM InfoSphere Data Replication`・
+`WebSphere Application Server` も追加。**IBM API の同一クエリが再現性なく毎回サイズが変わる**
+(例: "Db2 Warehouse" が3.6MB→21MBと変動)ことを確認済み — 分割は緩和策であり根治ではない
+- **CVE ID の `~`(OR)構文は数値レンジではない**ことを実機検証で確定(`CVE-2026-00000~
+  CVE-2026-00200` は0件、実在CVE2つの範囲指定も期待した範囲展開はされず3件のみ)。NVD由来の
+  IBM起点CVE(`source_identifier='psirt@us.ibm.com'`、8,407件)をバッチ`~`検索する代替案は
+  技術的に成立する(150~200件/バッチが安全、300件でHTTP 414)が、8,407件を捌くには
+  約40~55リクエスト必要で今回は不採用。ユーザーは「キーワード方式を継続」と判断
+- 全件 init 完走実績(2026-08-25、このWindows機、`cyber.duckdb`): silver.cve 382,270件、
+  silver.kev 1,675件、silver.ssvc 177,728件。ベンダーアドバイザリは `cyber_others.duckdb`
+  (NVDと別ファイルで並行取得したため、2ファイルのまま — 未マージ)
+
+### `Cyber/` は git 完全対象外に(2026-08-25)
+
+**大きな方針転換: `Cyber/`(本ファイルの対象)はコード・データ・CSV出力すべて git 管理外に
+なった。private リポへの分離も一度実施したが、ユーザー判断で撤回・削除。** 詳細な手順・
+残課題(**`.github/workflows/cyber-vulndb-update.yml` が Cyber/ 消失により次回実行で失敗する
+見込み、対応要**)は [[project-repo-setup]] の「Cyber/ は git 完全対象外化」節を参照。
+今後 vulndb の作業はこの Windows 機のローカルディスク上でのみ完結する前提になる
+(バックアップ手段は未確定 — ユーザーは「Export機能を活用する」意向、詳細未検討)。
+
+次にやりたいこと候補: Snowflake ロード用CSVエクスポート機能(ユーザーから別途仕様提供あり、
+DuckDBの既存テーブルからNVD/KEV/Vulnrichment/ベンダー広告の4形式でCSV出力する想定。
+**このエクスポートスクリプト自体も git 対象外**とする方針)。
 
 関連: [[project-repo-setup]] [[project-security-scan]]
