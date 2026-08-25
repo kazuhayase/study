@@ -99,4 +99,42 @@ SSVC の穴はほぼ全て2022年以前。手動判定のバックログは「�
 - Phase 2（資産テーブル）は未着手。指令 Phase III のタグ項目がそのままスキーマになる:
   組織／サブ組織、環境(prod/dev)、エクスポージャ(public/internal)、資産種別
 
+## ベンダーアドバイザリ収集（AWS/Microsoft/Broadcom/IBM、2026-08-21 Windows機で実装）
+
+BOD 判定(gold)とは無関係の別系統として `bronze.vendor_advisories` / `silver.vendor_advisory`
+を追加（migrations 006/007）。**bronze/silver に着地させるところまでがこの実装のスコープ**で、
+gold への統合や社内DBとの結合は別途行う想定（意図的に未実装）。
+
+- 4社とも無認証・公開エンドポイントで取得可能と実機確認済み（詳細は `Cyber/CLAUDE.md`）:
+  AWS は RSS 丸ごと置換、Microsoft は MSRC CVRF API（`Accept: application/json` 必須 —
+  無いと XML が返り `json.loads` が壊れる、一度踏んだ）、Broadcom は `segment:""` で全事業部
+  横断のページング API、IBM は非公式の製品名検索API（全件／日付範囲取得は不可、
+  `config.IBM_PRODUCT_SEARCH_TERMS` に無い製品は取りこぼす — カバレッジの構造的limit）
+- **IBM の日次更新コストが大きい**: 検索語15件 × 最大2,000件/24MBを毎回フルダウンロード。
+  実測で init 完了まで約27分（他3社は数分以内）。CI の日次実行時間が気になる場合は
+  `IBM_PRODUCT_SEARCH_TERMS` を絞るのが手軽な対処
+- 実データでの検証結果（2026-08-21時点、smoketest.duckdb）: aws 85件、broadcom 4,178件、
+  ibm 5,510件、microsoft（直近24ヶ月）25,430件、CVE紐付けビュー `silver.vendor_advisory_cve`
+  で53,979組
+- テストは実データ由来のフィクスチャ（`tests/fixtures/{aws,msrc,broadcom,ibm}_*_sample.json`）
+  で `tests/test_parsers.py` に追加済み。`.venv` 無しでも動く（transform.py は標準ライブラリ
+  のみで duckdb 非依存）
+
+### セッション終了時点の状態(2026-08-21)
+
+- ベンダーアドバイザリ実装(上記)は**ローカルで未コミット**。次回セッションでまず
+  `git status` を確認し、レビューのうえコミットする(実装・テストは完了済み、
+  `Cyber/tests/test_parsers.py` は全件パス、4ソースとも実データで動作確認済み)
+- `NVD_API_KEY` をこの Windows 機に `setx` で永続化したが、**このセッション中は未反映**
+  (`setx` は既存プロセスに効かない Windows の仕様。詳細は [[project-windows-environment]]
+  の「NVD_API_KEY の setx」節)。次回セッション(新しいターミナル)ではおそらく反映されて
+  いるはずなので、`echo $env:NVD_API_KEY` で確認してから全件 `init`/`update` を試す
+- 次にやりたいこと候補: IBM の日次コスト(約27分)が気になるなら
+  `config.IBM_PRODUCT_SEARCH_TERMS` を絞る、この Windows 機で `vulndb init`(全ソース)を
+  流して実データを確認する、または Actions artifact から全件DBを取得する(冒頭の
+  `gh run download` コマンド)
+- **`Cyber/` を private リポジトリに分離する計画あり(2026-08-21、メモリ記録のみで未実施)。**
+  詳細・影響範囲(CI ワークフローの `kazuhayase/study` 前提など)は [[project-repo-setup]] の
+  「リポジトリ分離(計画中)」節を参照
+
 関連: [[project-repo-setup]] [[project-security-scan]]
