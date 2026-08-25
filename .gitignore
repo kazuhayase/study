@@ -3,6 +3,11 @@ python/SRMs/Greed-2.0-RC-7.1.0.jar
 actuary/backup/
 actuary/GOMI/
 *.bak
+
+# Cyber/ (vulnerability DB work) is local-only by design (2026-08-25): code, data, and CSV
+# exports all stay out of git, including private repos. History was removed via git-filter-repo
+# + force-push; see .claude-memory/project_repo_setup.md for the migration record.
+/Cyber/
 ###
 ## See.
 ## https://help.github.com/articles/ignoring-files
