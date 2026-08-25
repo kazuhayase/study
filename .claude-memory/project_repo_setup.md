@@ -59,3 +59,19 @@ originSessionId: 979e4fb4-591a-49da-99fc-843d02f27d66
 - ローカルの worktree-security-fixes ブランチ（未マージ）は旧履歴のまま温存
   → 再開時は新masterへ cherry-pick すること。
 - GitHub上の旧SHA直アクセスはGC まで残存し得る（fork 0のためリスク小。完全消去はGitHubサポート依頼）。
+
+## リポジトリ分離(計画中、2026-08-21時点でメモリ記録のみ)
+
+**`Cyber/` も private リポジトリに分離する予定。** actuary(上記)と同じ理由(study が public)
+だと推測されるが、ユーザーからは分離することのみ確認済みで、詳細な実施方法は未確認・未実施。
+
+- **今回のセッションでは実作業は行っていない。** 次回、実施方法を改めてユーザーに確認すること
+  (選択肢として提示したもの: (a) actuary と同じ手順 — `git filter-repo` で `Cyber/` の履歴を
+  抽出し新規 private リポ(例: `kazuhayase/cyber`)へ移行、study 側は force-push で全履歴から
+  `Cyber/` を除去する破壊的操作、(b) 履歴を保持せず新規リポにコピーするだけ、(c) その他の方法)
+- 実施する場合、actuary分離時の注意点がそのまま当てはまる:
+  他マシン(Debian/Windows/Cowork)は再クローンまたは
+  `git clone git@github.com:kazuhayase/<repo>.git study/Cyber` の追加実行が必要になる
+- **影響範囲の洗い出しが必要**(実施前に確認すること): `.github/workflows/cyber-vulndb-update.yml`
+  が `kazuhayase/study` を前提にしている、`gh run download --repo kazuhayase/study ...` で
+  artifact を取得する運用([[project-cyber-vulndb]])、README/CLAUDE.md 内の相対パス言及など

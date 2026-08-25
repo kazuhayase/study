@@ -59,9 +59,17 @@ def _drain(
     base_params: dict[str, Any],
     result: dict[str, Any],
     label: str,
+    start_index: int = 0,
+    progress_key: str | None = None,
 ) -> str | None:
-    """Page through one query, storing as we go. Returns the max lastModified seen."""
-    start_index = 0
+    """Page through one query, storing as we go. Returns the max lastModified seen.
+
+    `progress_key`, when given, persists `start_index` to meta.sync_state after every page so a
+    run killed by a network error (a full corpus walk takes ~10-30 min and WinError 10054 /
+    IncompleteRead do happen mid-walk -- confirmed 2026-08-21) can resume near where it left off
+    on the next `init` instead of re-fetching everything. Cleared on a full, uninterrupted
+    completion so a deliberate fresh run still starts at 0.
+    """
     total = None
     watermark: str | None = None
     batch: list[tuple] = []
@@ -91,12 +99,16 @@ def _drain(
             batch = []
 
         start_index += len(items)
+        if progress_key:
+            set_cursor(con, progress_key, str(start_index))
         print(f"    {label}: {min(start_index, total):,}/{total:,}")
         if start_index < total:
             http.nvd_sleep()
 
     _store(con, batch, result["fetch_id"])
     result["rows_ingested"] += len(batch)
+    if progress_key:
+        con.execute("DELETE FROM meta.sync_state WHERE source = ?", [progress_key])
     return watermark
 
 
@@ -132,8 +144,14 @@ def sync(con: duckdb.DuckDBPyConnection, mode: str = "update", pub_start: str | 
             # Whole corpus: no date filter at all, just paginate to the end.
             # Rejected CVEs are kept rather than filtered with noRejected -- Silver flags them and
             # Gold excludes them, so the corpus stays complete and the exclusion stays auditable.
-            result["detail"] = "init full corpus"
-            watermark = _drain(con, {}, result, "nvd init")
+            resume_at = get_cursor(con, "nvd_init_progress")
+            start_index = int(resume_at) if resume_at else 0
+            result["detail"] = f"init full corpus (resuming at {start_index:,})" if start_index \
+                else "init full corpus"
+            watermark = _drain(
+                con, {}, result, "nvd init", start_index=start_index,
+                progress_key="nvd_init_progress",
+            )
             if watermark:
                 set_cursor(con, "nvd", watermark)
             return

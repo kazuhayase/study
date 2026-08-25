@@ -1,0 +1,23 @@
+{
+  "bundled_cves": {
+    "nid": "7284282",
+    "title": "Multiple Vulnerabilities have been identified in IBM WebSphere Application Server Liberty and IBM WebSphere Application Server shipped with IBM WebSphere Remote Server",
+    "field_cve_id": "",
+    "field_product": "IBM WebSphere Remote Server",
+    "field_cvss_base_score": "Low",
+    "field_pub_date": "2026-08-19",
+    "field_published_url": "https://www.ibm.com/support/pages/node/7284282",
+    "field_summary": "IBM WebSphere Application Server Liberty and IBM WebSphere Application Server are shipped with IBM WebSphere Remote Server. Information about security vulnerabilities affecting IBM WebSphere Application Server Liberty and IBM WebSphere Application Server has been published in a security bulletin (CVE-2026-57819, CVE-2026-54225, CVE-2026-64958)."
+  },
+  "single_cve": {
+    "nid": "7284352",
+    "title": "IBM WebSphere Application Server Liberty, which is bundled with IBM WebSphere Hybrid Edition, is affected by an authentication bypass vulnerability (CVE-2026-14525)",
+    "field_cve_id": "CVE-2026-14525",
+    "field_product": "IBM WebSphere Hybrid Edition",
+    "field_cvss_base_score": "Critical",
+    "field_pub_date": "2026-08-20",
+    "field_published_url": "https://www.ibm.com/support/pages/node/7284352",
+    "field_summary": "IBM WebSphere Application Server Liberty, which is bundled with IBM WebSphere Hybrid Edition, is affected by an authentication bypass vulnerability when the rtcomm-1.0 or rtcommGateway-1.0 feature is enabled.",
+    "field_vulnerability_details": " Refer to the security bulletin(s) listed in the Remediation/Fixes section<!--cvedetailsstart{\"vulns\":[{\"id\":\"CVE-2026-14525\",\"description\":\"IBM WebSphere Application Server - Liberty 17.0.0.3 through 26.0.0.8 is vulnerable to an authentication bypass.\",\"score\":\"9.4\"}]}cvedetailsend--->"
+  }
+}

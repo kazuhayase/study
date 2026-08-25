@@ -7,7 +7,20 @@ file and re-running `rebuild` -- never by re-downloading from upstream.
 
 from __future__ import annotations
 
+import re
+from datetime import date, datetime
+from email.utils import parsedate_to_datetime
 from typing import Any
+
+_CVE_RE = re.compile(r"CVE-\d{4}-\d{4,7}")
+
+
+def _find_cve_ids(*texts: str | None) -> list[str]:
+    found: set[str] = set()
+    for text in texts:
+        if text:
+            found.update(_CVE_RE.findall(text))
+    return sorted(found)
 
 # SSVC option keys differ between the two feeds that carry them. Verified against live records
 # on 2026-08-20:
@@ -202,4 +215,129 @@ def parse_kev_entry(entry: dict[str, Any]) -> dict[str, Any]:
         "required_action": entry.get("requiredAction"),
         "notes": entry.get("notes"),
         "source": "kev_catalog",
+    }
+
+
+# --- Vendor security advisories -> silver.vendor_advisory --------------------------------
+# One parser per vendor, all returning the same shape (or None if the advisory's own ID is
+# missing). cve_ids may legitimately be an empty list -- e.g. a Broadcom advisory published
+# ahead of CVE assignment -- the row is still kept for its metadata.
+
+def parse_aws_advisory(item: dict[str, Any]) -> dict[str, Any] | None:
+    """An AWS security bulletin RSS <item> (as a plain dict) -> a silver.vendor_advisory row."""
+    title = item.get("title") or ""
+    description = item.get("description") or ""
+
+    match = re.search(r"Bulletin ID:\s*(?:</b>)?\s*([\w-]+)", description)
+    advisory_id = match.group(1) if match else (item.get("link") or "").rstrip("/").rsplit("/", 1)[-1]
+    if not advisory_id:
+        return None
+
+    published_date = None
+    pub_date = item.get("pubDate")
+    if pub_date:
+        try:
+            published_date = parsedate_to_datetime(pub_date).date()
+        except (TypeError, ValueError):
+            pass
+
+    content_type_match = re.search(r"Content Type:\s*</b>\s*([^<]+)", description)
+
+    return {
+        "vendor": "aws",
+        "advisory_id": advisory_id,
+        "title": title,
+        "url": item.get("link"),
+        "published_date": published_date,
+        "severity": content_type_match.group(1).strip() if content_type_match else None,
+        "cve_ids": _find_cve_ids(title, description),
+    }
+
+
+def parse_microsoft_advisory(item: dict[str, Any]) -> dict[str, Any] | None:
+    """One CVRF Vulnerability[] entry (with _document_id / _initial_release_date injected by
+    the source module) -> a silver.vendor_advisory row. MSRC's natural unit is one CVE."""
+    cve_id = item.get("CVE")
+    if not cve_id:
+        return None
+
+    severity = None
+    for threat in item.get("Threats") or []:
+        if threat.get("Type") == 3:  # CVRF ThreatType 3 = Severity rating
+            severity = (threat.get("Description") or {}).get("Value")
+            break
+
+    published_date = None
+    release_date = item.get("_initial_release_date")
+    if release_date:
+        try:
+            published_date = datetime.fromisoformat(release_date).date()
+        except ValueError:
+            pass
+
+    return {
+        "vendor": "microsoft",
+        "advisory_id": cve_id,
+        "title": (item.get("Title") or {}).get("Value"),
+        "url": f"https://msrc.microsoft.com/update-guide/en-US/vulnerability/{cve_id}",
+        "published_date": published_date,
+        "severity": severity,
+        "cve_ids": [cve_id],
+    }
+
+
+def parse_broadcom_advisory(item: dict[str, Any]) -> dict[str, Any] | None:
+    """One entry of getSecurityAdvisoryList's data.list -> a silver.vendor_advisory row."""
+    advisory_id = item.get("documentId")
+    if not advisory_id:
+        return None
+
+    published_date = None
+    published = item.get("published")
+    if published:
+        try:
+            published_date = datetime.strptime(published, "%d %B %Y").date()
+        except ValueError:
+            pass
+
+    return {
+        "vendor": "broadcom",
+        "advisory_id": advisory_id,
+        "title": item.get("title"),
+        "url": item.get("notificationUrl"),
+        "published_date": published_date,
+        "severity": item.get("severity"),
+        "cve_ids": _find_cve_ids(item.get("affectedCve")),
+    }
+
+
+def parse_ibm_advisory(item: dict[str, Any]) -> dict[str, Any] | None:
+    """One entry of securityapp/api/search's results[] -> a silver.vendor_advisory row.
+
+    field_cve_id only ever holds a single CVE (blank when a bulletin bundles several), so
+    cve_ids is extracted from the free-text fields instead -- see config.IBM_PRODUCT_SEARCH_TERMS
+    for the coverage caveat this API's lack of a full-listing endpoint forces on us.
+    """
+    advisory_id = item.get("nid")
+    if not advisory_id:
+        return None
+
+    published_date = None
+    pub_date = item.get("field_pub_date")
+    if pub_date:
+        try:
+            published_date = date.fromisoformat(pub_date)
+        except ValueError:
+            pass
+
+    return {
+        "vendor": "ibm",
+        "advisory_id": advisory_id,
+        "title": item.get("title"),
+        "url": item.get("field_published_url"),
+        "published_date": published_date,
+        "severity": item.get("field_cvss_base_score"),
+        "cve_ids": _find_cve_ids(
+            item.get("title"), item.get("field_summary"), item.get("field_vulnerability_details")
+        ),
     }

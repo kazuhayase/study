@@ -11,13 +11,17 @@ import argparse
 import sys
 
 from . import config, db, rebuild
-from .sources import epss, kev, nvd, vulnrichment
+from .sources import aws, broadcom, epss, ibm, kev, microsoft, nvd, vulnrichment
 
 SOURCES = {
     "nvd": nvd.sync,
     "kev": kev.sync,
     "epss": epss.sync,
     "vulnrichment": vulnrichment.sync,
+    "aws": aws.sync,
+    "microsoft": microsoft.sync,
+    "broadcom": broadcom.sync,
+    "ibm": ibm.sync,
 }
 
 
@@ -81,7 +85,9 @@ def cmd_status(args) -> int:
     print("== row counts ==")
     for table in (
         "bronze.nvd_cve", "bronze.kev", "bronze.vulnrichment", "bronze.epss",
+        "bronze.vendor_advisories",
         "silver.cve", "silver.kev", "silver.ssvc", "silver.epss_current",
+        "silver.vendor_advisory",
     ):
         n = con.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
         print(f"  {table:<24} {n:>10,}")
@@ -170,7 +176,8 @@ def cmd_export(args) -> int:
     outdir = config.DATA_DIR / "export"
     outdir.mkdir(parents=True, exist_ok=True)
     for name in ("gold.cve_bod2604", "gold.ssvc_gap_triage", "gold.coverage_stats",
-                 "silver.cve", "silver.kev", "silver.ssvc", "silver.epss_current"):
+                 "silver.cve", "silver.kev", "silver.ssvc", "silver.epss_current",
+                 "silver.vendor_advisory"):
         target = outdir / f"{name.replace('.', '_')}.parquet"
         con.execute(f"COPY (SELECT * FROM {name}) TO '{target}' (FORMAT PARQUET)")
         print(f"  wrote {target}")

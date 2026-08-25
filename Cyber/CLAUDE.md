@@ -92,6 +92,28 @@ JSONL なのはクォート・改行・NULL の扱いを自前でエスケープ
   `git add -f` で強制追跡している（`talent-mgmt-db` や `scripts/podcast` と同じ扱い）。
   一度追跡されていれば以降の更新は普通にコミットできる
 
+### ベンダーアドバイザリ (AWS / Microsoft / Broadcom / IBM) は BOD 判定に使わない
+
+`bronze.vendor_advisories` / `silver.vendor_advisory` は BOD 26-04 の4変数とは無関係の
+別系統。`gold.*` には統合しない(社内の別DBへの受け渡し用に bronze/silver で止める設計)。
+
+- **IBM に全件取得・日付範囲取得の手段は無い。** `securityapp/api/search?q=<製品名>` は
+  無認証で動くが検索語必須。`limit`/`offset` は指定しても無視され、1検索語につき最大2,000件
+  (実測24MB)を毎回フルダウンロードする。`config.IBM_PRODUCT_SEARCH_TERMS` に無い製品の
+  アドバイザリは収集されない — カバレッジの限界であって不具合ではない
+- **IBM の `field_cve_id` は単一CVEにしか入らない。** 複数CVEを束ねたアドバイザリでは
+  空文字になるため、`title`/`field_summary`/`field_vulnerability_details` 全体を正規表現で
+  スキャンして CVE ID を拾っている(`transform._find_cve_ids`)。`field_cve_id` だけを見ると
+  束ねアドバイザリのCVEを静かに取りこぼす
+- **AWS の Bulletin ID / Content Type は `<b>ラベル:</b> 値` という HTML構造。** ラベルの
+  直後に空白ではなく `</b>` タグが来るため、正規表現は `</b>` を明示的に読み飛ばす必要がある
+  (`Bulletin ID:\s*(?:</b>)?\s*([\w-]+)` — タグを飛ばし忘れて一度ハマった)
+- **MSRC の Severity は `CVSSScoreSets` ではなく `Threats[]` の `Type==3` エントリ**
+  (`Description.Value`、例: "Moderate")から取る。`Type==0` など他のThreatエントリは
+  `Description` が空 `{}` のことがあるので、Type を見ずに先頭要素を使うと壊れる
+- **Broadcom の `getSecurityAdvisoryList` は `segment: ""` で全事業部(VMware/Symantec/CA
+  mainframe)を横断できる。** 事業部ごとに列挙する必要は無い(2026-08-21実測で確認)
+
 ## テスト
 
 pytest は使わない（リポジトリ全体の慣習）。標準ライブラリのみ:

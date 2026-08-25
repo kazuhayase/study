@@ -73,6 +73,39 @@ actuary リポジトリの `_local` はその派生コピー。
 2004年「問題3(2)」（早期是正措置制度）と「問題2(1)」のレディントン条件式は
 OCR抽出範囲外のためプレースホルダーあり、**原本PDFでの確認が必要**。
 
+## この Windows 機はパスが従来メモリの記述と違う
+
+これまでのメモリ/`CLAUDE.md` の Windows 向け記述は `C:\Users\kazuy\GitHub\study`
+(ユーザー名 `kazuy`)を前提にしているが、**この機体は `C:\Users\haya001\github\study`**
+(ユーザー名 `haya001`、`github` は小文字)。同一人物の別アカウント名と思われる。
+
+- `.claude\projects\...\memory` への symlink 用コマンド(`CLAUDE.md` 記載)はこのパス前提の
+  ままだと動かない。実際に `mklink` を試みたところ auto mode の classifier に拒否された
+  (`.claude\projects` 配下への rmdir/mklink が risky 判定)ため、この機体では symlink 化を
+  諦めて `.claude-memory/` を直接読み書きする運用にした(`CLAUDE.md` の fallback方針どおり)
+- セッションの実 cwd は `C:\Users\haya001\github`(study の親)で起動されており、
+  ハーネス組み込みの自動メモリは `C:\Users\haya001\.claude\projects\C--Users-haya001-github\memory`
+  に対応する — study 固有ではなく `github` 配下全体で共有される点に注意
+- python は `py` ランチャー経由(`C:\Users\haya001\AppData\Local\Python\pythoncore-3.14-64\`)。
+  Git Bash から素の `python`/`python3` を呼ぶと Microsoft Store のスタブが応答し失敗する。
+  Bash からは PowerShell 経由で `py` を叩くか、`.venv/Scripts/python.exe` を直接パス指定する
+- `uv` は未インストール。`python -m venv` + `pip install` で代用可能(Python 3.14 は
+  pyproject.toml の `>=3.13` を満たす)
+
+## NVD_API_KEY の setx は既存プロセスに効かない
+
+`setx NVD_API_KEY "..."` はレジストリ(`HKCU\Environment`)に書き込むだけで、**既に起動済みの
+プロセスには一切反映されない**。Claude Code のツール実行シェル(このセッションの
+PowerShell/Bash)もその一つで、そこから子プロセスとして新しい `powershell` を起動しても
+親の古い環境を引き継ぐため反映されない(実際に試して確認済み、2026-08-21)。
+
+- 反映させるには、このツールとは無関係に**新しく開いたターミナルウィンドウ**か、
+  Claude Code セッション自体の再起動が必要
+- レジストリに正しく書き込まれたかどうかは
+  `[System.Environment]::GetEnvironmentVariable("NVD_API_KEY", "User")` で(子プロセスを
+  介さず)直接確認できる — こちらは即座に反映を見られる
+- 今のセッション内だけで使いたい場合は `$env:NVD_API_KEY = "..."` で都度設定する
+
 ## Cowork 環境
 
 OS の `C:\Users\kazuy\.claude\` は保護されたパスで Cowork セッションにマウントできない。

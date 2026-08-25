@@ -66,6 +66,23 @@ SSVC_COLUMNS = {
     "source": "VARCHAR",
 }
 
+VENDOR_ADVISORY_COLUMNS = {
+    "vendor": "VARCHAR",
+    "advisory_id": "VARCHAR",
+    "title": "VARCHAR",
+    "url": "VARCHAR",
+    "published_date": "DATE",
+    "severity": "VARCHAR",
+    "cve_ids": "VARCHAR[]",
+}
+
+_VENDOR_PARSERS = {
+    "aws": transform.parse_aws_advisory,
+    "microsoft": transform.parse_microsoft_advisory,
+    "broadcom": transform.parse_broadcom_advisory,
+    "ibm": transform.parse_ibm_advisory,
+}
+
 
 def _iter_bronze(con: duckdb.DuckDBPyConnection, table: str):
     cur = con.execute(f"SELECT raw_json FROM {table}")
@@ -81,7 +98,10 @@ def _iter_bronze(con: duckdb.DuckDBPyConnection, table: str):
 
 
 def rebuild_all(con: duckdb.DuckDBPyConnection, verbose: bool = True) -> dict[str, int]:
-    for table in ("silver.cve", "silver.kev", "silver.ssvc", "silver.epss_current"):
+    for table in (
+        "silver.cve", "silver.kev", "silver.ssvc", "silver.epss_current",
+        "silver.vendor_advisory",
+    ):
         con.execute(f"DELETE FROM {table}")
 
     counts = {"silver.cve": 0, "silver.cve_skipped": 0}
@@ -147,11 +167,39 @@ def rebuild_all(con: duckdb.DuckDBPyConnection, verbose: bool = True) -> dict[st
         """
     )
 
+    # --- Pass 5: vendor security advisories (AWS, Microsoft, Broadcom, IBM) -------------
+    # Independent of the CVE/KEV/SSVC passes above: no precedence to preserve, each vendor's
+    # bronze rows map 1:1 to its own silver rows via that vendor's parser.
+    vendor_rows: list[dict] = []
+    vendor_skipped = 0
+    for vendor, raw_json in con.execute(
+        "SELECT vendor, raw_json FROM bronze.vendor_advisories"
+    ).fetchall():
+        parser = _VENDOR_PARSERS.get(vendor)
+        if parser is None:
+            vendor_skipped += 1
+            continue
+        try:
+            item = json.loads(raw_json)
+        except (json.JSONDecodeError, TypeError):
+            vendor_skipped += 1
+            continue
+        parsed = parser(item)
+        if parsed is None:
+            vendor_skipped += 1
+            continue
+        vendor_rows.append(parsed)
+    counts["silver.vendor_advisory"] = bulk_insert(
+        con, "silver.vendor_advisory", VENDOR_ADVISORY_COLUMNS, vendor_rows, mode="REPLACE"
+    )
+    counts["silver.vendor_advisory_skipped"] = vendor_skipped
+
     for table in ("silver.kev", "silver.ssvc", "silver.epss_current"):
         counts[table] = con.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
 
     if verbose:
         for name in ("silver.cve", "silver.cve_skipped", "silver.kev", "silver.ssvc",
-                     "silver.epss_current"):
+                     "silver.epss_current", "silver.vendor_advisory",
+                     "silver.vendor_advisory_skipped"):
             print(f"  {name}: {counts[name]:,}")
     return counts

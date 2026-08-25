@@ -110,6 +110,60 @@ def main():
           nkev["known_ransomware_campaign_use"] is None)
     check("non-KEV CVE -> None", transform.parse_nvd_kev(bare) is None)
 
+    print("\nparse_aws_advisory")
+    aws_fixture = load("aws_bulletin_sample.json")
+    aws_cve = transform.parse_aws_advisory(aws_fixture["with_cves"])
+    check("advisory_id from Bulletin ID", aws_cve["advisory_id"] == "2026-048-AWS",
+          aws_cve["advisory_id"])
+    check("cve_ids extracted from title", aws_cve["cve_ids"] == ["CVE-2026-13762", "CVE-2026-13763"],
+          aws_cve["cve_ids"])
+    check("severity from Content Type", aws_cve["severity"] == "Important (requires attention)",
+          aws_cve["severity"])
+    check("published_date parsed from pubDate", str(aws_cve["published_date"]) == "2026-08-20",
+          aws_cve["published_date"])
+    aws_no_cve = transform.parse_aws_advisory(aws_fixture["without_cves"])
+    check("bulletin with no CVEs still parses with empty cve_ids", aws_no_cve["cve_ids"] == [],
+          aws_no_cve["cve_ids"])
+
+    print("\nparse_microsoft_advisory")
+    msrc = load("msrc_vulnerability_sample.json")
+    ms = transform.parse_microsoft_advisory(msrc)
+    check("advisory_id is the CVE", ms["advisory_id"] == "CVE-2025-13034", ms["advisory_id"])
+    check("cve_ids is a single-element list", ms["cve_ids"] == ["CVE-2025-13034"], ms["cve_ids"])
+    check("severity from Threats Type==3, skipping Type==0", ms["severity"] == "Moderate",
+          ms["severity"])
+    check("published_date from injected _initial_release_date", str(ms["published_date"]) == "2026-01-13",
+          ms["published_date"])
+    check("no CVE -> None", transform.parse_microsoft_advisory({"Title": {"Value": "x"}}) is None)
+
+    print("\nparse_broadcom_advisory")
+    bc_fixture = load("broadcom_advisory_sample.json")
+    bc = transform.parse_broadcom_advisory(bc_fixture["with_cves"])
+    check("advisory_id is documentId", bc["advisory_id"] == "VCDSA38017", bc["advisory_id"])
+    check("cve_ids parsed from comma-separated affectedCve", bc["cve_ids"] == [
+        "CVE-2026-41703", "CVE-2026-41709", "CVE-2026-47876", "CVE-2026-59309", "CVE-2026-59310",
+    ], bc["cve_ids"])
+    check("published_date from '29 July 2026'", str(bc["published_date"]) == "2026-07-29",
+          bc["published_date"])
+    bc_na = transform.parse_broadcom_advisory(bc_fixture["without_cves"])
+    check("'N/A' affectedCve -> empty cve_ids, row still kept", bc_na["cve_ids"] == [],
+          bc_na["cve_ids"])
+
+    print("\nparse_ibm_advisory")
+    ibm_fixture = load("ibm_advisory_sample.json")
+    ibm_bundle = transform.parse_ibm_advisory(ibm_fixture["bundled_cves"])
+    check("advisory_id is nid", ibm_bundle["advisory_id"] == "7284282", ibm_bundle["advisory_id"])
+    check(
+        "cve_ids extracted from field_summary despite blank field_cve_id",
+        ibm_bundle["cve_ids"] == ["CVE-2026-54225", "CVE-2026-57819", "CVE-2026-64958"],
+        ibm_bundle["cve_ids"],
+    )
+    check("severity is the vendor's text label", ibm_bundle["severity"] == "Low",
+          ibm_bundle["severity"])
+    ibm_single = transform.parse_ibm_advisory(ibm_fixture["single_cve"])
+    check("single-CVE case also extracts via regex", ibm_single["cve_ids"] == ["CVE-2026-14525"],
+          ibm_single["cve_ids"])
+
     print("\nedge cases")
     check("empty options -> None", transform.parse_nvd_ssvc(
         {"id": "CVE-2026-0002", "metrics": {"ssvcV203": [{"ssvcData": {"options": []}}]}}) is None)

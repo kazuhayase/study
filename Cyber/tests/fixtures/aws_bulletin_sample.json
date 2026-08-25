@@ -1,0 +1,14 @@
+{
+  "with_cves": {
+    "title": "CVE-2026-13762 and CVE-2026-13763 - Issue with HTTP/2 multi-frame request body inspection in AWS WAF",
+    "description": "<p><b>Bulletin ID:</b> 2026-048-AWS<br> <b>Scope:</b> AWS<br> <b>Content Type:</b> Important (requires attention)<br> <b>Publication Date:</b> 06/29/2026 11:15 PM PDT</p> <p><b>Description:</b></p> <p>AWS WAF is a web application firewall that monitors the HTTP(S) requests that are forwarded to your protected web application resources. We identified CVE-2026-13762 and CVE-2026-13763, which are issues affecting HTTP/2 multi-frame request body inspection by AWS WAF.</p>",
+    "link": "https://aws.amazon.com/security/security-bulletins/rss/2026-048-aws/",
+    "pubDate": "Thu, 20 Aug 2026 21:35:57 +0000"
+  },
+  "without_cves": {
+    "title": "Ongoing updates on Copy.fail and variants",
+    "description": "<p><b>Bulletin ID:</b> 2026-030-AWS<br> <b>Scope:</b> AWS<br> <b>Content Type:</b> Important (requires attention)<br> <b>Publication Date:</b> 05/13/2026 10:00 PM PDT</p> <p><b>This is an ongoing issue. This bulletin will be updated as more information becomes available.</b></p> <p>AWS is aware of the copy.fail or DirtyFrag class of issues - a set of privilege escalation issues affecting the Linux Kernel.</p>",
+    "link": "https://aws.amazon.com/security/security-bulletins/rss/2026-030-aws/",
+    "pubDate": "Thu, 20 Aug 2026 21:35:57 +0000"
+  }
+}
