@@ -934,3 +934,56 @@ APIキーのファイル読み取り/環境変数優先のいずれも正しく�
 それ以外、当面のタスクは完了。継続改善はこのチャットで行う。
 
 関連: [[project-repo-setup]] [[project-security-scan]]
+
+---
+
+## 2026-09-10: README 全面改訂 + IBM の不正 CVE ID フィルタ
+
+### README.md を9月時点の実態に書き直し（フロー図追加）
+
+8/25 で止まっていた `README.md` を現状に合わせて全面改訂:
+
+- 役割を2つ明記（BOD 判定 / ベンダーアドバイザリ集約）、最終成果物は Snowflake 向け4CSV
+- **データフロー図を新設**（縦フロー主体。CJK 幅ずれを避けて罫線囲みは不使用）:
+  8ソース → bronze → silver → (gold: BOD系) / (vendor_advisory: gold に入れない) → 4CSV → Snowflake
+- データソースを4→**8**（ベンダー4種の取得方法と制約を表に）
+- `bronze.vendor_advisories` / `msrc_product` / `broadcom_advisory_page`、migration 001-009 対応表
+- **Snowflake 向け CSV セクション新設**（4ファイルの元テーブル・列数・full/incremental・カーソル・取り込み定義）
+- コマンドを `python -m vulndb ...` に統一（コンソールスクリプト未登録）、`daily`/`compact`/`export-snowflake` 追加
+- 運用を「GitHub Actions」→「運用担当PCで `daily.bat`」に修正
+
+ついでに `OPERATIONS.md` の KEV 列数を 11→**12**（`forensicTriage` 追加分。ファイル内で不整合だった）。
+
+### IBM: 不正な CVE ID（`CVE-0000-00000` 等）をフィルタ
+
+9/3 の実行ログに出ていた
+`ibm: gap-fill batch ... (CVE-0000-00000) hit the 2000-result cap on a single CVE` の原因と対策。
+
+**原因**: `CVE-0000-00000` は **IBM の datalist インデックス（`results.cve_ids`）に実在する**
+プレースホルダ。取り込みフィルタ `_CVE_ID_RE = ^CVE-\d{4}-\d+$` が緩く、これを通していた。
+`q=CVE-0000-00000` は IBM 側で数千件マッチ → 2,000 cap 到達 → 1 CVE なので分割不能 →
+毎回 `rows_skipped` に計上される、という無害だが無駄なループになっていた。
+
+**対策**（`sources/ibm.py`）: `_CVE_ID_RE` を capture 付きに変え、`_is_valid_cve_id()` を新設。
+**年 >= 1999 かつ serial > 0** を要求（CVE 採番は 1999 開始。serial 0 は存在しない）。
+`_fetch_known_cve_ids()` のフィルタをこれに差し替え。
+
+**ライブ検証**: 実際の datalist 23,874 件に対し、新フィルタが追加で落とすのは
+**`CVE-0000-00000` と `CVE-0201-0769`（年 0201）の2件だけ**。正規の CVE は1件も落ちない。
+
+`tests/test_ibm_batching.py` に `_is_valid_cve_id` の8ケースを追加。全6テスト通過。
+
+#### 見送った案（ユーザーと相談のうえ）
+
+「正当な1CVEで 2,000 超」への追加分割（日付キーセット・製品名 AND・datalist 個別取得）は
+**保留**。実測の密な CVE は 37〜236件で、1脆弱性に IBM が 2,000本の別々の報を出すことは
+現実にはほぼ起きない。現状の末端処理（最新 2,000 件を保持して skip 計上）で実害は小さい。
+実在 CVE が末端に落ちた実績が出たら、まず `q=` が日付境界構文を持つかプローブして採否判断。
+（`BACKLOG.md` には未記載。必要なら追記）
+
+### 未了
+
+- **E: へのバックアップ**（今回の ibm.py / test / README / OPERATIONS 改訂分）。
+  E: 未接続のため保留。再接続時に `robocopy ... /XD .venv data __pycache__ .pytest_cache python`
+
+関連: [[project-repo-setup]] [[project-security-scan]]
