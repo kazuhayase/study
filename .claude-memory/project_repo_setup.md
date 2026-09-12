@@ -91,10 +91,13 @@ git(study・private リポ含めどこにも)には一切追跡されていな�
 `.github/workflows/cyber-vulndb-update.yml`(studyリポ内、CI用)は現状放置 — Cyber/ が
 study から消えたため**このワークフローは次回実行時に失敗する見込み**、要対応。
 
-## Ubuntu機(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
+## Debian機・mnt-ubuntuパス(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
 
-このマシン(ユーザー`kazu`、マウントパスに`kazuyoshi`を含む)は上記「他マシン対応」が未実施の
-まま長期間放置されており、以下2つの問題が重なっていた。
+**OSはDebian 12**(`/etc/issue`で確認済み)。マウントパスに`ubuntu`を含むため当初Ubuntuと
+誤認したが誤り。ユーザーは`kazu`、リポジトリパスに`kazuyoshi`を含む。CLAUDE.mdの既存「Debian」欄
+は`~/git/study`前提だが、**この機体は`/mnt/ubuntu/home/kazuyoshi/github/study`という別パス**
+にクローンされている、同じくDebianの別クローン(Windowsのhaya001/kazuyの食い違いと同種の状況)。
+このマシンは上記「他マシン対応」が未実施のまま長期間放置されており、以下2つの問題が重なっていた。
 
 ### 1. `.git`オブジェクトの部分的破損 + master乖離(2017年まで遡及)
 - `git fetch`/`git fsck`で4個のloose objectが破損(`3834b479`,`5e33d4cc`,`b4e174e9`,`de01ed87`、
@@ -122,9 +125,10 @@ study から消えたため**このワークフローは次回実行時に失敗
   `texput.*`/`tmp.pdf`・emacs autosaveのみだったため削除した。private repo側
   (`kazuhayase/actuary`)は`seiho2-anaume`/`seiho2-goroawase`/`seiho2-mikiwame`/`seiho2-yosou`
   等、旧study/actuaryには無い大量の新規コンテンツを含み、明らかに旧nested分より進んでいる。
-- **本機はDebianではなくWindows方式を採用した唯一のマシン**という扱いになる。今後
-  「他マシンと同様に」と言われた場合、Mac/Debianのネスト方式ではなく本機のsibling方式を
-  指すかは都度確認すること(ユーザーの選択次第で変わり得る)。
+- **本機(Debianだが、他のMac/Debianのネスト方式ではなくWindows方式=sibling clone)を採用した
+  唯一のマシン**という扱いになる。今後「他マシンと同様に」と言われた場合、OSがDebianだからと
+  いってMac/Debianのネスト方式を指すとは限らない(ユーザーがこのセッションで明示的にWindows方式
+  を選んだ)ため、都度確認すること(ユーザーの選択次第で変わり得る)。
 
 **Why:** 長期間同期していなかったマシンを安全に復旧するため、Windows機で確立済みの
 「backup branch + reset --mixed(--hardは避ける)」手順を踏襲した。漏洩トークンを含む古い履歴を
