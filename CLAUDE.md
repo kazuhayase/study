@@ -36,6 +36,7 @@ auto-loading and version control both work:
 | **Mac** | `ln -s ~/github/study/.claude-memory ~/.claude/projects/-Users-kazu-github-study/memory` (done) |
 | **Debian** | `ln -s ~/git/study/.claude-memory ~/.claude/projects/-home-kazu-git-study/memory` |
 | **Windows** | `cmd /c mklink /D "%USERPROFILE%\.claude\projects\-C--Users-kazuy-GitHub-study\memory" "%USERPROFILE%\GitHub\study\.claude-memory"` (needs an admin shell or Developer Mode) |
+| **Ubuntu (mnt-ubuntu)** | `ln -s /mnt/ubuntu/home/kazuyoshi/github/study/.claude-memory /home/kazu/.claude/projects/-mnt-ubuntu-home-kazuyoshi-github-study/memory` (done 2026-09-12) |
 | **Cowork** | Use `.claude-memory/` directly — the OS-level `.claude\` path cannot be mounted into a session. |
 
 If the symlink cannot be created, just read and write `.claude-memory/` directly; nothing breaks

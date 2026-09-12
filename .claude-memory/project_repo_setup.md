@@ -90,3 +90,47 @@ git(study・private リポ含めどこにも)には一切追跡されていな�
 明示的に除外。バックアップ・同期は git に頼らず別手段を検討する方針(ユーザー談、未確定)。
 `.github/workflows/cyber-vulndb-update.yml`(studyリポ内、CI用)は現状放置 — Cyber/ が
 study から消えたため**このワークフローは次回実行時に失敗する見込み**、要対応。
+
+## Ubuntu機(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
+
+このマシン(ユーザー`kazu`、マウントパスに`kazuyoshi`を含む)は上記「他マシン対応」が未実施の
+まま長期間放置されており、以下2つの問題が重なっていた。
+
+### 1. `.git`オブジェクトの部分的破損 + master乖離(2017年まで遡及)
+- `git fetch`/`git fsck`で4個のloose objectが破損(`3834b479`,`5e33d4cc`,`b4e174e9`,`de01ed87`、
+  いずれも2024-08-17付、内容不明の古いblob/tree)と判明。破損objがfetchのthin-pack差分ベースとして
+  要求され、通常のfetchが恒久的に失敗する状態だった。
+- 加えて、このmasterはCyber/分離(2026-08-25)より前の**history-rewrite前の系統**のままで、
+  origin/masterと共通祖先が非常に古く(2017年台)、`work/twitter-bot/`の**漏洩トークン**と
+  旧actuaryの教科書・過去問PDFがローカル履歴に残存していた([[project-windows-environment]]の
+  「2026-08-02のmaster乖離」と同種の状態)。
+- **対処**: 破損4オブジェクトを退避 → 別ディレクトリにfresh clone → `git bundle create`で
+  origin/masterの完全な履歴を取得 → `git fetch <bundle> +master:refs/remotes/origin/master`で
+  ネットワーク越しのhave-negotiationを回避して`origin/master`参照を正しい値に更新 →
+  `git branch backup/master-prerewrite-20260912`(ローカル限定、originへpushしない)で退避 →
+  `git reset --mixed origin/master` + `git checkout -- .`で同期(`--hard`は使わずuntracked化した
+  実ファイルを保全)。結果、masterはorigin/masterに一致、`actuary/`実ファイルはuntrackedとして
+  disk上に残った。
+
+### 2. actuaryの配置は「Debian: study/actuary へネスト」ではなく sibling clone を選択
+- 上記メモの「他マシン対応」ではDebianも`study/actuary`へネストする指示だったが、**ユーザーが
+  このセッションで明示的にWindows方式(sibling clone: `~/github/actuary`)を指定**したため、
+  `git clone git@github.com:kazuhayase/actuary.git` を `~/github/actuary`(studyの外、
+  siblingディレクトリ)に実行。
+- 旧`study/actuary/`(174ファイル・98MB、当時のuntracked残骸)と`diff -rq`で照合した結果、
+  独自価値のあるファイルは無く、LaTeXビルド成果物(aux/fls/synctex.gz)・`GOMI/`(ゴミ)・
+  `texput.*`/`tmp.pdf`・emacs autosaveのみだったため削除した。private repo側
+  (`kazuhayase/actuary`)は`seiho2-anaume`/`seiho2-goroawase`/`seiho2-mikiwame`/`seiho2-yosou`
+  等、旧study/actuaryには無い大量の新規コンテンツを含み、明らかに旧nested分より進んでいる。
+- **本機はDebianではなくWindows方式を採用した唯一のマシン**という扱いになる。今後
+  「他マシンと同様に」と言われた場合、Mac/Debianのネスト方式ではなく本機のsibling方式を
+  指すかは都度確認すること(ユーザーの選択次第で変わり得る)。
+
+**Why:** 長期間同期していなかったマシンを安全に復旧するため、Windows機で確立済みの
+「backup branch + reset --mixed(--hardは避ける)」手順を踏襲した。漏洩トークンを含む古い履歴を
+誤ってoriginへpushしないことが最優先事項だった。
+
+**How to apply:** 他の未同期マシン(存在する場合)を復旧する際も、まず`git fsck`と
+`git log --oneline <local>..<remote> / <remote>..<local>`で乖離の有無と規模を確認し、
+乖離があれば安易にmergeせず、このセクションの手順(bundle経由のorigin/master取得 →
+backup branch → reset --mixed → checkout --)を再利用する。
