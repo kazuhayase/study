@@ -91,12 +91,15 @@ git(study・private リポ含めどこにも)には一切追跡されていな�
 `.github/workflows/cyber-vulndb-update.yml`(studyリポ内、CI用)は現状放置 — Cyber/ が
 study から消えたため**このワークフローは次回実行時に失敗する見込み**、要対応。
 
-## Debian機・mnt-ubuntuパス(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
+## Debian/Ubuntuデュアルブート機・mnt-ubuntuパス(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
 
-**OSはDebian 12**(`/etc/issue`で確認済み)。マウントパスに`ubuntu`を含むため当初Ubuntuと
-誤認したが誤り。ユーザーは`kazu`、リポジトリパスに`kazuyoshi`を含む。CLAUDE.mdの既存「Debian」欄
-は`~/git/study`前提だが、**この機体は`/mnt/ubuntu/home/kazuyoshi/github/study`という別パス**
-にクローンされている、同じくDebianの別クローン(Windowsのhaya001/kazuyの食い違いと同種の状況)。
+このマシンは**Debian 12とUbuntuのデュアルブート**で、`github`フォルダは両OSから見える
+**共有パーティション**上にある(ユーザー談)。今回のセッションはDebian側で起動しており、
+その共有パーティションが`/mnt/ubuntu/home/kazuyoshi/github/study`にマウントされていた
+(マウントパスの`ubuntu`はこのため。OS名がUbuntuという意味ではない — `/etc/issue`で
+Debian 12を確認済み)。**Ubuntu側で起動した場合のマウントパスは未確認**(ユーザーに確認予定、
+おそらく`/home/kazuyoshi/github`がネイティブhomeの可能性がある)。CLAUDE.mdの既存「Debian」欄
+は`~/git/study`前提で、これは全くの別クローン(Windowsのhaya001/kazuyの食い違いと同種の状況)。
 このマシンは上記「他マシン対応」が未実施のまま長期間放置されており、以下2つの問題が重なっていた。
 
 ### 1. `.git`オブジェクトの部分的破損 + master乖離(2017年まで遡及)

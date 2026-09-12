@@ -36,7 +36,7 @@ auto-loading and version control both work:
 | **Mac** | `ln -s ~/github/study/.claude-memory ~/.claude/projects/-Users-kazu-github-study/memory` (done) |
 | **Debian** | `ln -s ~/git/study/.claude-memory ~/.claude/projects/-home-kazu-git-study/memory` |
 | **Windows** | `cmd /c mklink /D "%USERPROFILE%\.claude\projects\-C--Users-kazuy-GitHub-study\memory" "%USERPROFILE%\GitHub\study\.claude-memory"` (needs an admin shell or Developer Mode) |
-| **Debian (mnt-ubuntu path)** | Also Debian 12, but a different clone path than the "Debian" row above: `ln -s /mnt/ubuntu/home/kazuyoshi/github/study/.claude-memory /home/kazu/.claude/projects/-mnt-ubuntu-home-kazuyoshi-github-study/memory` (done 2026-09-12) |
+| **Debian/Ubuntu dual-boot (shared `github/` partition, Debian-side mount)** | Different clone from the "Debian" row above. `github/` sits on a partition shared between this machine's Debian and Ubuntu boots; under Debian it's mounted at `/mnt/ubuntu/...` (Ubuntu-side mount path not yet confirmed): `ln -s /mnt/ubuntu/home/kazuyoshi/github/study/.claude-memory /home/kazu/.claude/projects/-mnt-ubuntu-home-kazuyoshi-github-study/memory` (done 2026-09-12) |
 | **Cowork** | Use `.claude-memory/` directly — the OS-level `.claude\` path cannot be mounted into a session. |
 
 If the symlink cannot be created, just read and write `.claude-memory/` directly; nothing breaks
