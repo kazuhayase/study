@@ -137,6 +137,19 @@ Debian 12を確認済み)。**Ubuntu側で起動した場合のマウントパ�
 「backup branch + reset --mixed(--hardは避ける)」手順を踏襲した。漏洩トークンを含む古い履歴を
 誤ってoriginへpushしないことが最優先事項だった。
 
+### 3. このマシンのBIOS設定が勝手に戻る問題(2026-10-03 調査)
+- 機体: Mouse Computer H110M-S01(OEM)、BIOS 1.07(2016-07-19、更新なし)。症状は「SecureBoot有効化・
+  UEFIブート順変更・Primary DisplayがPEGに戻る」=BIOSデフォルトへのリセットそのもの。
+- **fwupdは犯人ではない**(get-historyが空、journalにもデーモン起動/停止のみ)。OSアップデートでは
+  SecureBoot/PEGは変わらない。ブート順だけはshim/grub更新時のgrub-installがefibootmgrで書き換え得る
+  (対策: `grub2/update_nvram` を false に。**未実施**)。
+- **有力原因(ユーザー談)**: サスペンドから復帰できず電源長押しで強制OFF → 次回起動でBIOSが2〜3回
+  自動再起動 → その間に設定がデフォルトへ。BIOSのSaveが不安定なことも過去にあり、CMOS電池は交換済み。
+- **対処(2026-10-03実施)**: `systemctl mask sleep/suspend/hibernate/hybrid-sleep.target`、
+  GNOME(ユーザー・GDM両方)の sleep-inactive-*-type を 'nothing'。`CanSuspend` は "no"。
+  GNOMEの電源設定から自動サスペンド項目が消えるのはmaskの結果で正常。
+- 経過観察中。再発時は `mokutil --sb-state` と `efibootmgr -v` を取り、直前の起動経緯と併せて切り分ける。
+
 **How to apply:** 他の未同期マシン(存在する場合)を復旧する際も、まず`git fsck`と
 `git log --oneline <local>..<remote> / <remote>..<local>`で乖離の有無と規模を確認し、
 乖離があれば安易にmergeせず、このセクションの手順(bundle経由のorigin/master取得 →
