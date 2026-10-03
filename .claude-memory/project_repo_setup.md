@@ -142,7 +142,7 @@ Debian 12を確認済み)。**Ubuntu側で起動した場合のマウントパ�
   UEFIブート順変更・Primary DisplayがPEGに戻る」=BIOSデフォルトへのリセットそのもの。
 - **fwupdは犯人ではない**(get-historyが空、journalにもデーモン起動/停止のみ)。OSアップデートでは
   SecureBoot/PEGは変わらない。ブート順だけはshim/grub更新時のgrub-installがefibootmgrで書き換え得る
-  (対策: `grub2/update_nvram` を false に。**未実施**)。
+  (対策: `grub2/update_nvram` を false に。**2026-10-03実施**: `debconf-set-selections` で false 設定、`debconf-show grub-efi-amd64` で確認済み。以後 grub-install は `--no-nvram` 相当で、GRUB更新でブートエントリが消えた場合は efibootmgr で手動復旧)。
 - **有力原因(ユーザー談)**: サスペンドから復帰できず電源長押しで強制OFF → 次回起動でBIOSが2〜3回
   自動再起動 → その間に設定がデフォルトへ。BIOSのSaveが不安定なことも過去にあり、CMOS電池は交換済み。
 - **対処(2026-10-03実施)**: `systemctl mask sleep/suspend/hibernate/hybrid-sleep.target`、
