@@ -154,3 +154,12 @@ Debian 12を確認済み)。**Ubuntu側で起動した場合のマウントパ�
 `git log --oneline <local>..<remote> / <remote>..<local>`で乖離の有無と規模を確認し、
 乖離があれば安易にmergeせず、このセクションの手順(bundle経由のorigin/master取得 →
 backup branch → reset --mixed → checkout --)を再利用する。
+
+## Synergy 3 on the Debian/Ubuntu dual-boot machine (2026-10-03)
+
+- Debian 12 (bookworm) cannot install `synergy-3.7.2-linux-noble-x86_64.deb`: it depends on `libei1`,
+  which exists only in Debian 13 / Ubuntu 24.04+. A `debian-13/` build exists upstream.
+- Synergy 3 uses its own protocol, so input-leap / Synergy 1.x are not drop-in clients for a Synergy 3 server.
+- **Current workaround:** the Windows (server) side was set to *not* require authentication and the
+  connection worked. Keep this to trusted LAN only. Upgrading to Debian 13 was deliberately deferred
+  because of the unresolved BIOS-reset / suspend problems above; the Ubuntu boot can install the noble .deb as-is.
