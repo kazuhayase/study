@@ -120,3 +120,76 @@ study(public)側の「職場情報を公開リポに書かない」制約も関�
 
 **今後**: `data/`(DBファイル)・`.venv/`・`logs/` は引き続き git 管理外。
 コードとメモのみが `kazuhayase/Cyber` で追跡される。
+
+## Debian/Ubuntuデュアルブート機・mnt-ubuntuパス(`/mnt/ubuntu/home/kazuyoshi/github/study`)のセットアップ(2026-09-12)
+
+このマシンは**Debian 12とUbuntuのデュアルブート**で、`github`フォルダは両OSから見える
+**共有パーティション**上にある(ユーザー談)。今回のセッションはDebian側で起動しており、
+その共有パーティションが`/mnt/ubuntu/home/kazuyoshi/github/study`にマウントされていた
+(マウントパスの`ubuntu`はこのため。OS名がUbuntuという意味ではない — `/etc/issue`で
+Debian 12を確認済み)。**Ubuntu側で起動した場合のマウントパスは未確認**(ユーザーに確認予定、
+おそらく`/home/kazuyoshi/github`がネイティブhomeの可能性がある)。CLAUDE.mdの既存「Debian」欄
+は`~/git/study`前提で、これは全くの別クローン(Windowsのhaya001/kazuyの食い違いと同種の状況)。
+このマシンは上記「他マシン対応」が未実施のまま長期間放置されており、以下2つの問題が重なっていた。
+
+### 1. `.git`オブジェクトの部分的破損 + master乖離(2017年まで遡及)
+- `git fetch`/`git fsck`で4個のloose objectが破損(`3834b479`,`5e33d4cc`,`b4e174e9`,`de01ed87`、
+  いずれも2024-08-17付、内容不明の古いblob/tree)と判明。破損objがfetchのthin-pack差分ベースとして
+  要求され、通常のfetchが恒久的に失敗する状態だった。
+- 加えて、このmasterはCyber/分離(2026-08-25)より前の**history-rewrite前の系統**のままで、
+  origin/masterと共通祖先が非常に古く(2017年台)、`work/twitter-bot/`の**漏洩トークン**と
+  旧actuaryの教科書・過去問PDFがローカル履歴に残存していた([[project-windows-environment]]の
+  「2026-08-02のmaster乖離」と同種の状態)。
+- **対処**: 破損4オブジェクトを退避 → 別ディレクトリにfresh clone → `git bundle create`で
+  origin/masterの完全な履歴を取得 → `git fetch <bundle> +master:refs/remotes/origin/master`で
+  ネットワーク越しのhave-negotiationを回避して`origin/master`参照を正しい値に更新 →
+  `git branch backup/master-prerewrite-20260912`(ローカル限定、originへpushしない)で退避 →
+  `git reset --mixed origin/master` + `git checkout -- .`で同期(`--hard`は使わずuntracked化した
+  実ファイルを保全)。結果、masterはorigin/masterに一致、`actuary/`実ファイルはuntrackedとして
+  disk上に残った。
+
+### 2. actuaryの配置は「Debian: study/actuary へネスト」ではなく sibling clone を選択
+- 上記メモの「他マシン対応」ではDebianも`study/actuary`へネストする指示だったが、**ユーザーが
+  このセッションで明示的にWindows方式(sibling clone: `~/github/actuary`)を指定**したため、
+  `git clone git@github.com:kazuhayase/actuary.git` を `~/github/actuary`(studyの外、
+  siblingディレクトリ)に実行。
+- 旧`study/actuary/`(174ファイル・98MB、当時のuntracked残骸)と`diff -rq`で照合した結果、
+  独自価値のあるファイルは無く、LaTeXビルド成果物(aux/fls/synctex.gz)・`GOMI/`(ゴミ)・
+  `texput.*`/`tmp.pdf`・emacs autosaveのみだったため削除した。private repo側
+  (`kazuhayase/actuary`)は`seiho2-anaume`/`seiho2-goroawase`/`seiho2-mikiwame`/`seiho2-yosou`
+  等、旧study/actuaryには無い大量の新規コンテンツを含み、明らかに旧nested分より進んでいる。
+- **本機(Debianだが、他のMac/Debianのネスト方式ではなくWindows方式=sibling clone)を採用した
+  唯一のマシン**という扱いになる。今後「他マシンと同様に」と言われた場合、OSがDebianだからと
+  いってMac/Debianのネスト方式を指すとは限らない(ユーザーがこのセッションで明示的にWindows方式
+  を選んだ)ため、都度確認すること(ユーザーの選択次第で変わり得る)。
+
+**Why:** 長期間同期していなかったマシンを安全に復旧するため、Windows機で確立済みの
+「backup branch + reset --mixed(--hardは避ける)」手順を踏襲した。漏洩トークンを含む古い履歴を
+誤ってoriginへpushしないことが最優先事項だった。
+
+### 3. このマシンのBIOS設定が勝手に戻る問題(2026-10-03 調査)
+- 機体: Mouse Computer H110M-S01(OEM)、BIOS 1.07(2016-07-19、更新なし)。症状は「SecureBoot有効化・
+  UEFIブート順変更・Primary DisplayがPEGに戻る」=BIOSデフォルトへのリセットそのもの。
+- **fwupdは犯人ではない**(get-historyが空、journalにもデーモン起動/停止のみ)。OSアップデートでは
+  SecureBoot/PEGは変わらない。ブート順だけはshim/grub更新時のgrub-installがefibootmgrで書き換え得る
+  (対策: `grub2/update_nvram` を false に。**2026-10-03実施**: `debconf-set-selections` で false 設定、`debconf-show grub-efi-amd64` で確認済み。以後 grub-install は `--no-nvram` 相当で、GRUB更新でブートエントリが消えた場合は efibootmgr で手動復旧)。
+- **有力原因(ユーザー談)**: サスペンドから復帰できず電源長押しで強制OFF → 次回起動でBIOSが2〜3回
+  自動再起動 → その間に設定がデフォルトへ。BIOSのSaveが不安定なことも過去にあり、CMOS電池は交換済み。
+- **対処(2026-10-03実施)**: `systemctl mask sleep/suspend/hibernate/hybrid-sleep.target`、
+  GNOME(ユーザー・GDM両方)の sleep-inactive-*-type を 'nothing'。`CanSuspend` は "no"。
+  GNOMEの電源設定から自動サスペンド項目が消えるのはmaskの結果で正常。
+- 経過観察中。再発時は `mokutil --sb-state` と `efibootmgr -v` を取り、直前の起動経緯と併せて切り分ける。
+
+**How to apply:** 他の未同期マシン(存在する場合)を復旧する際も、まず`git fsck`と
+`git log --oneline <local>..<remote> / <remote>..<local>`で乖離の有無と規模を確認し、
+乖離があれば安易にmergeせず、このセクションの手順(bundle経由のorigin/master取得 →
+backup branch → reset --mixed → checkout --)を再利用する。
+
+## Synergy 3 on the Debian/Ubuntu dual-boot machine (2026-10-03)
+
+- Debian 12 (bookworm) cannot install `synergy-3.7.2-linux-noble-x86_64.deb`: it depends on `libei1`,
+  which exists only in Debian 13 / Ubuntu 24.04+. A `debian-13/` build exists upstream.
+- Synergy 3 uses its own protocol, so input-leap / Synergy 1.x are not drop-in clients for a Synergy 3 server.
+- **Current workaround:** the Windows (server) side was set to *not* require authentication and the
+  connection worked. Keep this to trusted LAN only. Upgrading to Debian 13 was deliberately deferred
+  because of the unresolved BIOS-reset / suspend problems above; the Ubuntu boot can install the noble .deb as-is.
