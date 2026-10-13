@@ -90,3 +90,33 @@ git(study・private リポ含めどこにも)には一切追跡されていな�
 明示的に除外。バックアップ・同期は git に頼らず別手段を検討する方針(ユーザー談、未確定)。
 `.github/workflows/cyber-vulndb-update.yml`(studyリポ内、CI用)は現状放置 — Cyber/ が
 study から消えたため**このワークフローは次回実行時に失敗する見込み**、要対応。
+
+**この課題は後日 `cyber-vulndb-update.yml` の削除で解消済み**(commit 592b566)。
+
+## Cyber/ を再度 private リポへ分離(2026-10-13、方針転換)
+
+**上記の「git に一切載せない」方針を覆し、`Cyber/` 専用の private リポジトリ
+`kazuhayase/Cyber` を新設・push した。** 2026-08-25 時点とは別の判断軸:
+ローカルの変更追跡(`git diff`/`git revert`)自体に価値があり、private リポなら
+study(public)側の「職場情報を公開リポに書かない」制約も関係なくバックアップ代わりに使える、
+という2点をユーザーと確認した上での再開。過去に一度撤回した経緯があることはユーザーに
+提示し、「今回は進める」という明示判断を得てから実施(撤回の具体的な理由は過去メモに
+記録が無く不明)。
+
+実施内容:
+- `Cyber/.gitignore` を新規作成(`data/`[11GB]・`logs/`・`.venv/`・`*.duckdb`・
+  `.claude/scheduled_tasks.lock` 等を除外)
+- `Cyber/` を**独立した git リポジトリとして** `git init`(study とは親子関係を持たない。
+  study 側 `.gitignore` の `/Cyber/` 全除外とは無関係に併存できる)
+- `gh repo create kazuhayase/Cyber --private --source=. --remote=origin --push`
+- **`Cyber/vulndb` のプロジェクトメモ(`project_cyber_vulndb.md`)を study の
+  `.claude-memory/` から `Cyber/.claude-memory/` へ移行**(二重管理を避けるため、
+  study 側は削除し `MEMORY.md` にも移行先のみ記載)。OS側メモリパスの symlink
+  (`~/.claude/projects/C--Users-haya001-github-study-Cyber/memory` →
+  `Cyber/.claude-memory`)も新設(study 本体とは別プロジェクトとして Claude Code が
+  認識する cwd のため、符号化パスも別物)
+- リポジトリ名は `Cyber`(大文字、ユーザー選択)。旧 `kazuhayase/cyber`(小文字、
+  2026-08-25に削除済み)との重複は無く新規作成できた
+
+**今後**: `data/`(DBファイル)・`.venv/`・`logs/` は引き続き git 管理外。
+コードとメモのみが `kazuhayase/Cyber` で追跡される。
