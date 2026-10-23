@@ -58,3 +58,10 @@ Dependabot API は OSV API で代替。`gh api repos/kazuhayase/study/dependabot
 **Why:** セキュリティ対応を完全に自動化し、ユーザーが依頼しなくても最新の脆弱性に対応し続けるため。
 
 **How to apply:** 手動でスキャンを依頼された場合も同じ OSV API 手法を使う。既知リスクテーブルは毎回スキャン後に更新する。
+
+## eMudhra/emSign 中間CA秘密鍵漏洩対応 (2026-10-23, PR kazuhayase/study#6)
+- 修正版: certifi 2026.10.19（10.18は不可）・pip 26.2.2（pip同梱certifiのためcertifi単独更新では不十分）・uv ≥0.13.4・pixi ≥0.82.1・conda ≥26.9.4・Node.js 22.23.4/24.22.1/26.12.1。sigstore 4.5.1は二次情報で下限とされるが公式CHANGELOGに記載なし・リポジトリ未使用
+- リポジトリ内は uv.lock×2 / poetry.lock×4 / requirements.txt×2 / DA-Elyza2024 Dockerfile を更新済み
+- 各マシンの venv・uv・pixi・conda・Node は**未対応**。手順は `scripts/security/ca-trust-2026-10/README.md`（`--require-hashes` 付きブートストラップ、ハッシュはPyPI JSON APIの値）
+- Python 3.13.16 の ensurepip は pip 26.2.1 → 新規 venv は作成直後にブートストラップが必要
+- クラウドセッションでは api.osv.dev / discuss.python.org がネットワークポリシーで遮断される（PyPI・nodejs.org・raw.githubusercontent.com は可）

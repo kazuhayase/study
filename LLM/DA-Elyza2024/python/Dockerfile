@@ -6,6 +6,10 @@ RUN apt-get update --fix-missing && apt-get install -y --fix-missing build-essen
 && apt-get clean 
 #&& rm -rf /var/lib/apt/lists/*
 
+# Upgrade pip (vendored certifi) and certifi first, verified by hash, so the
+# image stops trusting the compromised eMudhra/emSign intermediate CAs.
+COPY bootstrap-requirements.txt /tmp/
+RUN pip install --require-hashes --no-deps --only-binary :all: -r /tmp/bootstrap-requirements.txt
 COPY requirements.txt /tmp/
 #RUN pip install --no-cache-dir -r /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
