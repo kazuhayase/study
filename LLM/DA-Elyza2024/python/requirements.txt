@@ -1,4 +1,6 @@
 beautifulsoup4==4.12.3
+# SECURITY: eMudhra/emSign intermediate CA key compromise (GHSA-6q48-6c7w-9gw2). certifi is transitive (requests/httpx); pin the fixed release.
+certifi==2026.10.19
 # SECURITY: GHSA-f4j7-r4q5-qw2c / CVE-2026-45829 (CRITICAL) - pre-auth code injection via trust_remote_code=True
 # SECURITY: CVE-2026-45833 (HIGH) - authenticated code injection via UPDATE_COLLECTION permission. No fix as of 2026-10-19.
 # No fixed version available as of 2026-10-19 (latest PyPI: 1.5.9). Do NOT use trust_remote_code=True.
