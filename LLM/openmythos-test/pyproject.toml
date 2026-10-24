@@ -5,6 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    # SECURITY: open-mythos==0.5.0 (latest on PyPI) hard-pins torch==2.11.0, which in turn
+    # pins setuptools<82. This forces torch GHSA-rrmf-rvhw-rf47 and setuptools
+    # GHSA-h35f-9h28-mq5c / GHSA-xmj3-9gf7-h52w (both require local access to exploit).
+    # No fix available as of 2026-10-24; re-check when open-mythos releases a new version.
     "open-mythos>=0.5.0",
     "torch>=2.11.0",
 ]
