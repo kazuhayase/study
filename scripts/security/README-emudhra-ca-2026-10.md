@@ -39,7 +39,31 @@ Primary source:
 | Store Python 3.11.9 — certifi | 2024.2.2 | 2026.10.23 |
 | `LLM/act-MLS2024/python/sample-server/.venv` | pip 26.1, no certifi | pip 26.2.2, certifi 2026.10.23 |
 | `LLM/DA-Elyza2024/python/sample-server/.venv` | pip 26.1, no certifi | pip 26.2.2, certifi 2026.10.23 |
+| poetry cache venv `llm-server-UzOFBbEr-py3.11` | pip 26.1, no certifi | pip 26.2.2, certifi 2026.10.23 |
+| poetry cache venv `llm-server-wJpX9WeI-py3.11` | pip 26.1, no certifi | pip 26.2.2, certifi 2026.10.23 |
+| virtualenv (seeds pip into new venvs) | 21.3.0, embeds pip 26.1 | 21.14.13, embeds pip 26.2.2 |
 | Node.js | 24.19.0 | 24.22.1 (npm 11.19.1) |
+
+### Where Store Python hides things
+
+The Store build runs with `%LOCALAPPDATA%` redirected into its own package
+sandbox, so poetry's cache venvs are **not** at the path `poetry config
+virtualenvs.path` reports. They are under:
+
+```
+C:\Users\<user>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\Local\pypoetry\Cache\virtualenvs\
+```
+
+That is 7 levels below the user profile, so a depth-limited `find` misses them.
+Always enumerate with no depth limit:
+
+```bash
+find /c/Users/<user> -name pyvenv.cfg 2>/dev/null
+```
+
+On this machine that yields exactly 4 venvs (2 in-project `.venv`, 2 poetry
+cache). The same redirect applies to virtualenv's seed cache under
+`...\LocalCache\Local\pypa\virtualenv\`.
 
 Repo manifests needed no change from here: `mls-seminar/requirements.txt`
 (certifi==2026.10.23) and `LLM/model-compare/uv.lock` (certifi 2026.10.23) were
@@ -58,14 +82,23 @@ certifi bundle and from Node's bundled roots. The `emSign Root CA - G1` entry
 that remains is one of the unaffected roots that certifi 2026.10.19
 deliberately restored.
 
-## Known residual risk
+## Creating new venvs
 
-The Microsoft Store Python 3.11 ships `ensurepip` with **pip 24.0**, and
-patching it would mean writing into
-`C:\Program Files\WindowsApps\...` (a Store app install). That was left alone.
+There are two independent sources that seed pip into a new venv, and they had
+to be handled separately.
 
-Consequence: a plain `python -m venv` creates a venv with the vulnerable pip
-24.0 again. Use the helper instead:
+**`virtualenv` — fixed.** This is what poetry and pre-commit use. 21.3.0
+embedded pip 26.1 at the newest, so every poetry venv was born vulnerable.
+Upgraded to 21.14.13, which embeds pip 26.2.2. Verified by creating a throwaway
+venv: it now gets pip 26.2.2 with certifi 2026.10.19 and no G3. So
+`virtualenv .venv`, `poetry install` and `pre-commit install` are all safe now.
+
+**`ensurepip` — not fixed.** Store Python 3.11 ships ensurepip with **pip
+24.0**, and patching it would mean writing into
+`C:\Program Files\WindowsApps\...` (a Store app install). That was left alone,
+so a plain `python -m venv` still produces a venv with pip 24.0.
+
+For that case use the helper, or just use `virtualenv` instead:
 
 ```powershell
 ./scripts/security/new-safe-venv.ps1 -Path .venv
@@ -74,6 +107,11 @@ Consequence: a plain `python -m venv` creates a venv with the vulnerable pip
 It pins the pip and certifi wheel SHA256s (cross-checked against the advisory
 and the PyPI JSON API) and installs with `--no-index`, so the stale pip never
 validates a certificate chain.
+
+Note: upgrading virtualenv needs its newer dependencies (`distlib>=0.4.3`,
+`packaging>=26.3`, `python-discovery>=1.6.1`). Installing it with `--no-deps`
+leaves virtualenv broken with `AttributeError: 'PythonInfo' object has no
+attribute 'system_exe'`. Run `pip check` afterwards.
 
 ## How to verify an environment
 

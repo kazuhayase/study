@@ -90,6 +90,15 @@ Debian `ca-certificates`パッケージは20250419~deb12u2のまま(2026-10-24�
   同日のpoetry再作成で既に修正版だったが、Windows機では別実体なので個別対応が必要だった。
 - Node.js **24.19.0 → 要修正**（24.22.1。eMudhra中間鍵のブロックリスト + NSS 3.131.1へのルート更新。
   同リリースにBrotli解凍のRCEも含むため優先度高）
+- **poetryキャッシュvenv 2件（当初見逃した）** — pip 26.1 / certifi未導入（要修正）。
+  `llm-server-UzOFBbEr-py3.11`、`llm-server-wJpX9WeI-py3.11`。
+  **Store版Pythonは`%LOCALAPPDATA%`がパッケージサンドボックスへリダイレクトされる**ため、
+  `poetry config virtualenvs.path`が返すパスには実体が無く、実際は
+  `AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\Local\pypoetry\Cacheirtualenvs\`
+  配下にある（ユーザープロファイルから7階層下 = `find -maxdepth 5`では到達不能）。
+  Debian機メモの「depth制限なしで洗い出す」をWindowsでも踏んだ。
+- **virtualenv 21.3.0（venvへのpip注入元・要修正）** — 同梱pipの最新が26.1だったため、
+  poetry/pre-commitが作るvenvは**生成時点で脆弱**になっていた。21.14.13は pip 26.2.2 を同梱。
 - uv / pixi / conda / sigstore — **このマシンには未インストール（対象外）**
 - Windowsトラストストア(`LocalMachine\Root`,`\CA`,`CurrentUser\Root`,`\CA`,`Disallowed`)
   — eMudhra/emSign証明書が**1件も存在しない**。OS側の対応は不要。
@@ -105,10 +114,21 @@ Debian `ca-certificates`パッケージは20250419~deb12u2のまま(2026-10-24�
 4. 検証: 全certifi束とNodeのバンドルルートから`emSign ECC Root CA - G3`が消えたこと、
    pypi.org / registry.npmjs.org / python.org へのTLSが成功することを確認。
 
+5. poetryキャッシュvenv 2件を同じ`--no-index`手順で修正。
+6. virtualenv 21.3.0 → 21.14.13。これで`virtualenv`/`poetry install`/`pre-commit`が
+   作る新規venvは pip 26.2.2 で生成される（実測確認済み）。
+   **注意: `--no-deps`で入れると壊れる**（`distlib>=0.4.3`/`packaging>=26.3`/
+   `python-discovery>=1.6.1`が必要で、`AttributeError: 'PythonInfo' object has no
+   attribute 'system_exe'`になる）。deps込みで入れて`pip check`で確認すること。
+   なお`pip install --no-index --upgrade virtualenv`はresolverが新しいdepsを見つけられず
+   黙って21.3.0を維持する（"Requirement already satisfied"で終わる）ので、
+   pip/certifi修正後にネットワーク経由で入れるのが正解。
+
 ### Windows固有の残存リスク（重要）
 Store版Python 3.11の`ensurepip`は**pip 24.0を同梱したまま**。修正するには
 `C:\Program Files\WindowsApps\...`（Storeアプリの実体）への書き込みが必要なので手を出していない。
-結果として**素の`python -m venv`は今も脆弱なpip 24.0入りのvenvを作る**。
+結果として**素の`python -m venv`は今も脆弱なpip 24.0入りのvenvを作る**
+（virtualenv経由なら21.14.13で安全なので、`virtualenv .venv`に寄せるのも可）。
 対策として `scripts/security/new-safe-venv.ps1` をリポジトリに追加した（wheelのSHA256固定 +
 `--no-index`導入）。新しいvenvはこれ経由で作ること。
 同ディレクトリの`README-emudhra-ca-2026-10.md`に対応状況と検証コマンドを記録済み。
@@ -126,6 +146,9 @@ Debian機のc978ae8で既に修正済みで、Windows機でも独立に同じバ
 **実際にvenvへインストールして`pip check`で確認する**(編集だけでは互換性問題を検出できない)、
 (5) OSトラストストアに実際に侵害されたルートが含まれているかを確認してから対応の緊急度を
 判断する(存在しないルートを心配して不要なシステム設定変更をしない)、(6) **Windows/Store版Python
-では`ensurepip`の同梱pipが古いまま残るので、venv作成手順そのものを差し替える**(`scripts/security/new-safe-venv.ps1`)、(7) pip 26以降はwheel内から自分自身を
+では`ensurepip`の同梱pipが古いまま残るので、venv作成手順そのものを差し替える**(`scripts/security/new-safe-venv.ps1`)、(7) **venvへpipを注入する経路は`ensurepip`と`virtualenv`の2系統あり、両方確認する**
+(virtualenvの同梱pipが古いとpoetry/pre-commitのvenvが生成時点で脆弱)、(8) **Store版Pythonは
+`%LOCALAPPDATA%`がサンドボックスへリダイレクトされるので、poetry/virtualenvのキャッシュは
+`AppData\Local\Packages\...\LocalCache\Local\`配下を見る**、(9) pip 26以降はwheel内から自分自身を
 インストールしようとすると"To modify pip"で拒否されるので、通常の`python -m venv`で作ってから
 `--no-index`で差し替える方が確実。[[project_security_scan]] [[project_windows_environment]]
