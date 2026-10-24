@@ -1,11 +1,11 @@
 ---
 name: emudhra-emsign-ca-incident-remediation
-description: 2026-10 eMudhra/emSign中間CA秘密鍵漏洩インシデントへの対応(pip/certifi/uv/venv) - Debian機で実施済み
+description: 2026-10 eMudhra/emSign中間CA秘密鍵漏洩インシデントへの対応(pip/certifi/uv/node/venv) - Debian機・Windows機とも実施済み
 metadata:
   node_type: memory
   type: project
   originSessionId: f72ce0e9-0aa1-4705-8324-df7805e32834
-  modified: 2026-10-24T04:25:04.452Z
+  modified: 2026-10-24T07:00:00.000Z
 ---
 
 ## インシデント概要（2026-10-17発覚）
@@ -81,10 +81,51 @@ certifi自身の判断と整合して不要と結論）。
 Debian `ca-certificates`パッケージは20250419~deb12u2のまま(2026-10-24時点で候補バージョンなし
 = まだDebian側のセキュリティ更新が来ていない)ことも確認済み。
 
+## このWindows機での対応（2026-10-24実施）
+
+### 発見した環境
+- Microsoft Store版 Python 3.11.9 — **pip 24.0 / certifi 2024.2.2 / pip同梱certifi 2023.07.22（要修正）**
+- `LLM/act-MLS2024/python/sample-server/.venv`、`LLM/DA-Elyza2024/python/sample-server/.venv`
+  — **pip 26.1 / pip同梱certifi 2026.02.25 / certifiパッケージ未導入（要修正）**。Debian機では
+  同日のpoetry再作成で既に修正版だったが、Windows機では別実体なので個別対応が必要だった。
+- Node.js **24.19.0 → 要修正**（24.22.1。eMudhra中間鍵のブロックリスト + NSS 3.131.1へのルート更新。
+  同リリースにBrotli解凍のRCEも含むため優先度高）
+- uv / pixi / conda / sigstore — **このマシンには未インストール（対象外）**
+- Windowsトラストストア(`LocalMachine\Root`,`\CA`,`CurrentUser\Root`,`\CA`,`Disallowed`)
+  — eMudhra/emSign証明書が**1件も存在しない**。OS側の対応は不要。
+
+### 実施した修正
+1. pip 26.2.2 と certifi 2026.10.23 のwheelを`curl.exe`で取得し、SHA256をローカルで照合
+   （公式advisoryのハッシュ + PyPI JSON APIの両方と一致を確認）。
+2. `pip install --no-index --find-links <dir> --upgrade pip certifi` で
+   Store Python本体 + venv 2件に適用。`--no-index`なので脆弱な旧pipはTLS検証を一切行わない。
+3. Node.js: `winget upgrade --id OpenJS.NodeJS.LTS` で 24.19.0 → 24.22.1（npm 11.17.0 → 11.19.1）。
+   wingetがインストーラのハッシュを検証する。管理者昇格のプロンプトが出るため**2分では終わらず
+   バックグラウンド実行になる**（約5分）。
+4. 検証: 全certifi束とNodeのバンドルルートから`emSign ECC Root CA - G3`が消えたこと、
+   pypi.org / registry.npmjs.org / python.org へのTLSが成功することを確認。
+
+### Windows固有の残存リスク（重要）
+Store版Python 3.11の`ensurepip`は**pip 24.0を同梱したまま**。修正するには
+`C:\Program Files\WindowsApps\...`（Storeアプリの実体）への書き込みが必要なので手を出していない。
+結果として**素の`python -m venv`は今も脆弱なpip 24.0入りのvenvを作る**。
+対策として `scripts/security/new-safe-venv.ps1` をリポジトリに追加した（wheelのSHA256固定 +
+`--no-index`導入）。新しいvenvはこれ経由で作ること。
+同ディレクトリの`README-emudhra-ca-2026-10.md`に対応状況と検証コマンドを記録済み。
+
+### リポジトリ側マニフェスト
+`mls-seminar/requirements.txt`(certifi==2026.10.23)と`LLM/model-compare/uv.lock`は
+Debian機のc978ae8で既に修正済みで、Windows機でも独立に同じバージョンへ到達したため差分なし。
+`LLM/openmythos-test/uv.lock`はupstreamで再生成されており**certifiを含まない**
+（`truststore`解決 = OSストア依存）ので対応不要。
+
 **How to apply:** 今後別マシン(特にWindows機・Mac機)でも同様の手順を踏むこと: (1)
 `pip --version`/`uv --version`で現状確認、(2) venvを`find -iname pyvenv.cfg`で**depth制限なし**
 で網羅的に洗い出す(今回当初`-maxdepth 4`で2件の`.venv`を見逃した)、(3) 必ずPyPI JSON API等で
 ハッシュを独立に再検証してから使う、(4) `pip install -r requirements.txt`のようなテキスト編集後は
 **実際にvenvへインストールして`pip check`で確認する**(編集だけでは互換性問題を検出できない)、
 (5) OSトラストストアに実際に侵害されたルートが含まれているかを確認してから対応の緊急度を
-判断する(存在しないルートを心配して不要なシステム設定変更をしない)。[[project_security_scan]]
+判断する(存在しないルートを心配して不要なシステム設定変更をしない)、(6) **Windows/Store版Python
+では`ensurepip`の同梱pipが古いまま残るので、venv作成手順そのものを差し替える**(`scripts/security/new-safe-venv.ps1`)、(7) pip 26以降はwheel内から自分自身を
+インストールしようとすると"To modify pip"で拒否されるので、通常の`python -m venv`で作ってから
+`--no-index`で差し替える方が確実。[[project_security_scan]] [[project_windows_environment]]
