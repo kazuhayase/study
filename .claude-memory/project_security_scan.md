@@ -33,8 +33,9 @@ Dependabot API は OSV API で代替。`gh api repos/kazuhayase/study/dependabot
 
 | パッケージ | バージョン | CVE | 状況 |
 |---|---|---|---|
-| chromadb | 1.5.9 | CVE-2026-45829 (CRITICAL) + CVE-2026-45833 (HIGH) | 2026-10-24時点で両方とも修正版なし。trust_remote_code=True を使わなければ攻撃不可。PyPI新バージョンが出たらアップグレード。 |
-| axios | ^1.20.0 (3ファイル, 2026-10-24に1.16.1から更新) | 21件の新規advisory | 1.16.1は21件のadvisoryで脆弱と判明(2026-10-24)。1.20.0で解消。次回スキャンで引き続き安全か確認する。 |
+| chromadb | 1.5.9 | CVE-2026-45829 (CRITICAL) + CVE-2026-45833 (HIGH) | 2026-10-26時点で両方とも修正版なし。trust_remote_code=True を使わなければ攻撃不可。PyPI新バージョンが出たらアップグレード。 |
+| axios | ^1.20.0 (3ファイル, 2026-10-24に1.16.1から更新) | 1.20.0はFIX版 | 1.20.0はCVE-2026-101901等複数の2026 advisoryの修正版。安全確認済み(2026-10-26)。 |
+| socket.io / socket.io-client | ^4.7.4 → ^4.8.0 (2ファイル, 2026-10-26に更新) | CVE-2026-59725 (High, CVSS 7.5) | 4.7.4はEngine.IOポーリング接続消耗によるDoS。4.8.0で修正版(Mendの情報)。streaming-chat-app×2で更新済み。 |
 | torch / setuptools | torch==2.11.0 / setuptools<82 (LLM/openmythos-test) | GHSA-rrmf-rvhw-rf47 / GHSA-h35f-9h28-mq5c, GHSA-xmj3-9gf7-h52w | サードパーティ open-mythos==0.5.0 がtorch==2.11.0を厳密ピン→setuptools<82強制。open-mythosの新版待ち。いずれもローカルアクセス前提の低リスク。 |
 
 ### 修正済みファイル（2026-05-30）
@@ -78,6 +79,17 @@ LLM/DA-Elyza2024/python/requirements.txt（pypdf）、axios 1.16.1→1.20.0（3 
 @babel/core 7.20.0→7.29.6（2 package.json）、poetry.lock×4、uv.lock×2、openmythos-test/pyproject.toml。
 push時に他マシンの2026-10-19スキャン(chromadb CVE-2026-45833追記)とコンフリクトしたため
 `git merge origin/master` で解消（両方のCVE記載を保持）。
+
+## 週次自動スキャン（2026-10-26 Cowork環境）
+
+**制約: Cowork環境でOSV APIがプロキシ(403)でブロックされる。** `api.osv.dev:443` はproxy policyでCONNECT拒否。
+代替手段：WebSearch でCVE検索 + GitHub Dependabot APIは `gh api` (403: Resource not accessible by integration) で取得不可。
+→ **WebSearch によるCVE手動確認**に依存。次回以降もCoworkではWebSearch検索を先に行うこと。
+
+**今回の修正ファイル（3件、コミット83bbbf3）**:
+- `LLM/DA-Elyza2024/javascript/streaming-chat-app/package.json` — socket.io/socket.io-client 4.7.4→4.8.0
+- `LLM/act-MLS2024/javascript/streaming-chat-app/package.json` — 同上
+- `LLM/DA-Elyza2024/python/requirements.txt` — chromadb CVEコメント日付更新(2026-10-24→2026-10-26)
 
 **Why:** Dependabot cross-checkは「OSVはrequirements.txt/package.jsonしか見ない」という既存の
 Mac向けメモの想定を裏付けた。次回以降もlockファイル(poetry.lock/uv.lock)を必ず含めてスキャンする。
